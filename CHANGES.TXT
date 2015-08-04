@@ -1,0 +1,61 @@
+version 0.7 (2015-08-04)
+- BRICK WALL and ELEMENTAL added
+- New dungeon features: sword in stone, stone tablet
+- Fountains and altars give more experience deeper down
+- Restart game after winning/dying
+- ARAQNO article corrected
+
+
+version 0.6 (2013-10-19)
+- Branches reworked, doors added
+- Campsites and scrying orbs added
+- New enemies: BLURK, ARAQNO, MOTH-THING, EVIL TREE, GIANT NOSE and a secret boss
+- Screen shaking
+- You now stop before any chasm, not just trapdoors
+- Cartographer updates gold display
+- Fewer traps
+- Axe graphic changed
+- Fixed a bug when praying
+- Monster difficulty adjusted
+
+
+version 0.5 (2013-06-26)
+- Highscore table
+- Monsters now shown partly outside screen
+- Rogues can steal your gold
+- Liches and floating eyes are slightly weaker, imps somewhat stronger
+- Poison traps somewhat stronger
+- Title + help screen added
+- /etc/basment.conf
+
+
+version 0.4 (2013-06-15)
+- Bows can break and cost gold to shoot
+- Portal branch populated
+- Fixed animation timing under Windows
+
+
+version 0.3 (2013-06-05)
+- Bows
+- New traps
+- Early floors no longer have traps
+- Dungeon is more compact and monster distribution better
+- Fixed a minor scrolling bug at the right edge of the map
+
+
+version 0.2 (2013-05-07)
+- Automap
+- M opens the map (in addition to m)
+- Fixed HP bars when displaying over 60 points
+- Bookshelves
+- Binary skills (lockpick, trap detection)
+- When leaving a floor, a new monster is spawned
+- Fewer weak monsters deep down
+- Blink indication when attributes change
+- No traps on the first few levels
+- New enemies: knave, floating eye, mimic
+- Lich attack animation adjusted
+- Help key added
+- Fountains are more helpful
+- Cave-ins do less damage
+- Reversed combat lookup (attack the monster closest to the screen)

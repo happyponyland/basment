@@ -1,0 +1,11 @@
+# BASMENT DWELLERS example config file
+#
+# Put this in /etc/basment.conf for site-wide options!
+# Lines starting with # are comments.
+
+# Path to highscore table. Please use a path without spaces.
+scores /shit/basment/SCORES
+
+# Always prompt for a name for the highscore table.
+# If this is left out the players username will be used.
+forcename

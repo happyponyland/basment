@@ -1,0 +1,36 @@
+# xinetd.conf.example for BASMENT DWELLERS
+# http://www.happyponyland.net/basment.php
+# Save this as /etc/xinetd.conf
+
+defaults
+{
+  # Limit the number of simultaneous connections (players)
+  instances      = 20
+
+  # Try to avoid DOS attacks, etc
+  cps             = 5 30
+
+  # Log connections
+  log_type = FILE /var/log/xinetd.log
+  log_on_success = HOST
+  log_on_failure = HOST
+}
+
+service basment
+{
+  socket_type     = stream
+  flags           = REUSE
+  wait            = no
+  server          = /usr/sbin/telnetd
+
+  # This should of course point to your basment binary
+  server_args     = -E /shit/basment/basment
+
+  # If you do not set UNLISTED, the port number
+  # must be added to /etc/services!
+  port            = 4000
+  type            = UNLISTED
+
+  # Make a user account (useradd -s /bin/false basment)
+  user            = basment
+}
