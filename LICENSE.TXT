@@ -1,0 +1,25 @@
+THE SUPER LAME "I WISH I WOULDN'T HAVE TO CARE
+ABOUT THIS BUT I GUESS IT'S A GOOD IDEA TO MAKE
+IT OPEN SOURCE" BASMENT DWELLERS PUBLIC LICENSE
+
+Author(s):
+  Ulf Åström (happyponyland.net)
+
+You are provided the source code for this application so you can:
+
+  a) compile it for your particular system,
+  b) verify what runs within your computer,
+  c) make changes and additions to it,
+  d) (maybe) learn something from it.
+
+This software comes without warranty. Use it at your own risk.
+
+You may distribute modified versions, but only under an identical license.
+
+You must provide the source code. Please state clearly that you have changed it.
+
+Don't make money from other peoples work ("distribution fees" my ass, this is the Internet).
+
+Don't remove the names of other contributors (they deserve to have their work recognized).
+
+Don't be stupid. Don't be evil. Thank you.
