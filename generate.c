@@ -543,11 +543,11 @@ void corridor(int y, int start_x, int speed, bool remainder)
     {
       set_cell(y, x, CELL_BOSS);
 
-      for (i = 0; i < 5; i++)
-	make_lake();
-      
-      for (i = 0; i < 5; i++)
+      for (i = 0; i < 3; i++)
 	make_branch();
+
+      for (i = 0; i < 7; i++)
+	make_lake();
     }
   }
   else if (!remainder)
@@ -615,8 +615,8 @@ void make_lake()
     {
       if (get_cell(start_y, start_x) == CELL_ROOM)
       {
-	dig_lake(start_y, start_x,     +1);
-	dig_lake(start_y, start_x - 1, -1);
+	dig_lake(start_y, start_x,     dir);
+//	dig_lake(start_y, start_x - 1, -1);
 	return;
       }
       
@@ -640,17 +640,34 @@ void dig_lake(int start_y, int start_x, int dir)
   y = start_y;
   x = start_x;
 
-  depth = 1 + rand() % 3;
-  
-  while (get_cell(start_y, x) == CELL_ROOM)/*m ||
-					     get_cell(start_y, x) == CELL_WSURFACE)*/
+  depth = 1 + rand() % 5;
+//  depth = 0;
+
+  while (get_cell(start_y, x) == CELL_ROOM)
   {
     set_cell(start_y, x, CELL_WSURFACE);
 
+/*    switch (rand() % 3)
+    {
+    case 0: break;
+    case 1: depth++; break;
+    case 2: depth = MIN(1, depth - 1); break;
+    }*/
+    
     for (y = start_y + 1; y <= start_y + depth; y++)
     {
       if (get_cell(y, x) != CELL_ROCK)
 	break;
+
+      if ((get_cell(y, x - 1) != CELL_ROCK &&
+	   get_cell(y, x - 1) != CELL_WATER)
+	  ||
+	  (get_cell(y, x + 1) != CELL_ROCK &&
+	   get_cell(y, x + 1) != CELL_WATER))
+      {
+	set_cell(y, x, CELL_RESERVED);
+	break;
+      }
       
       set_cell(y, x, CELL_WATER);
     }
@@ -914,6 +931,8 @@ void populate_cellmap(void)
       {
 	if (get_cell(y, x - 1) > CELL_BLOCKING &&
 	    get_cell(y, x + 1) > CELL_BLOCKING &&
+	    !water_cell(get_cell(y, x - 1)) &&
+	    !water_cell(get_cell(y, x + 1)) &&
 	    (get_cell(y, x) == CELL_ROCK ||
 	     get_cell(y, x) == CELL_RESERVED))
 	{
@@ -1098,6 +1117,7 @@ void make_water(int cy, int cx)
   int y;
   int w_l;
   int w_r;
+  int tile;
 
   c = get_cell(cy, cx);
   
@@ -1111,8 +1131,8 @@ void make_water(int cy, int cx)
     
     if (water_cell(get_cell(cy + 1, cx)))
     {
-      w_l = (get_cell(cy + 1, cx - 1) == CELL_WATER ? 4 : 2);
-      w_r = (get_cell(cy + 1, cx + 1) == CELL_WATER ? 4 : 2);
+      w_l = (get_cell(cy + 1, cx - 1) == CELL_WATER ? 4 : 1);
+      w_r = (get_cell(cy + 1, cx + 1) == CELL_WATER ? 4 : 1);
     }
 
     if (get_cell(cy, cx - 1) == CELL_WSURFACE)
@@ -1129,8 +1149,8 @@ void make_water(int cy, int cx)
   }
   else if (water_cell(CELL_WATER))
   {
-    w_l = (water_cell(get_cell(cy, cx - 1)) ? 4 : 2);
-    w_r = (water_cell(get_cell(cy, cx + 1)) ? 4 : 2);
+    w_l = (water_cell(get_cell(cy, cx - 1)) ? 4 : 1);
+    w_r = (water_cell(get_cell(cy, cx + 1)) ? 4 : 1);
     
     for (x = tx - w_l; x <= tx + w_r; x++)
     {
@@ -1140,12 +1160,17 @@ void make_water(int cy, int cx)
       }
     }
 
-    for (x = tx - w_l; x <= tx + w_r; x++)
+    tile = get_cell(cy + 1, cx);
+
+    if (tile == CELL_WATER || tile == CELL_WSURFACE)
     {
-      for (y = feet - FLOOR_H + 1; y <= feet - 6; y++)
+      for (x = tx - w_l; x <= tx + w_r; x++)
       {
-	if (gtile(y, x) != TL_SURFACE)
-	  stile(y, x, TL_WATER);
+	for (y = feet - FLOOR_H + 1; y <= feet - 6; y++)
+	{
+	  if (gtile(y, x) != TL_SURFACE)
+	    stile(y, x, TL_WATER);
+	}
       }
     }
   }

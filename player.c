@@ -189,7 +189,7 @@ retry:
     give_weapon(WPN_SWORD);
     give_armor(SHD_MAGIC);
     give_armor(ARMOR_MAGIC);
-    fill_automap(1);
+    fill_automap(2);
     game->player_gold += 500;
     draw_stats();
     draw_bars();

@@ -332,6 +332,10 @@ enum tile_t
   TL_CORNER_LR,
   TL_CORNER_LL,
 
+  TL_IWALL,
+
+  TL_NO_MODIFY,
+
   TL_W_CORNER_UR,
   TL_W_CORNER_UL,
   TL_W_CORNER_LR,
@@ -341,10 +345,6 @@ enum tile_t
   TL_W_BOTTOM,
   TL_W_VFLAT,
   TL_W_HFLAT,
-  
-  TL_IWALL,
-
-  TL_NO_MODIFY,
 
   TL_WALL_BT,
   TL_WALL_TT,

@@ -65,14 +65,24 @@ void fix_walls()
 	  
 	case 1:
 	  if (rand() % 2)
+	  {
 	    stile(y, x, TL_W_LEFT);
+
+	    if (rand() % 3 == 0)
+	      stile(y, x + 1, TL_W_HFLAT);
+	  }
 	  else
 	    stile(y, x, TL_W_VFLAT);
 	  break;
 	  
 	case 2:
 	  if (rand() % 2)
+	  {
 	    stile(y, x, TL_W_RIGHT);
+
+	    if (rand() % 3 == 0)
+	      stile(y, x - 1, TL_W_HFLAT);
+	  }
 	  else
 	    stile(y, x, TL_W_VFLAT);
 	  break;
@@ -81,7 +91,12 @@ void fix_walls()
 	case 4:
 	case 8:
 	  if (rand() % 2)
+	  {
 	    stile(y, x, TL_W_BOTTOM);
+
+    	    if (rand() % 3 == 0)
+	      stile(y + 1, x, TL_W_VFLAT);
+	  }
 	  else
 	    stile(y, x, TL_W_HFLAT);
 	  break;

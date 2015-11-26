@@ -9,7 +9,7 @@
 #ifndef _BASMENT_H_
 #define _BASMENT_H_
 
-#define BD_VERSION "0.7"
+#define BD_VERSION "0.8"
 
 #ifdef _WIN32
 #include <curses.h>
