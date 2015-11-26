@@ -13,6 +13,7 @@ void fix_walls()
   int bt;
   int mask;
   int tile;
+  int water;
 
   for (y = 0; y < MAP_H; y++)
   {
@@ -28,44 +29,106 @@ void fix_walls()
       tt = gtile(y - 1, x);
       bt = gtile(y + 1, x);
 
+      water =
+ 	lt == TL_WATER || lt == TL_SURFACE ||
+ 	rt == TL_WATER || rt == TL_SURFACE ||
+ 	tt == TL_WATER || tt == TL_SURFACE ||
+ 	bt == TL_WATER || bt == TL_SURFACE ||
+	gtile(y - 1, x - 1) == TL_WATER ||
+	gtile(y + 1, x - 1) == TL_WATER ||
+	gtile(y + 1, x + 1) == TL_WATER ||
+	gtile(y - 1, x + 1) == TL_WATER;
+      
       mask =
 	(lt < TL_JOIN_WALL ? 1 : 0) + 
 	(rt < TL_JOIN_WALL ? 2 : 0) +
 	(tt < TL_JOIN_WALL ? 4 : 0) +
 	(bt < TL_JOIN_WALL ? 8 : 0);
-      
-      switch (mask)
+
+      if (water)
       {
-      case 0:
-	if (gtile(y - 1, x + 1) < TL_JOIN_WALL)
-	  stile(y, x, TL_CORNER_LL);
-	else if (gtile(y + 1, x + 1) < TL_JOIN_WALL)
-	  stile(y, x, TL_CORNER_UL);
-	else if (gtile(y - 1, x - 1) < TL_JOIN_WALL)
-	  stile(y, x, TL_CORNER_LR);
-	else if (gtile(y + 1, x - 1) < TL_JOIN_WALL)
-	  stile(y, x, TL_CORNER_UR);
-	else
-	  stile(y, x, TL_BWALL);
-	
-	break;
-
-      case 1: stile(y, x, TL_WALL); break;
-      case 2: stile(y, x, TL_WALL); break;
-	
-      case 3:
-      case 4:
-      case 8:
-	stile(y, x, TL_FLOOR);
-	break;
-
-      case 5: stile(y, x, TL_CORNER_UL); break;
-      case 6: stile(y, x, TL_CORNER_UR); break;
-      case 9: stile(y, x, TL_CORNER_LL); break;
-      case 10: stile(y, x, TL_CORNER_LR); break;
-
-      default: stile(y, x, TL_BWALL); break;
-      }
+	switch (mask)
+	{
+	case 0:
+	  if (gtile(y - 1, x + 1) < TL_JOIN_WALL)
+	    stile(y, x, TL_W_CORNER_LL);
+	  else if (gtile(y + 1, x + 1) < TL_JOIN_WALL)
+	    stile(y, x, TL_W_CORNER_UL);
+	  else if (gtile(y - 1, x - 1) < TL_JOIN_WALL)
+	    stile(y, x, TL_W_CORNER_LR);
+	  else if (gtile(y + 1, x - 1) < TL_JOIN_WALL)
+	    stile(y, x, TL_W_CORNER_UR);
+	  else
+	    stile(y, x, TL_BWALL);
+	  
+	  break;
+	  
+	case 1:
+	  if (rand() % 2)
+	    stile(y, x, TL_W_LEFT);
+	  else
+	    stile(y, x, TL_W_VFLAT);
+	  break;
+	  
+	case 2:
+	  if (rand() % 2)
+	    stile(y, x, TL_W_RIGHT);
+	  else
+	    stile(y, x, TL_W_VFLAT);
+	  break;
+	  
+	case 3:
+	case 4:
+	case 8:
+	  if (rand() % 2)
+	    stile(y, x, TL_W_BOTTOM);
+	  else
+	    stile(y, x, TL_W_HFLAT);
+	  break;
+	  
+	case 5:  stile(y, x, TL_W_CORNER_UL); break;
+	case 6:  stile(y, x, TL_W_CORNER_UR); break;
+	case 9:  stile(y, x, TL_W_CORNER_LL); break;
+	case 10: stile(y, x, TL_W_CORNER_LR); break;
+	  
+	default: stile(y, x, TL_BWALL); break;
+	}
+      } /* water */
+      else
+      {
+	switch (mask)
+	{
+	case 0:
+	  if (gtile(y - 1, x + 1) < TL_JOIN_WALL)
+	    stile(y, x, TL_CORNER_LL);
+	  else if (gtile(y + 1, x + 1) < TL_JOIN_WALL)
+	    stile(y, x, TL_CORNER_UL);
+	  else if (gtile(y - 1, x - 1) < TL_JOIN_WALL)
+	    stile(y, x, TL_CORNER_LR);
+	  else if (gtile(y + 1, x - 1) < TL_JOIN_WALL)
+	    stile(y, x, TL_CORNER_UR);
+	  else
+	    stile(y, x, TL_BWALL);
+	  
+	  break;
+	  
+	case 1: stile(y, x, TL_WALL); break;
+	case 2: stile(y, x, TL_WALL); break;
+	  
+	case 3:
+	case 4:
+	case 8:
+	  stile(y, x, TL_FLOOR);
+	  break;
+	  
+	case 5: stile(y, x, TL_CORNER_UL); break;
+	case 6: stile(y, x, TL_CORNER_UR); break;
+	case 9: stile(y, x, TL_CORNER_LL); break;
+	case 10: stile(y, x, TL_CORNER_LR); break;
+	  
+	default: stile(y, x, TL_BWALL); break;
+	}
+      } /* not water */
     }
   }
 

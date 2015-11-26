@@ -297,6 +297,9 @@ enum tile_t
   TL_TAB_R,
   TL_TAB_T,
   TL_TAB_C,
+
+  TL_SURFACE,
+  TL_WATER,
   
   TL_BLOCKING,
 
@@ -328,6 +331,16 @@ enum tile_t
   TL_CORNER_UL,
   TL_CORNER_LR,
   TL_CORNER_LL,
+
+  TL_W_CORNER_UR,
+  TL_W_CORNER_UL,
+  TL_W_CORNER_LR,
+  TL_W_CORNER_LL,
+  TL_W_LEFT,
+  TL_W_RIGHT,
+  TL_W_BOTTOM,
+  TL_W_VFLAT,
+  TL_W_HFLAT,
   
   TL_IWALL,
 
@@ -383,6 +396,7 @@ enum decoration_t
 #define CELL_LADDER   1
 #define CELL_CHASM    2
 #define CELL_RESERVED 3
+#define CELL_WATER    4
 
 #define CELL_BLOCKING 9 /* <= */
 
@@ -417,5 +431,7 @@ enum decoration_t
 #define CELL_SWSTONE   36
 #define CELL_TABLET    37
 
+#define CELL_WSURFACE  100
+#define CELL_WFALL     102
 
 #endif

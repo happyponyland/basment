@@ -156,7 +156,16 @@ void init_gfx_map()
   gfx_map[TL_LADDER_L]    = ACS_LTEE  | COLOR_PAIR(PAIR_BROWN);
   gfx_map[TL_LADDER_R]    = ACS_RTEE  | COLOR_PAIR(PAIR_BROWN);
 
-
+  gfx_map[TL_W_CORNER_UR]   = ACS_URCORNER | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_W_CORNER_UL]   = ACS_ULCORNER | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_W_CORNER_LR]   = ACS_LRCORNER | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_W_CORNER_LL]   = ACS_LLCORNER | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_W_LEFT]        = ACS_LTEE     | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_W_RIGHT]       = ACS_RTEE     | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_W_BOTTOM]      = ACS_TTEE     | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_W_VFLAT]       = ACS_VLINE    | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_W_HFLAT]       = ACS_HLINE    | COLOR_PAIR(PAIR_GREEN);
+ 
   gfx_map[TL_VOID] =
     gfx_map[TL_BWALL] =
     gfx_map[TL_CHASM] =
@@ -265,6 +274,9 @@ void init_gfx_map()
   gfx_map[TL_TAB_T] = '_' | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
   gfx_map[TL_TAB_C] = '=' | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
 
+  gfx_map[TL_SURFACE] = '~' | COLOR_PAIR(PAIR_WHITE_ON_CYAN);
+  gfx_map[TL_WATER]   = ' ' | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
+  
   return;
 }
 
@@ -344,6 +356,40 @@ void draw_board()
 		   sc_y, sc_x,
 		   mob->type, mob->flip,
 		   mob->flags);
+      }
+    }
+  }
+
+  // Make another pass of the tiles to change water
+  for (y = 0; y < BOARD_H; y++)
+  {
+    for (x = 0; x < BOARD_W + 1; x++)
+    {
+      wmove(board, y, x);
+
+      if (game->hallucination)
+      {
+	// Flip view up-side-down
+	t = gtile(view_y + BOARD_H - 1 - y, view_x + x);
+      }
+      else
+      {
+	t = gtile(view_y + y, view_x + x);
+      }
+
+      if (t == TL_SURFACE)
+	waddch(board, gfx_map[TL_SURFACE]);
+      else if (t == TL_WATER)
+      {
+	int in;
+	int ch;
+	int attr;
+
+	in = mvwinch(board, y, x);
+	ch = in & A_CHARTEXT;
+	attr = in & ((1<<22) | (1<<18));
+
+	waddch(board, ch | attr | COLOR_PAIR(PAIR_BLACK_ON_CYAN));
       }
     }
   }
@@ -446,6 +492,16 @@ void g_uadd(int y, int x, char * s, chtype a)
 
 void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
 {
+  if (!title_running)
+  {
+    if (gtile(mob->y + 1, mob->x)     == TL_SURFACE &&
+	gtile(mob->y + 1, mob->x - 1) == TL_SURFACE &&
+	gtile(mob->y + 1, mob->x + 1) == TL_SURFACE)
+    {
+      y++;
+    }
+  }
+  
   switch (type)
   {
   case MOB_PLAYER:
@@ -2540,6 +2596,9 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   uint32_t fall = 0;
   uint32_t climb = 0;
   int skin = PAIR_WHITE;
+  int dive = false;
+
+  dive = flags & GFX_HUMAN_DIVE;
 
   shd_type = flags & (GFX_HUMAN_SHIELD1 | GFX_HUMAN_SHIELD2);
   shd_up = flags & GFX_HUMAN_SHIELD_UP;
@@ -2585,12 +2644,24 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   else
     GA(-1, 0, 'T' | skin); //GU(-1, 0, "ℿ", 0);//
 
+  if (dive)
+  {
+    GA(0, 0, '@' | skin);
+    
+    GA((climb == GFX_HUMAN_CLIMB1 ? -1 : 0), -1, GA_AL);
+    GA((climb == GFX_HUMAN_CLIMB2 ? -1 : 0), +1, GA_AR);
+
+    GA(-2, -1, GA_BS | skin);
+    GA(-2, -0, ' '   | skin);
+    GA(-2, +1, GA_FS | skin);
+
+    return;
+  }
+  
   // Head
 
   if (flags & GFX_HUMAN_PLAYER)
     GA(-2, 0, '@' | skin);
-    //mvwaddstr(board, y - 2, x, "⌂"); ☺
-    //GU(-2, 0, "⌂", 0);
   else
     GA(-2, 0, 'o' | skin);
   

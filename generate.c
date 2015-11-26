@@ -544,6 +544,9 @@ void corridor(int y, int start_x, int speed, bool remainder)
       set_cell(y, x, CELL_BOSS);
 
       for (i = 0; i < 5; i++)
+	make_lake();
+      
+      for (i = 0; i < 5; i++)
 	make_branch();
     }
   }
@@ -586,6 +589,73 @@ void corridor(int y, int start_x, int speed, bool remainder)
   if (!remainder && y >= 0)
   {
     corridor(y, start_x, speed * -1, true);
+  }
+
+  return;
+}
+
+
+
+void make_lake()
+{
+  int start_y;
+  int start_x;
+
+  int dir;
+
+  dir = (rand() % 2 ? +1 : -1);
+  
+  start_y = 2 + rand() % (MAX_FLOORS - 8);
+
+  while (start_y < MAX_FLOORS - 10)
+  {
+    start_x = 5 + rand() % (CELLS_W - 10);
+
+    while (start_x > 5 && start_x <= CELLS_W - 10)
+    {
+      if (get_cell(start_y, start_x) == CELL_ROOM)
+      {
+	dig_lake(start_y, start_x,     +1);
+	dig_lake(start_y, start_x - 1, -1);
+	return;
+      }
+      
+      start_x += dir;
+    }
+
+    start_y++;
+  }
+   
+  return;
+}
+
+
+
+void dig_lake(int start_y, int start_x, int dir)
+{
+  int y;
+  int x;
+  int depth;
+
+  y = start_y;
+  x = start_x;
+
+  depth = 1 + rand() % 3;
+  
+  while (get_cell(start_y, x) == CELL_ROOM)/*m ||
+					     get_cell(start_y, x) == CELL_WSURFACE)*/
+  {
+    set_cell(start_y, x, CELL_WSURFACE);
+
+    for (y = start_y + 1; y <= start_y + depth; y++)
+    {
+      if (get_cell(y, x) != CELL_ROCK)
+	break;
+      
+      set_cell(y, x, CELL_WATER);
+    }
+     
+    x += dir;
   }
 
   return;
@@ -1013,6 +1083,79 @@ void place_single_cell(int start_y, int cell)
 
 
 
+void make_water(int cy, int cx)
+{
+  int c;
+  int tx;
+  int feet;
+  int x;
+  int y;
+  int w_l;
+  int w_r;
+
+  c = get_cell(cy, cx);
+  
+  feet = (cy * BOARD_H) + FEET_Y;
+  tx = (cx * CELL_TO_TILES) + 4;
+
+  if (c == CELL_WSURFACE)
+  {
+    w_l = 2;
+    w_r = 2;
+    
+    if (get_cell(cy + 1, cx) == CELL_WATER)
+    {
+      w_l = (get_cell(cy + 1, cx - 1) == CELL_WATER ? 4 : 2);
+      w_r = (get_cell(cy + 1, cx + 1) == CELL_WATER ? 4 : 2);
+    }
+/*
+    else
+    {
+      w_l = (get_cell(cy, cx - 1) == CELL_WSURFACE ? 4 : 2);
+      w_r = (get_cell(cy, cx + 1) == CELL_WSURFACE ? 4 : 2);
+    }
+*/
+
+    if (get_cell(cy, cx - 1) == CELL_WSURFACE)
+      w_l = 4;
+
+    if (get_cell(cy, cx + 1) == CELL_WSURFACE)
+      w_r = 4;
+
+    for (x = tx - w_l; x <= tx + w_r; x++)
+    {
+      stile(feet + 1, x, TL_SURFACE);
+      stile(feet + 2, x, TL_WATER);
+    }
+  }
+  else if (c == CELL_WATER)
+  {
+    w_l = (get_cell(cy, cx - 1) == CELL_WATER ? 4 : 2);
+    w_r = (get_cell(cy, cx + 1) == CELL_WATER ? 4 : 2);
+    
+    for (x = tx - w_l; x <= tx + w_r; x++)
+    {
+      for (y = feet - 5; y <= feet; y++)
+      {
+	stile(y, x, TL_WATER);
+      }
+    }
+
+    for (x = tx - w_l; x <= tx + w_r; x++)
+    {
+      for (y = feet - FLOOR_H + 1; y <= feet - 6; y++)
+      {
+	if (gtile(y, x) != TL_SURFACE)
+	  stile(y, x, TL_WATER);
+      }
+    }
+  }
+
+  return;
+}
+
+
+
 /*
   Converts a populated cellmap to a tilemap.
 */
@@ -1069,6 +1212,11 @@ void convert_cellmap(void)
 
       switch (game->cell[cy][cx])
       {
+      case CELL_WSURFACE:
+      case CELL_WATER:
+	make_water(cy, cx);
+	break;
+	
       case CELL_CAMP:
 	tx += slide;
 	decorate(feet, tx, DEC_CAMP);

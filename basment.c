@@ -126,6 +126,8 @@ void new_game(void)
   int i;
 
   setjmp(restart_game);
+
+  title_running = false;
   
   // Start a new game
   game = malloc(sizeof(game_t));
@@ -226,6 +228,10 @@ void init_ui()
   init_pair(PAIR_BLACK_ON_GREEN, COLOR_BLACK, COLOR_GREEN);
   init_pair(PAIR_GREEN_ON_MAGENTA, COLOR_GREEN, COLOR_MAGENTA);
   init_pair(PAIR_RED_ON_WHITE, COLOR_RED, COLOR_WHITE);
+  init_pair(PAIR_BLACK_ON_BLUE, COLOR_BLACK, COLOR_BLUE);
+  init_pair(PAIR_WHITE_ON_BLUE, COLOR_WHITE, COLOR_BLUE);
+  init_pair(PAIR_BLACK_ON_CYAN, COLOR_BLACK, COLOR_CYAN);
+  init_pair(PAIR_WHITE_ON_CYAN, COLOR_WHITE, COLOR_CYAN);
 
   erase();
   refresh();

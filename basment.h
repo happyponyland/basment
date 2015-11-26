@@ -78,7 +78,11 @@ extern jmp_buf restart_game;
 #define PAIR_BLACK_ON_GREEN   20
 #define PAIR_GREEN_ON_MAGENTA 21
 #define PAIR_RED_ON_WHITE    22
-#define PAIR_LAST         22
+#define PAIR_BLACK_ON_BLUE   23
+#define PAIR_WHITE_ON_BLUE   24
+#define PAIR_BLACK_ON_CYAN   25
+#define PAIR_WHITE_ON_CYAN   26
+#define PAIR_LAST         26
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
@@ -102,6 +106,8 @@ void new_game(void);
 int keep_in_range(int a, int b, int c);
 
 // title.c
+extern int title_running;
+
 void title_screen(void);
 void title_anim(void);
 
@@ -354,6 +360,9 @@ void add_wide_chasms(void);
 void place_single_cell(int start_y, int cell);
 bool dig_wide_chasm(int start_y, int x);
 bool dig_up(int start_y, int x, int carve);
+void make_lake(void);
+void dig_lake(int start_y, int start_x, int dir);
+void make_water(int cy, int cx);
 bool make_branch(void);
 void link_portals(void);
 void clear_cellmap(void);
@@ -441,6 +450,7 @@ extern char * mob_name[MOB_LAST];
 #define GFX_HURT    (1<<1)
 #define GFX_ATTACK2 (1<<2)
 
+#define GFX_HUMAN_DIVE    (1<<4)
 #define GFX_HUMAN_CLIMB1  (1<<5)
 #define GFX_HUMAN_CLIMB2  (1<<6)
 #define GFX_HUMAN_FALL1   (1<<7)

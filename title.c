@@ -5,6 +5,8 @@
 
 int title_frame;
 
+int title_running;
+
 
 void title_screen(void)
 {
@@ -13,6 +15,8 @@ void title_screen(void)
   int t;
   int l_edge;
 
+  title_running = true;
+  
   board = newwin(7, BOARD_W, 16, (COLS - BOARD_W) / 2);
   mode = 0;
   title_frame = 0;

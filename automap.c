@@ -304,6 +304,21 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
     *attr = COLOR_PAIR(PAIR_WHITE);
     break;
 
+  case CELL_WSURFACE:
+    *glyph = '!';
+    *attr = COLOR_PAIR(PAIR_BLUE);
+    break;
+
+  case CELL_WATER:
+    *glyph = '#';
+    *attr = COLOR_PAIR(PAIR_BLACK_ON_BLUE);
+    break;
+
+  case CELL_WFALL:
+    *glyph = 'W';
+    *attr = COLOR_PAIR(PAIR_BLACK_ON_BLUE);
+    break;
+    
   default:
     *glyph = '?';
     break;

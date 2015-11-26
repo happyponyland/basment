@@ -120,6 +120,16 @@ retry:
   {
     climb_ladder(-1);
   }
+  else if ((input == KEY_DOWN || input == key_down) &&
+	   (tile_below == TL_WATER || TL_SURFACE))
+  {
+    climb_ladder(+1);
+  }
+  else if ((input == KEY_UP || input == key_up) &&
+	   tile_feet == TL_WATER)
+  {
+    climb_ladder(-1);
+  }
   else if (input == 'm' || input == 'M')
   {
 /*    if (map->has_map == false)
@@ -554,30 +564,62 @@ void climb_ladder(int dir)
 {
   int off = 0;
   int old_floor;
+  int swimming;
+  int dist;
 
   recenter(false);
 
   old_floor = game->current_floor;
 
-  // When moving up we need to stop at the right place
-
-  if (dir == -1)
-    off = +1;
-
-  while (gtile(player->y + off + dir, player->x) == TL_LADDER_M)
+  if ((dir == -1 && gtile(player->y, player->x) == TL_WATER) ||
+      (dir == +1 && gtile(player->y + 1, player->x) == TL_SURFACE) ||
+      (dir == +1 && gtile(player->y + 1, player->x) == TL_WATER))
   {
+    swimming = true;
+  }
+  else
+  {
+    swimming = false;
+  }
+
+  if (swimming)
+  {
+    dist = FLOOR_H;
+
+    off = 0;
+  }
+  else
+  {
+    // It's a regular ladder
+    
+    // When moving up we need to stop at the right place
+
+    dist = 999;
+    
+    if (dir == -1)
+      off = +1;
+  }
+
+  while (dist--)
+  {
+    if (!swimming && gtile(player->y + off + dir, player->x) != TL_LADDER_M)
+      break;
+    
     // Move player on map and viewport; player always remains centered
     view_y += dir;
     player->y += dir;
-
+    
     update_automap();
-      
+    
     // Play a small animation
     if (player->y % 2)
       player->flags = GFX_HUMAN_CLIMB1;
     else 
       player->flags = GFX_HUMAN_CLIMB2;
 
+    if (swimming && dir == +1)
+      player->flags |= GFX_HUMAN_DIVE;
+    
     draw_board();
     lpause();
   }
