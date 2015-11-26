@@ -963,6 +963,12 @@ void populate_cellmap(void)
 	continue;
       }
 
+      if (original == CELL_WATER)
+      {
+	if (rand() % 4 == 0)
+	  set_cell(y, x, CELL_WMONSTER);
+      }
+
       if (original != CELL_ROOM)
 	continue;
 
@@ -1103,18 +1109,11 @@ void make_water(int cy, int cx)
     w_l = 2;
     w_r = 2;
     
-    if (get_cell(cy + 1, cx) == CELL_WATER)
+    if (water_cell(get_cell(cy + 1, cx)))
     {
       w_l = (get_cell(cy + 1, cx - 1) == CELL_WATER ? 4 : 2);
       w_r = (get_cell(cy + 1, cx + 1) == CELL_WATER ? 4 : 2);
     }
-/*
-    else
-    {
-      w_l = (get_cell(cy, cx - 1) == CELL_WSURFACE ? 4 : 2);
-      w_r = (get_cell(cy, cx + 1) == CELL_WSURFACE ? 4 : 2);
-    }
-*/
 
     if (get_cell(cy, cx - 1) == CELL_WSURFACE)
       w_l = 4;
@@ -1128,10 +1127,10 @@ void make_water(int cy, int cx)
       stile(feet + 2, x, TL_WATER);
     }
   }
-  else if (c == CELL_WATER)
+  else if (water_cell(CELL_WATER))
   {
-    w_l = (get_cell(cy, cx - 1) == CELL_WATER ? 4 : 2);
-    w_r = (get_cell(cy, cx + 1) == CELL_WATER ? 4 : 2);
+    w_l = (water_cell(get_cell(cy, cx - 1)) ? 4 : 2);
+    w_r = (water_cell(get_cell(cy, cx + 1)) ? 4 : 2);
     
     for (x = tx - w_l; x <= tx + w_r; x++)
     {
@@ -1185,9 +1184,9 @@ void convert_cellmap(void)
 	tiles to the left or right are traversable, we will extend one
 	tile further in that direction to meet the next section.
       */
-      open   = (this_cell > CELL_OPEN ? true : false);
-      open_l = (get_cell(cy, cx - 1) > CELL_OPEN ? true : false);
-      open_r = (get_cell(cy, cx + 1) > CELL_OPEN ? true : false);
+      open   = (cell_open(this_cell)            ? true : false);
+      open_l = (cell_open(get_cell(cy, cx - 1)) ? true : false);
+      open_r = (cell_open(get_cell(cy, cx + 1)) ? true : false);
 
       feet = (cy * BOARD_H) + FEET_Y;
       tx = (cx * CELL_TO_TILES) + 4;
@@ -1215,6 +1214,11 @@ void convert_cellmap(void)
       case CELL_WSURFACE:
       case CELL_WATER:
 	make_water(cy, cx);
+	break;
+
+      case CELL_WMONSTER:
+	make_water(cy, cx);
+	make_monster(feet, tx, MOB_FISH);
 	break;
 	
       case CELL_CAMP:
@@ -1585,3 +1589,30 @@ int floor_loot(int cy, int cx)
     
   return r;
 }
+
+
+
+/**
+   Returns if this cell should have walls removed to connect with neighbour cells.
+ */
+int cell_open(int c)
+{
+  if (c > CELL_CLOSED)
+    return false;
+  
+  if (c > CELL_OPEN)
+    return true;
+
+  return false;
+}
+
+
+
+int water_cell(int c)
+{
+  if (c == CELL_WATER || c == CELL_WMONSTER)
+    return true;
+
+  return false;
+}
+

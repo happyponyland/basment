@@ -224,6 +224,7 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
     break;
 
   case CELL_MONSTER:
+  case CELL_WMONSTER:
     *glyph = 'M';
     *attr = COLOR_PAIR(PAIR_WHITE);
     break;

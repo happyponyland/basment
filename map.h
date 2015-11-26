@@ -396,7 +396,6 @@ enum decoration_t
 #define CELL_LADDER   1
 #define CELL_CHASM    2
 #define CELL_RESERVED 3
-#define CELL_WATER    4
 
 #define CELL_BLOCKING 9 /* <= */
 
@@ -431,7 +430,12 @@ enum decoration_t
 #define CELL_SWSTONE   36
 #define CELL_TABLET    37
 
-#define CELL_WSURFACE  100
-#define CELL_WFALL     102
+#define CELL_WSURFACE    80
+
+#define CELL_CLOSED      100
+
+#define CELL_WFALL       102
+#define CELL_WATER       103
+#define CELL_WMONSTER    104
 
 #endif

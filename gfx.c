@@ -665,6 +665,9 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
     draw_snake(y, x, type, flip, flags);
     break;
 
+  case MOB_FISH:
+    draw_fish(y, x, type, flip, flags);
+
   default:
     break;
   }
@@ -2430,6 +2433,52 @@ void draw_snake(int y, int x, int type, bool flip, uint32_t flags)
   GU(-0, +1, "╰", c);
   GU(-0, +2, "╯", c);*/
   
+  return;
+}
+
+
+
+void draw_fish(int y, int x, int type, bool flip, uint32_t flags)
+{
+  int c;
+
+  if (flags & GFX_HURT)
+  {
+    c  = COLOR_PAIR(PAIR_GREEN);
+  }
+  else
+  {
+    c  = COLOR_PAIR(PAIR_GREEN);
+  }
+  
+  GA(-0, -3, GA_PL | c);
+  GA(-0, -2, GA_FS | c);
+  GA(-0, -1, GA_BS | c);
+  GA(-0, -0, '_'   | c);
+  GA(-0, +1, '_'   | c);
+  GA(-0, +2, '_'   | c);
+  GA(-0, +3, GA_FS | c);
+
+  GA(-1, -3, GA_PL | c);
+  GA(-1, -2, ' '   | c);
+  GA(-1, -1, ' '   | c);
+  GA(-1, -0, GA_PL | c);
+  GA(-1, +1, ' '   | c);
+  GA(-1, +2, '_'   | c);
+  GA(-1, +3, '_'   | c);
+
+  GA(-2, -3, GA_PL | c);
+  GA(-2, -2, GA_BS | c);
+  GA(-2, -1, GA_FS | c);
+  GA(-2, -0, ' '   | c);
+  GA(-2, +1, ','   | c);
+  GA(-2, +2, ','   | c);
+  GA(-2, +3, GA_BS | c);
+
+  GA(-3, -0, '_'   | c);
+  GA(-3, +1, '_'   | c);
+  GA(-3, +2, '_'   | c);
+
   return;
 }
 

@@ -176,6 +176,7 @@ void draw_demon(int y, int x, int type, bool flip, uint32_t flags);
 void draw_archdemon(int y, int x, int type, bool flip, uint32_t flags);
 void draw_spider(int y, int x, int type, bool flip, uint32_t flags);
 void draw_snake(int y, int x, int type, bool flip, uint32_t flags);
+void draw_fish(int y, int x, int type, bool flip, uint32_t flags);
 void draw_ghoul(int y, int x, int type, bool flip, uint32_t flags);
 void draw_giant(int y, int x, int type, bool flip, uint32_t flags);
 void draw_lich(int y, int x, int type, bool flip, uint32_t flags);
@@ -363,6 +364,7 @@ bool dig_up(int start_y, int x, int carve);
 void make_lake(void);
 void dig_lake(int start_y, int start_x, int dir);
 void make_water(int cy, int cx);
+int water_cell(int c);
 bool make_branch(void);
 void link_portals(void);
 void clear_cellmap(void);
@@ -383,6 +385,7 @@ void set_cell_branch(int y, int x, int token, int branch);
 int get_cell(int y, int x);
 int floor_loot(int cy, int cx);
 bool cell_range(int t, int l, int b, int r, int type, bool write);
+int cell_open(int c);
 
 /* hiscore.c */
 char scores_file[DEFLEN];
@@ -440,7 +443,8 @@ WINDOW * lowwin;
 #define MOB_BIGSPIDER  35
 #define MOB_SHRUBBERY  36
 #define MOB_BRICKWALL  37
-#define MOB_LAST       38
+#define MOB_FISH       38
+#define MOB_LAST       39
 
 extern char * mob_name[MOB_LAST];
 

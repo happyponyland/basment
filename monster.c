@@ -41,7 +41,8 @@ char * mob_name[MOB_LAST] =
   [MOB_MOTH] = "MOTH-THING",
   [MOB_SHRUBBERY] = "SHRUBBERY",
   [MOB_BIGSPIDER] = "ARAQNO",
-  [MOB_BRICKWALL] = "BRICK WALL"
+  [MOB_BRICKWALL] = "BRICK WALL",
+  [MOB_FISH] = "FISH"
 };
 
 
@@ -207,6 +208,16 @@ int make_monster(int y, int x, int type)
     mob->hp = 30;
     mob->exp = 400;
     mob->damage = 12;
+    break;
+
+  case MOB_FISH:
+    mob->w = 3;
+    mob->speed = 8;
+    mob->steps = 4;
+    mob->range = 5;
+    mob->hp = 40;
+    mob->exp = 500;
+    mob->damage = 8;
     break;
 
   case MOB_NOSE:

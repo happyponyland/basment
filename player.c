@@ -571,10 +571,16 @@ void climb_ladder(int dir)
 
   old_floor = game->current_floor;
 
-  if ((dir == -1 && gtile(player->y, player->x) == TL_WATER) ||
-      (dir == +1 && gtile(player->y + 1, player->x) == TL_SURFACE) ||
-      (dir == +1 && gtile(player->y + 1, player->x) == TL_WATER))
+  if (dir == -1 && gtile(player->y, player->x) == TL_WATER)
   {
+    swimming = true;
+  }
+  else if ((dir == +1 && gtile(player->y + 1, player->x) == TL_SURFACE) ||
+	   (dir == +1 && gtile(player->y + 1, player->x) == TL_WATER))
+  {
+    if (gtile(player->y + FLOOR_H, player->x) != TL_WATER)
+      return;
+    
     swimming = true;
   }
   else
