@@ -193,6 +193,10 @@ void interact()
   {
     pwait("SORRY WE ARE CLOSED FOR RENOVATION");
   }
+  else if (tile == TL_P_NPC_SUSHI)
+  {
+    shop_sushi();
+  }
   else if (tile == TL_P_COFFIN)
   {
     stile(player->y, player->x, TL_COFFIN_HL);

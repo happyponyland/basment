@@ -439,7 +439,8 @@ int player_move(int dir)
       tile_feet == TL_P_NPC2 ||
       tile_feet == TL_P_NPC3 ||
       tile_feet == TL_P_NPC4 ||
-      tile_feet == TL_P_NPC5)
+      tile_feet == TL_P_NPC5 ||
+      tile_feet == TL_P_NPC_SUSHI)
   {
     interact();
   }

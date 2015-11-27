@@ -86,6 +86,7 @@ enum tile_t
   TL_P_NPC3,
   TL_P_NPC4,
   TL_P_NPC5,
+  TL_P_NPC_SUSHI,
   TL_P_ENTRANCE,
 
   TL_P_CORPSE,
@@ -425,11 +426,13 @@ enum decoration_t
 #define CELL_KEEPROOM 30
 #define CELL_GORZOTH_L 31
 #define CELL_GORZOTH_R 32
-#define CELL_DOOR     33
-#define CELL_CAMP     34
+#define CELL_DOOR      33
+#define CELL_CAMP      34
 #define CELL_BRICKWALL 35
 #define CELL_SWSTONE   36
 #define CELL_TABLET    37
+#define CELL_SUSHI_L   38
+#define CELL_SUSHI_R   39
 
 #define CELL_WSURFACE    80
 

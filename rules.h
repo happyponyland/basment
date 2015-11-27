@@ -17,6 +17,16 @@
 #define COST_MAGGOT_PUDDING 100
 #define MAGGOT_PUDDING_HEAL 5
 
+#define COST_11PCS  150
+#define NIGIRI_HEAL +10
+#define COST_13PCS  200
+#define COST_ROLL   100
+#define COST_EEL    250
+#define COST_TOFU   150
+#define TOFU_SPEED  +1
+#define COST_BENTO  100
+#define BENTO_HEAL  +20
+
 #define CHEST_GOLD   60
 #define COFFIN_GOLD  45
 

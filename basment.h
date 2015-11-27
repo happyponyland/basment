@@ -50,7 +50,7 @@ extern jmp_buf restart_game;
 #include "rules.h"
 
 // Message buffer size
-#define DEFLEN 200
+#define DEFLEN 400
 
 /*
   Internal color definitions; these do not
@@ -289,6 +289,7 @@ void shop_chef(void);
 void shop_train(void);
 void shop_map(void);
 void shop_blacksmith(void);
+void shop_sushi(void);
 
 /* weapon.c */
 #define WPN_UNARMED   0
@@ -365,6 +366,8 @@ void make_lake(void);
 void dig_lake(int start_y, int start_x, int dir);
 void make_water(int cy, int cx);
 int dig_lake_up(int start_y, int start_x, int dir, int rec_depth);
+int air_pocket(int y, int start_x);
+void flatten_rooms(void);
 void put_lakes(void);
 int water_cell(int c);
 void add_surfaces(void);

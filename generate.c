@@ -38,6 +38,8 @@ void generate_map()
     link_portals();
     replace_remainders();
     add_ambushes();
+
+    flatten_rooms();
     populate_cellmap();
 	
     set_cell(0, start_x - 1, CELL_ROOM);
@@ -897,6 +899,29 @@ void clear_cellmap()
 }
 
 
+/**
+   Convert all remainders and dead ends to regular rooms.
+*/
+void flatten_rooms()
+{
+  int y;
+  int x;
+  int original;
+  
+  for (y = 0; y < MAX_FLOORS; y++)
+  {
+    for (x = 0; x < CELLS_W; x++)
+    {
+      original = get_cell(y, x);
+
+      if (original == CELL_RMNDR || original == CELL_DEADEND)
+	set_cell(y, x, CELL_ROOM);
+    }
+  }
+
+  return;
+}
+
 
 /*
   Populates the cellmap with interesting encounters.
@@ -907,18 +932,6 @@ void populate_cellmap(void)
   int x;
   int original;
   int dir;
-
-  for (y = 0; y < MAX_FLOORS; y++)
-  {
-    for (x = 0; x < CELLS_W; x++)
-    {
-      original = get_cell(y, x);
-
-      // Convert all remainders and dead ends to regular rooms
-      if (original == CELL_RMNDR || original == CELL_DEADEND)
-	set_cell(y, x, CELL_ROOM);
-    }
-  }
 
   place_single_cell(12, CELL_SWSTONE);
   
@@ -1150,15 +1163,31 @@ void make_water(int cy, int cx)
 
     if (cell_l == CELL_WSURFACE)
       w_l = 4;
-
+    else
+    {
+      if (gtile(feet, tx - 4) == TL_FLOOR)
+	stile(feet, tx - 4, TL_STOP);
+      
+      stile(feet, tx, TL_STOP);
+    }
+    
     if (cell_r == CELL_WSURFACE)
       w_r = 4;
+    else
+    {
+      if (gtile(feet, tx - 4) == TL_FLOOR)
+	stile(feet, tx + 4, TL_STOP);
+      
+      stile(feet, tx, TL_STOP);
+    }
 
     for (x = tx - w_l; x <= tx + w_r; x++)
     {
       stile(feet + 1, x, TL_SURFACE);
       stile(feet + 2, x, TL_WATER);
     }
+
+    
   }
   else if (water_cell(here) || here == CELL_WCORR)
   {
@@ -1208,6 +1237,85 @@ void make_water(int cy, int cx)
   }
 
   return;
+}
+
+
+
+int air_pocket(int y, int start_x)
+{
+  int dir = 0;
+
+  if (get_cell(y, start_x)     != CELL_ROCK ||
+      get_cell(y, start_x - 1) != CELL_ROCK ||
+      get_cell(y, start_x + 1) != CELL_ROCK)
+  {
+    return false;
+  }
+
+  set_cell(y, start_x, CELL_WSURFACE);
+
+  if (rand() % 2)
+  {
+    dir = (rand() % 2 ? -1 : +1);
+    corridor(y, start_x, dir,  true);
+    corridor(y, start_x, -dir, true);
+  }
+  else
+  {
+    set_cell(y, start_x - 1, CELL_RESERVED);
+    set_cell(y, start_x + 1, CELL_RESERVED);
+
+    int x;
+    int step;
+    int w;
+    
+    dir  = (rand() % 2 ? -1 : +1);
+    step = (dir == -1  ? +2 : -2);
+
+    while (dir == -1 || dir == +1)
+    {
+      x = start_x;
+      w = 0;
+      
+      while (x > 0 && x < CELLS_W - 2)
+      {
+	x += dir;
+	w++;
+	
+	if (get_cell(y, x + dir) != CELL_ROCK)
+	  break;
+
+	set_cell(y, x + dir, CELL_RESERVED);
+	set_cell(y, x, CELL_ROOM);
+
+	if (w > 4)
+	{
+	  if (dir > 0)
+	    set_cell(y, x, CELL_SUSHI_R);
+	  else
+	    set_cell(y, x, CELL_SUSHI_L);
+	  
+	  return true;
+	}
+      }
+
+      dir += step;
+    }
+  }
+  
+  //  set_cell(y, start_x - 1, CELL_LADDER_B);
+//  set_cell(y, start_x - 1, CELL_RESERVED);
+//  set_cell(y, start_x + 1, CELL_RESERVED);
+	    
+  /*if (get_cell(y, start_x)     != CELL_ROCK ||
+      get_cell(y, start_x - 1) != CELL_ROCK ||
+      get_cell(y, start_x + 1) != CELL_ROCK)
+  {
+    return false;
+    }*/
+
+  
+  return true;
 }
 
 
@@ -1266,7 +1374,7 @@ void add_surfaces()
 	if (rand() % 4)
 	  set_cell(y, x, CELL_WATER);
       }
-      else if (there == CELL_ROOM)
+      else if (there == CELL_ROOM || there == CELL_RMNDR || there == CELL_DEADEND)
       {
 	if (here == CELL_WCORR && rand() % 4)
 	  set_cell(y, x, CELL_WATER);
@@ -1329,12 +1437,16 @@ int dig_lake_up(int start_y, int start_x, int dir, int rec_depth)
     if (--dist == 0 ||
 	(c != CELL_ROCK)/* && c != CELL_WCORR && c != CELL_WATER)*/)
     {
-      int t;
+      int t = false;
 
       if (rec_depth > 3 || rand() % 2)
       {
 	t =  dig_lake_up(y - 1, x - dir, -1, rec_depth);
 	t |= dig_lake_up(y - 1, x - dir, +1, rec_depth);
+      }
+      else if (rand() % 3 == 0)
+      {
+	t = air_pocket(y - 1, x - dir);
       }
 
       if (t)
@@ -1574,9 +1686,11 @@ void convert_cellmap(void)
 
       case CELL_NPC_L:
       case CELL_NPC_R:
+      case CELL_SUSHI_L:
+      case CELL_SUSHI_R:
 	npc_room(feet, tx, game->cell[cy][cx]);
 	break;
-	
+
       default:
 	break;
       }
@@ -1688,9 +1802,12 @@ void npc_room(int y, int x, int cell_type)
   int npc_type;
   int x_off;
 
-  npc_type = TL_P_NPC1 + rand() % 4;
+  if (cell_type == CELL_SUSHI_L || cell_type == CELL_SUSHI_R)
+    npc_type = TL_P_NPC_SUSHI;
+  else
+    npc_type = TL_P_NPC1 + rand() % 4;
 
-  if (cell_type == CELL_NPC_R)
+  if (cell_type == CELL_NPC_R || cell_type == CELL_SUSHI_R)
   {
     x_off = -1;
     decorate(y, x + 2, DEC_NPC);

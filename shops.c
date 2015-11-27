@@ -376,3 +376,93 @@ void shop_map()
   return;
 }
 
+
+
+
+void shop_sushi()
+{
+  int sel;
+  char line[DEFLEN];
+  int leave;
+
+  if (gtile(player->y - 1, player->x - 3) == TL_DESK)
+    leave = POPUP_LEAVE_LEFT;
+  else
+    leave = POPUP_LEAVE_RIGHT;
+
+  snprintf(line, DEFLEN,
+	   "ITAMAE:\n"
+	   "HELLO WOULD YOU LIKE SOMETHING TO EAT\n\n"
+	   "  11-PIECE NIGIRI (SAKE, AJI, EBI, TOFU)  (%d)  \n"
+	   "  13-PIECE NIGIRI (OTORO, HAMACHI, TAKO)  (%d)  \n"
+	   "  SPICY URAMAKI (TOPPED W. SESAME SEEDS)  (%d)  \n"
+	   "  WAKAME & TOFU SALAD (VEGETARIAN)        (%d)  \n"
+	   "  SMOKED EEL SPECIAL                      (%d)  \n"
+	   "  BENTO (ONIGIRI, PICKLES, SASHIMI)       (%d)  ",
+	   COST_11PCS, COST_13PCS, COST_ROLL, COST_TOFU, COST_EEL, COST_BENTO);
+  
+  sel = pchoose(line, 3, 6, leave);
+  
+  draw_board();
+  
+  if (sel >= 0)
+  {
+    int cost;
+    
+    if      (sel == 0) cost = COST_11PCS;
+    else if (sel == 1) cost = COST_13PCS;
+    else if (sel == 2) cost = COST_ROLL;
+    else if (sel == 2) cost = COST_TOFU;
+    else if (sel == 2) cost = COST_EEL;
+    else if (sel == 2) cost = COST_BENTO;
+    
+    if (spend_gold(cost) == false)
+    {
+      pwait("ITAMAE:\nI'M SORRY YOU CANNOT AFFORD IT");
+    }
+    else
+    {
+      // Update gold
+      draw_stats();
+
+      if (sel == 0)
+      {
+	pwait("THE 11-PIECE NIGIRI WAS DELICIOUS");
+	change_pl_st(+1);
+	draw_stats();
+	refill_hp(NIGIRI_HEAL);
+      }
+      else if (sel == 1)
+      {
+	pwait("THE 13-PIECE NIGIRI WAS DELICIOUS");
+	refill_hp(NIGIRI_HEAL);
+      }
+      else if (sel == 2)
+      {
+	pwait("YOU ENJOY A SPICY URAMAKI");
+
+      }
+      else if (sel == 3)
+      {
+	pwait("THIS WAKAME & TOFU SALAD\n"
+	      "MUST BE REALLY HEALTHY!!!");
+	change_pl_sp(+1);
+      }
+      else if (sel == 4)
+      {
+	pwait("THE SMOKED EEL WAS INCREDIBLE!!!\n"
+	      "SERIOUSLY IT WAS LIKE THE BEST EVER");
+	change_pl_st(+2);
+      }
+      else if (sel == 5)
+      {
+	pwait("THE BENTO WAS A-EXCELLENTO");
+	refill_hp(BENTO_HEAL);
+      }
+    }
+    
+    return;
+  }
+  
+  return;
+}

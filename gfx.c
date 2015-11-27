@@ -175,7 +175,8 @@ void init_gfx_map()
     gfx_map[TL_P_NPC2] =
     gfx_map[TL_P_NPC3] =
     gfx_map[TL_P_NPC4] =
-    gfx_map[TL_P_NPC5] = ' ';
+    gfx_map[TL_P_NPC5] =
+    gfx_map[TL_P_NPC_SUSHI] = ' ';
 
   gfx_map[TL_L_A] = 'A';
   gfx_map[TL_L_B] = 'B';
