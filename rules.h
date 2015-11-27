@@ -3,6 +3,8 @@
 
 #define CONF_PATH "/etc/basment.conf"
 
+#define UNDERWATER_STEPS 3
+
 #define FOUNTAIN_HEAL 10
 #define CAMP_HEAL 12
 #define LEVEL_UP_HP_BOOST 10

@@ -311,6 +311,8 @@ int player_move(int dir)
   int moved = 0;
   int tile_below;
   int tile_feet;
+  int steps;
+  int underwater = false;
 
   /*
     Figure out in which direction we want to move, and how far off
@@ -328,7 +330,15 @@ int player_move(int dir)
     (blocking wall) or passes a point of interest (loot, etc).
   */
 
-  for (i = 0; i < player->steps; i++)
+  steps = player->steps;
+
+  if (gtile(player->y, player->x) == TL_WATER)
+  {
+    underwater = true;
+    steps = UNDERWATER_STEPS;
+  }
+  
+  for (i = 0; i < steps; i++)
   {
     new_x = player->x + x_off + speed;
 
@@ -451,6 +461,26 @@ int player_move(int dir)
       current location
     */
     feet_instruction(gtile(player->y, player->x));
+  }
+
+  if (underwater)
+  {
+    player->hp--;
+
+    draw_bars();
+
+    if (player->hp <= 0)
+    {
+/*      char line[DEFLEN];      
+
+      snprintf(line, DEFLEN,
+	       "YOU DROWNED"
+	       "BY %s%s",
+	       article[attacker->article],
+	       mob_name[attacker->type]);*/
+      
+      game_over("YOU DROWNED", false);
+    }
   }
   
   return moved;
