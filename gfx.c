@@ -278,7 +278,16 @@ void init_gfx_map()
 
   gfx_map[TL_SURFACE] = '~' | COLOR_PAIR(PAIR_WHITE_ON_CYAN);
   gfx_map[TL_WATER]   = ' ' | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
-  
+
+  /* Underwater */
+  gfx_map[TL_UWWOOD]        =
+    gfx_map[TL_P_UWCHEST]   = ACS_CKBOARD  | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
+  gfx_map[TL_UWLOCK]        = 'X'          | COLOR_PAIR(PAIR_BLACK_ON_CYAN) | A_REVERSE;
+  gfx_map[TL_UW_UL]         = ACS_ULCORNER | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
+  gfx_map[TL_UW_UR]         = ACS_URCORNER | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
+  gfx_map[TL_UW_VL]         = ACS_VLINE    | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
+  gfx_map[TL_UW_HL]         = ACS_HLINE    | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
+
   return;
 }
 
@@ -381,7 +390,7 @@ void draw_board()
 
       if (t == TL_SURFACE)
 	waddch(board, gfx_map[TL_SURFACE]);
-      else if (t == TL_WATER)
+      else if (t > TL_UNDERWATER && t < TL_LASTUNDERWATER)
       {
 	int in;
 	int ch;
@@ -2453,33 +2462,60 @@ void draw_fish(int y, int x, int type, bool flip, uint32_t flags)
     c  = COLOR_PAIR(PAIR_GREEN);
   }
   
-  GA(-0, -3, GA_PL | c);
-  GA(-0, -2, GA_FS | c);
-  GA(-0, -1, GA_BS | c);
-  GA(-0, -0, '_'   | c);
-  GA(-0, +1, '_'   | c);
-  GA(-0, +2, '_'   | c);
-  GA(-0, +3, GA_FS | c);
+  if (flags & GFX_ATTACK)
+  {
+    GA(-0, -0, GA_BS | c);
+    GA(-0, +1, '_'   | c);
+    GA(-0, +2, GA_FS | c);
+//    GA(-0, +3, ' '   | c);
 
-  GA(-1, -3, GA_PL | c);
-  GA(-1, -2, ' '   | c);
-  GA(-1, -1, ' '   | c);
-  GA(-1, -0, GA_PL | c);
-  GA(-1, +1, ' '   | c);
-  GA(-1, +2, '_'   | c);
-  GA(-1, +3, '_'   | c);
+    GA(-1, -3, GA_PL | c);
+    GA(-1, -2, GA_FS | c);
+    GA(-1, -1, GA_BS | c);
+    GA(-1, -0, ' '   | c);
+    GA(-1, +1, GA_BS | c);
+    GA(-1, +2, '_'   | c);
+    GA(-1, +3, ' '   | c);
+    
+    GA(-2, -3, GA_PL | c);
+    GA(-2, -2, ' '   | c);
+    GA(-2, -1, ' '   | c);
+    GA(-2, -0, GA_BS | c);
+//    GA(-2, +1, ' '   | c);
+//    GA(-2, +2, ' '   | c);
+//    GA(-2, +3, GA_FS | c);
 
-  GA(-2, -3, GA_PL | c);
-  GA(-2, -2, GA_BS | c);
-  GA(-2, -1, GA_FS | c);
-  GA(-2, -0, ' '   | c);
-  GA(-2, +1, ','   | c);
-  GA(-2, +2, ','   | c);
-  GA(-2, +3, GA_BS | c);
+  }
+  else
+  {
+    GA(-1, -3, GA_PL | c);
+    GA(-1, -2, GA_FS | c);
+    GA(-1, -1, GA_BS | c);
+    GA(-1, -0, '_'   | c);
+    GA(-1, +1, '_'   | c);
+    GA(-1, +2, '_'   | c);
+    GA(-1, +3, GA_FS | c);
+    
+    GA(-2, -3, GA_PL | c);
+    GA(-2, -2, ' '   | c);
+    GA(-2, -1, ' '   | c);
+    GA(-2, -0, GA_PL | c);
+    GA(-2, +1, ' '   | c);
+    GA(-2, +2, '_'   | c);
+    GA(-2, +3, '_'   | c);
+  }
 
-  GA(-3, -0, '_'   | c);
-  GA(-3, +1, '_'   | c);
-  GA(-3, +2, '_'   | c);
+  GA(-3, -3, GA_PL | c);
+  GA(-3, -2, GA_BS | c);
+  GA(-3, -1, GA_FS | c);
+  GA(-3, -0, ' '   | c);
+  GA(-3, +1, ','   | c);
+  GA(-3, +2, ','   | c);
+  GA(-3, +3, GA_BS | c);
+
+  GA(-4, -0, '_'   | c);
+  GA(-4, +1, '_'   | c);
+  GA(-4, +2, '_'   | c);
 
   return;
 }

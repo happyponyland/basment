@@ -471,14 +471,6 @@ int player_move(int dir)
 
     if (player->hp <= 0)
     {
-/*      char line[DEFLEN];      
-
-      snprintf(line, DEFLEN,
-	       "YOU DROWNED"
-	       "BY %s%s",
-	       article[attacker->article],
-	       mob_name[attacker->type]);*/
-      
       game_over("YOU DROWNED", false);
     }
   }

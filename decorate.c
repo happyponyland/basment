@@ -358,6 +358,20 @@ void decorate(int y, int x, int type)
 
     break;
 
+  case DEC_UWCHEST:
+    stile(y, x,     TL_P_UWCHEST);
+    stile(y, x - 2, TL_UWWOOD);
+    stile(y, x - 1, TL_UWWOOD);
+    stile(y, x + 1, TL_UWWOOD);
+    stile(y, x + 2, TL_UWWOOD);
+
+    stile(y - 1, x - 2, TL_UWWOOD);
+    stile(y - 1, x - 1, TL_UWWOOD);
+    stile(y - 1, x,     TL_UWLOCK);
+    stile(y - 1, x + 1, TL_UWWOOD);
+    stile(y - 1, x + 2, TL_UWWOOD);
+    break;    
+    
   case DEC_CHEST:
   default:
     stile(y, x,     TL_P_CHEST);

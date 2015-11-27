@@ -1001,8 +1001,26 @@ void populate_cellmap(void)
 
       if (original == CELL_WATER)
       {
-	if (rand() % 4 == 0)
-	  set_cell(y, x, CELL_WMONSTER);
+	switch (rand() % 8)
+	{
+	case 0:
+	  if (wopen_cell(get_cell(y + 1, x)) == false)
+	  {
+	    set_cell(y, x, CELL_WLOOT);
+	    break;
+	  }
+	case 1:  set_cell(y, x, CELL_WMONSTER);    break;
+	default: break;
+	}
+      }
+      else if (original == CELL_WCORR)
+      {
+	switch (rand() % 8)
+	{
+	case 0:  set_cell(y, x, CELL_WCORRMON);    break;
+	case 1:  set_cell(y, x, CELL_WCORRLOOT);   break;
+	default: break;
+	}
       }
 
       if (original != CELL_ROOM)
@@ -1186,20 +1204,12 @@ void make_water(int cy, int cx)
       stile(feet + 1, x, TL_SURFACE);
       stile(feet + 2, x, TL_WATER);
     }
-
-    
   }
-  else if (water_cell(here) || here == CELL_WCORR)
+  else if (water_cell(here)/* || here == CELL_WCORR*/)
   {
-    w_l = ((water_cell(cell_l) || cell_l == CELL_WCORR) ? 4 : 2);
-    w_r = ((water_cell(cell_r) || cell_r == CELL_WCORR) ? 4 : 2);
+    w_l = ((water_cell(cell_l) /*|| wcorr_cell(cell_l)*/) ? 4 : 2);
+    w_r = ((water_cell(cell_r) /*|| wcorr_cell(cell_r)*/) ? 4 : 2);
 
-/*    if (here == CELL_WCORR && water_cell(cell_ll))
-      w_l = 4;
-
-    if (here == CELL_WCORR && water_cell(cell_lr))
-    w_r = 4;*/
-    
     for (x = tx - w_l; x <= tx + w_r; x++)
     {
       for (y = feet - 5; y <= feet; y++)
@@ -1208,12 +1218,10 @@ void make_water(int cy, int cx)
       }
     }
 
-//    w_l = ((water_cell(cell_ul) || cell_ul == CELL_WCORR) ? 4 : 2);
-//    w_r = ((water_cell(cell_ur) || cell_ur == CELL_WCORR) ? 4 : 2);
-    //tile = get_cell(cy + 1, cx);
-
     if ((water_cell(cell_u) || cell_u == CELL_WSURFACE) &&
-	(here == CELL_WATER || here == CELL_WMONSTER))
+	(here == CELL_WATER    ||
+	 here == CELL_WMONSTER ||
+	 here == CELL_WLOOT))
     {
       w_l = w_r = 2;
 
@@ -1368,10 +1376,9 @@ void add_surfaces()
       here = get_cell(y, x);
       there = get_cell(y - 1, x);
       
-      if ((here == CELL_WCORR)
-	  && (there == CELL_WCORR))
+      if (here == CELL_WCORR && there == CELL_WCORR)
       {
-	if (rand() % 4)
+	if (rand() % 8)
 	  set_cell(y, x, CELL_WATER);
       }
       else if (there == CELL_ROOM || there == CELL_RMNDR || there == CELL_DEADEND)
@@ -1526,7 +1533,14 @@ void convert_cellmap(void)
 	make_water(cy, cx);
 	break;
 
+      case CELL_WLOOT:
+      case CELL_WCORRLOOT:
+	make_water(cy, cx);
+	decorate(feet, tx, DEC_UWCHEST);
+	break;
+
       case CELL_WMONSTER:
+      case CELL_WCORRMON:
 	make_water(cy, cx);
 	make_monster(feet, tx, MOB_FISH);
 	break;
@@ -1707,6 +1721,17 @@ void convert_cellmap(void)
     }
   }
 }
+
+
+
+int water_join(int t)
+{
+  if (t >= TL_UNDERWATER && t < TL_LASTUNDERWATER)
+    return true;
+
+  return false;
+}
+
 
 
 /*
@@ -1925,9 +1950,37 @@ int cell_open(int c)
 
 int water_cell(int c)
 {
-  if (c == CELL_WATER || c == CELL_WMONSTER || c == CELL_WCORR)
+  return wcorr_cell(c) || wopen_cell(c);
+}
+
+
+int wcorr_cell(int c)
+{
+  switch (c)
+  {
+  case CELL_WCORR:
+  case CELL_WCORRLOOT:
+  case CELL_WCORRMON:
     return true;
 
-  return false;
+  default:
+    return false;
+  }
+}
+
+
+
+int wopen_cell(int c)
+{
+  switch (c)
+  {
+  case CELL_WATER:
+  case CELL_WMONSTER:
+  case CELL_WLOOT:
+    return true;
+
+  default:
+    return false;
+  }
 }
 

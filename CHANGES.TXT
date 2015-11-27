@@ -1,3 +1,7 @@
+version 0.8
+- Water added
+
+
 version 0.7 (2015-08-04)
 - BRICK WALL and ELEMENTAL added
 - New dungeon features: sword in stone, stone tablet

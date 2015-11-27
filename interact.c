@@ -27,6 +27,7 @@ bool interesting(int tile)
   case TL_P_ORB:
   case TL_P_SWSTONE:
   case TL_P_TABLET:
+  case TL_P_UWCHEST:
     return true;
 
   default:
@@ -44,6 +45,7 @@ void feet_instruction(int tile)
   switch (tile)
   {
   case TL_P_CHEST:
+  case TL_P_UWCHEST:
     snprintf(lowmsg, DEFLEN, "PRESS <UP> TO LOOT CHEST");
     break;
 
@@ -124,7 +126,7 @@ void interact()
 
   tile = gtile(player->y, player->x);
 
-  if (tile == TL_P_CHEST)
+  if (tile == TL_P_CHEST || tile == TL_P_UWCHEST)
   {
     if (!game->skill_lockpick && game->weapon == WPN_UNARMED)
     {
@@ -159,13 +161,25 @@ void interact()
 
 /*    if (game->skill_lockpick || damage_weapon(rand() % 10) == false)
       {*/
-      stile(player->y, player->x, TL_WOOD);
-      
-      stile(player->y - 1, player->x - 2, TL_BR_UL);
-      stile(player->y - 1, player->x - 1, TL_BR_HL);
-      stile(player->y - 1, player->x, TL_BR_HL);
-      stile(player->y - 1, player->x + 1, TL_BR_HL);
-      stile(player->y - 1, player->x + 2, TL_BR_UR);
+
+    if (tile == TL_P_UWCHEST)
+      {
+	stile(player->y, player->x, TL_UWWOOD);
+	stile(player->y - 1, player->x - 2, TL_UW_UL);
+	stile(player->y - 1, player->x - 1, TL_UW_HL);
+	stile(player->y - 1, player->x, TL_UW_HL);
+	stile(player->y - 1, player->x + 1, TL_UW_HL);
+	stile(player->y - 1, player->x + 2, TL_UW_UR);
+      }
+      else
+      {
+	stile(player->y, player->x, TL_WOOD);
+	stile(player->y - 1, player->x - 2, TL_BR_UL);
+	stile(player->y - 1, player->x - 1, TL_BR_HL);
+	stile(player->y - 1, player->x, TL_BR_HL);
+	stile(player->y - 1, player->x + 1, TL_BR_HL);
+	stile(player->y - 1, player->x + 2, TL_BR_UR);
+      }
 
       draw_board();
       give_gold(line, 10 + rand() % CHEST_GOLD);

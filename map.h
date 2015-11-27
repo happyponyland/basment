@@ -300,8 +300,18 @@ enum tile_t
   TL_TAB_C,
 
   TL_SURFACE,
-  TL_WATER,
   
+  TL_UNDERWATER,
+  TL_WATER,
+  TL_UWWOOD,
+  TL_P_UWCHEST,
+  TL_UWLOCK,
+  TL_UW_UL,
+  TL_UW_VL,
+  TL_UW_UR,
+  TL_UW_HL,
+  TL_LASTUNDERWATER,
+
   TL_BLOCKING,
 
   TL_DOOR_BLOCK,
@@ -352,7 +362,7 @@ enum tile_t
   TL_WALL_TT,
 
   TL_OOB,
-
+  
   TL_LAST
 };
   
@@ -388,6 +398,10 @@ enum decoration_t
   DEC_EMPTY_SHELF,
   DEC_PORTAL,
   DEC_DOOR,
+
+  // Underwater
+  DEC_UWCHEST,
+    
   DEC_,
 };
 
@@ -442,5 +456,8 @@ enum decoration_t
 #define CELL_WATER       103
 #define CELL_WMONSTER    104
 #define CELL_WCORR       105
+#define CELL_WCORRLOOT   106
+#define CELL_WCORRMON    107
+#define CELL_WLOOT       108
 
 #endif

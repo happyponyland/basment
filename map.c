@@ -29,6 +29,7 @@ void fix_walls()
       tt = gtile(y - 1, x);
       bt = gtile(y + 1, x);
 
+/*
       water =
  	lt == TL_WATER || lt == TL_SURFACE ||
  	rt == TL_WATER || rt == TL_SURFACE ||
@@ -38,6 +39,16 @@ void fix_walls()
 	gtile(y + 1, x - 1) == TL_WATER ||
 	gtile(y + 1, x + 1) == TL_WATER ||
 	gtile(y - 1, x + 1) == TL_WATER;
+*/
+      water =
+ 	water_join(lt) ||
+ 	water_join(rt) ||
+ 	water_join(tt) ||
+	water_join(bt) ||
+	water_join(gtile(y - 1, x - 1)) ||
+	water_join(gtile(y + 1, x - 1)) ||
+	water_join(gtile(y + 1, x + 1)) ||
+	water_join(gtile(y - 1, x + 1));
       
       mask =
 	(lt < TL_JOIN_WALL ? 1 : 0) + 
