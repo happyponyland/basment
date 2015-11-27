@@ -412,9 +412,9 @@ void shop_sushi()
     if      (sel == 0) cost = COST_11PCS;
     else if (sel == 1) cost = COST_13PCS;
     else if (sel == 2) cost = COST_ROLL;
-    else if (sel == 2) cost = COST_TOFU;
-    else if (sel == 2) cost = COST_EEL;
-    else if (sel == 2) cost = COST_BENTO;
+    else if (sel == 3) cost = COST_TOFU;
+    else if (sel == 4) cost = COST_EEL;
+    else if (sel == 5) cost = COST_BENTO;
     
     if (spend_gold(cost) == false)
     {
@@ -460,6 +460,9 @@ void shop_sushi()
 	refill_hp(BENTO_HEAL);
       }
     }
+
+    // Refresh attributes
+    draw_stats();
     
     return;
   }
