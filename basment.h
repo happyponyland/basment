@@ -364,6 +364,8 @@ bool dig_up(int start_y, int x, int carve);
 void make_lake(void);
 void dig_lake(int start_y, int start_x, int dir);
 void make_water(int cy, int cx);
+int dig_lake_up(int start_y, int start_x, int dir);
+void put_lakes(void);
 int water_cell(int c);
 bool make_branch(void);
 void link_portals(void);

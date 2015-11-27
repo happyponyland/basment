@@ -573,12 +573,18 @@ void climb_ladder(int dir)
 
   if (dir == -1 && gtile(player->y, player->x) == TL_WATER)
   {
+    if (gtile(player->y - 6, player->x) != TL_WATER)
+      return;
+    
     swimming = true;
   }
   else if ((dir == +1 && gtile(player->y + 1, player->x) == TL_SURFACE) ||
 	   (dir == +1 && gtile(player->y + 1, player->x) == TL_WATER))
   {
     if (gtile(player->y + FLOOR_H, player->x) != TL_WATER)
+      return;
+
+    if (gtile(player->y + 3, player->x) != TL_WATER)
       return;
     
     swimming = true;

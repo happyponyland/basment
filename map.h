@@ -343,6 +343,7 @@ enum tile_t
   TL_W_LEFT,
   TL_W_RIGHT,
   TL_W_BOTTOM,
+  TL_W_TOP,
   TL_W_VFLAT,
   TL_W_HFLAT,
 
@@ -437,5 +438,6 @@ enum decoration_t
 #define CELL_WFALL       102
 #define CELL_WATER       103
 #define CELL_WMONSTER    104
+#define CELL_WCORR       105
 
 #endif

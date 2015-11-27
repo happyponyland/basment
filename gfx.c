@@ -163,6 +163,7 @@ void init_gfx_map()
   gfx_map[TL_W_LEFT]        = ACS_LTEE     | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_W_RIGHT]       = ACS_RTEE     | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_W_BOTTOM]      = ACS_TTEE     | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_W_TOP]         = ACS_BTEE     | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_W_VFLAT]       = ACS_VLINE    | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_W_HFLAT]       = ACS_HLINE    | COLOR_PAIR(PAIR_GREEN);
  
