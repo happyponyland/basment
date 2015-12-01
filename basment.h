@@ -104,6 +104,7 @@ void new_game(void);
 
 // stuff.c
 int keep_in_range(int a, int b, int c);
+int rnd_dir(void);
 
 // title.c
 extern int title_running;
@@ -373,6 +374,7 @@ int water_cell(int c);
 int wcorr_cell(int c);
 int wopen_cell(int c);
 int water_join(int t);
+void add_shallow_lakes(void);
 void add_surfaces(void);
 bool make_branch(void);
 void link_portals(void);
@@ -405,6 +407,11 @@ void show_highscore(int top_entries, int highlight, bool fancy);
 char * read_file(char * filename);
 
 /* automap.c */
+
+#define NOW_WORKING now_working(__func__);
+extern char working_label[DEFLEN];
+void now_working(const char * func);
+
 void update_automap(void);
 void draw_cellmap(void);
 void fill_automap(int mode);

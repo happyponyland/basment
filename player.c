@@ -121,12 +121,13 @@ retry:
     climb_ladder(-1);
   }
   else if ((input == KEY_DOWN || input == key_down) &&
-	   (tile_below == TL_WATER || TL_SURFACE))
+	   water_join(tile_below))
   {
     climb_ladder(+1);
   }
   else if ((input == KEY_UP || input == key_up) &&
-	   tile_feet == TL_WATER)
+	   water_join(tile_feet) &&
+	   !interesting(tile_feet))
   {
     climb_ladder(-1);
   }
@@ -589,37 +590,42 @@ void climb_ladder(int dir)
   int old_floor;
   int swimming;
   int dist;
+  int tile_feet;
+  int tile_below;
+
+  tile_feet  = gtile(player->y,     player->x);
+  tile_below = gtile(player->y + 1, player->x);
 
   recenter(false);
 
   old_floor = game->current_floor;
 
-  if (dir == -1 && gtile(player->y, player->x) == TL_WATER)
+  if (dir == -1 && water_join(tile_feet))
   {
-    if (gtile(player->y - 6, player->x) != TL_WATER)
+    if (!water_join(gtile(player->y - 6, player->x)))
       return;
     
     swimming = true;
-
-    if (gtile(player->y - 6, player->x - 1) != TL_WATER)
+    
+    if (!water_join(gtile(player->y - 6, player->x - 1)))
       player->x++;
-    else if (gtile(player->y - 6, player->x + 1) != TL_WATER)
+    else if (!water_join(gtile(player->y - 6, player->x + 1)))
       player->x--;
   }
-  else if ((dir == +1 && gtile(player->y + 1, player->x) == TL_SURFACE) ||
-	   (dir == +1 && gtile(player->y + 1, player->x) == TL_WATER))
+  else if (dir == +1 &&
+	   ((tile_below == TL_SURFACE) || water_join(tile_below)))
   {
-    if (gtile(player->y + FLOOR_H, player->x) != TL_WATER)
+    if (!water_join(gtile(player->y + FLOOR_H, player->x)))
       return;
 
-    if (gtile(player->y + 3, player->x) != TL_WATER)
+    if (!water_join(gtile(player->y + 3, player->x)))
       return;
     
     swimming = true;
 
-    if (gtile(player->y + 3, player->x - 1) != TL_WATER)
+    if (!water_join(gtile(player->y + 3, player->x - 1)))
       player->x++;
-    else if (gtile(player->y + 3, player->x + 1) != TL_WATER)
+    else if (!water_join(gtile(player->y + 3, player->x + 1)))
       player->x--;
   }
   else

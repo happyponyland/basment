@@ -29,6 +29,9 @@ void generate_map()
 
     add_surfaces();
 
+    add_shallow_lakes();
+    
+
     /*
       nodelay(stdscr, false);
       getch();
@@ -303,6 +306,8 @@ void add_extra_rooms(void)
   int start_x;
   int dir;
 
+  NOW_WORKING;
+
 //  for (y = MAX_FLOORS - 2; y >= 1; y--)
   for (y = 1; y < MAX_FLOORS - 2; y++)
   {
@@ -481,6 +486,8 @@ void corridor(int y, int start_x, int speed, bool remainder)
   int dug;
 
   int edge_clear;
+
+  NOW_WORKING;
 
   x = start_x;
 
@@ -694,10 +701,12 @@ bool make_branch()
 
   int y;
   int x;
-//  int i;
+
   int l;
 
   int branch;
+
+  NOW_WORKING;
 
 //  branch = BRANCH_ORGANIC;
   branch = 1 + rand() % (BRANCHES - 1);
@@ -907,6 +916,8 @@ void flatten_rooms()
   int y;
   int x;
   int original;
+
+  NOW_WORKING;
   
   for (y = 0; y < MAX_FLOORS; y++)
   {
@@ -933,6 +944,8 @@ void populate_cellmap(void)
   int original;
   int dir;
 
+  NOW_WORKING;
+    
   place_single_cell(12, CELL_SWSTONE);
   
   for (y = 0; y < MAX_FLOORS; y++)
@@ -1368,6 +1381,8 @@ void add_surfaces()
   
   int here;
   int there;
+
+  NOW_WORKING;
   
   for (y = MAX_FLOORS - 2; y > 2; y--)
   {
@@ -1375,11 +1390,20 @@ void add_surfaces()
     {
       here = get_cell(y, x);
       there = get_cell(y - 1, x);
-      
-      if (here == CELL_WCORR && there == CELL_WCORR)
+
+      if (here == CELL_WATER && there == CELL_WCORR)
+      {
+	set_cell(y - 1, x, CELL_WOPENDOWN);
+      }
+      else if (here == CELL_WCORR && there == CELL_WCORR)
       {
 	if (rand() % 8)
+	{
 	  set_cell(y, x, CELL_WATER);
+
+	  // Prevent placing anything on this spot
+	  set_cell(y - 1, x, CELL_WOPENDOWN);
+	}
       }
       else if (there == CELL_ROOM || there == CELL_RMNDR || there == CELL_DEADEND)
       {
@@ -1399,6 +1423,60 @@ void add_surfaces()
 
 
 
+void add_shallow_lakes()
+{
+  int y;
+  int x;
+  int dir;
+  int paint;
+
+  NOW_WORKING;
+
+  for (y = 1; y < MAX_FLOORS - 1; y++)
+  {
+    if (rand() % 3 > 0)
+      continue;
+    
+    dir = rnd_dir();
+    x = (dir == +1 ? 2 : CELLS_W - 3);
+    paint = 0;
+    
+    while (true)
+    {
+      x += dir * (rand() % 50);
+
+    short_step:
+      
+      if (x < 2 || x >= CELLS_W - 2)
+	break;
+
+      if (get_cell(y, x) != CELL_ROOM)
+      {
+	paint = 0;
+	continue;
+      }
+      else if (!paint)
+      {
+	paint = 3 + rand() % 5;
+      }
+      
+      if (paint)
+      {
+	paint--;
+	set_cell(y, x, CELL_WSURFACE);
+	x += dir;
+
+	if (paint > 0)
+	  goto short_step;
+      }
+    }
+  }
+
+  return;
+}
+
+
+
 
 int dig_lake_up(int start_y, int start_x, int dir, int rec_depth)
 {
@@ -1406,6 +1484,8 @@ int dig_lake_up(int start_y, int start_x, int dir, int rec_depth)
   int x;
   int c;
   int dist;
+
+  NOW_WORKING;
 
   --rec_depth;
   
@@ -1530,6 +1610,7 @@ void convert_cellmap(void)
       case CELL_WSURFACE:
       case CELL_WATER:
       case CELL_WCORR:
+      case CELL_WOPENDOWN:
 	make_water(cy, cx);
 	break;
 
@@ -1961,6 +2042,7 @@ int wcorr_cell(int c)
   case CELL_WCORR:
   case CELL_WCORRLOOT:
   case CELL_WCORRMON:
+  case CELL_WOPENDOWN:
     return true;
 
   default:

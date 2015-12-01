@@ -2,6 +2,18 @@
 
 
 
+char working_label[DEFLEN];
+
+
+
+void now_working(const char * func)
+{
+  snprintf(working_label, DEFLEN, "%s", func);
+  return;
+}
+
+
+
 /*
   Adds the area around the players position to the automap.
 */
@@ -107,6 +119,11 @@ void draw_cellmap()
   {
     mvaddch(player->y / FLOOR_H, player->x / 9,
 	    ACS_CKBOARD | COLOR_PAIR(PAIR_MAGENTA) | A_BLINK);
+  }
+
+  if (map_demo)
+  {
+    mvaddstr(MAX_FLOORS - 1, CELLS_W + 2, working_label);
   }
 
   refresh();

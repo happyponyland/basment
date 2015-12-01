@@ -35,6 +35,8 @@ int main(int argc, char ** argv)
 
 //  setlocale(LC_ALL, "");
 
+  working_label[0] = '\0';
+  
   strcpy(scores_file, "./SCORES");
   
   read_conf();

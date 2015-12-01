@@ -2505,13 +2505,26 @@ void draw_fish(int y, int x, int type, bool flip, uint32_t flags)
     GA(-2, +3, '_'   | c);
   }
 
-  GA(-3, -3, GA_PL | c);
-  GA(-3, -2, GA_BS | c);
-  GA(-3, -1, GA_FS | c);
-  GA(-3, -0, ' '   | c);
-  GA(-3, +1, ','   | c);
-  GA(-3, +2, ','   | c);
-  GA(-3, +3, GA_BS | c);
+  if (flags & GFX_HURT)
+  {
+    GA(-3, -3, GA_PL | c);
+    GA(-3, -2, GA_BS | c);
+    GA(-3, -1, GA_FS | c);
+    GA(-3, -0, ' '   | c);
+    GA(-3, +1, 'x'   | c);
+    GA(-3, +2, 'x'   | c);
+    GA(-3, +3, GA_BS | c);
+  }
+  else
+  {
+    GA(-3, -3, GA_PL | c);
+    GA(-3, -2, GA_BS | c);
+    GA(-3, -1, GA_FS | c);
+    GA(-3, -0, ' '   | c);
+    GA(-3, +1, ','   | c);
+    GA(-3, +2, ','   | c);
+    GA(-3, +3, GA_BS | c);
+  }
 
   GA(-4, -0, '_'   | c);
   GA(-4, +1, '_'   | c);

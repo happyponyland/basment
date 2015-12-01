@@ -459,5 +459,6 @@ enum decoration_t
 #define CELL_WCORRLOOT   106
 #define CELL_WCORRMON    107
 #define CELL_WLOOT       108
+#define CELL_WOPENDOWN   109
 
 #endif
