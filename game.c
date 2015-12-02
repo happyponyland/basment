@@ -124,12 +124,3 @@ void enemy_turn(int mi)
 
 
 
-void move_towards_player(mob_t * mob)
-{
-  if (player->x < mob->x)
-    mob_walk(mob->index, mob->steps * -1);
-  else
-    mob_walk(mob->index, mob->steps);
-
-  return;
-}

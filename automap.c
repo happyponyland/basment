@@ -327,34 +327,35 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
     break;
 
   case CELL_WATER:
+  case CELL_WCORR:
+  case CELL_WOPENDOWN:
     *glyph = ACS_CKBOARD;
     *attr = COLOR_PAIR(PAIR_BLACK_ON_CYAN);
     break;
 
-  case CELL_WCORR:
-    *glyph = '-';
+/*    *glyph = '-';
     *attr = COLOR_PAIR(PAIR_BLACK_ON_CYAN);
-    break;
+    break;*/
 
   case CELL_WMONSTER:
-    *glyph = 'M';
-    *attr = COLOR_PAIR(PAIR_BLACK_ON_CYAN);
-    break;
-
   case CELL_WCORRMON:
     *glyph = 'M';
-    *attr = COLOR_PAIR(PAIR_RED);
+    *attr = COLOR_PAIR(PAIR_BLACK_ON_CYAN);
     break;
 
+/*    *glyph = 'M';
+    *attr = COLOR_PAIR(PAIR_RED);
+    break;*/
+
   case CELL_WLOOT:
+  case CELL_WCORRLOOT:
     *glyph = '*';
     *attr = COLOR_PAIR(PAIR_BLACK_ON_CYAN);
     break;
 
-  case CELL_WCORRLOOT:
-    *glyph = '*';
+/*    *glyph = '*';
     *attr = COLOR_PAIR(PAIR_RED);
-    break;
+    break;*/
 
   case CELL_WFALL:
     *glyph = 'W';

@@ -678,6 +678,11 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
 
   case MOB_FISH:
     draw_fish(y, x, type, flip, flags);
+    break;
+
+  case MOB_CRAB:
+    draw_crab(y, x, type, flip, flags);
+    break;
 
   default:
     break;
@@ -2453,14 +2458,7 @@ void draw_fish(int y, int x, int type, bool flip, uint32_t flags)
 {
   int c;
 
-  if (flags & GFX_HURT)
-  {
-    c  = COLOR_PAIR(PAIR_GREEN);
-  }
-  else
-  {
-    c  = COLOR_PAIR(PAIR_GREEN);
-  }
+  c = 0;
   
   if (flags & GFX_ATTACK)
   {
@@ -2481,10 +2479,6 @@ void draw_fish(int y, int x, int type, bool flip, uint32_t flags)
     GA(-2, -2, ' '   | c);
     GA(-2, -1, ' '   | c);
     GA(-2, -0, GA_BS | c);
-//    GA(-2, +1, ' '   | c);
-//    GA(-2, +2, ' '   | c);
-//    GA(-2, +3, GA_FS | c);
-
   }
   else
   {
@@ -2530,6 +2524,100 @@ void draw_fish(int y, int x, int type, bool flip, uint32_t flags)
   GA(-4, +1, '_'   | c);
   GA(-4, +2, '_'   | c);
 
+  return;
+}
+
+
+
+void draw_crab(int y, int x, int type, bool flip, uint32_t flags)
+{
+  int c;
+
+  c = COLOR_PAIR(PAIR_RED);
+
+  GA(-0, -3, GA_AL | c);
+  GA(-0, -2, GA_AL | c);
+  GA(-0, +2, GA_AR | c);
+  GA(-0, +3, GA_AR | c);
+
+  GA(-1, -2, GA_PL | c);
+  GA(-1, -1, '_'   | c);
+  GA(-1, -0, '^'   | c);
+  GA(-1, +1, '_'   | c);
+  GA(-1, +2, GA_PR | c);
+
+  if (flags & GFX_HURT)
+  {
+    GA(-2, -1, 'x'   | c);
+    GA(-2, -0, ' '   | c);
+    GA(-2, +1, 'x'   | c);
+  }
+  else
+  {
+    GA(-2, -1, '.'   | c);
+    GA(-2, -0, ' '   | c);
+    GA(-2, +1, '.'   | c);
+  }
+
+  if (flags & GFX_ATTACK2)
+  {
+    GA(-2, -3, '_'   | c);
+    GA(-2, -4, GA_BS | c);
+    GA(-3, -3, GA_AR | c);
+    GA(-3, -4, ' '   | c);
+    GA(-3, -5, GA_BS | c);
+    GA(-4, -4, 'v'   | c);
+    GA(-4, -5, GA_FS | c);
+
+    GA(-2, +3, '_'   | c);
+    GA(-2, +4, GA_FS | c);
+    GA(-3, +3, GA_AL | c);
+    GA(-3, +4, ' '   | c);
+    GA(-3, +5, GA_FS | c);
+    GA(-4, +4, 'v'   | c);
+    GA(-4, +5, GA_BS | c);
+  }
+  else
+  {
+    // Inactive claw
+    GA(-1, -3, GA_FS | c);
+    GA(-1, -4, '_'   | c);
+    GA(-1, -5, GA_BS | c);
+    GA(-2, -4, GA_AR | c);
+    GA(-2, -5, ' '   | c);
+    GA(-2, -6, GA_BS | c);
+    GA(-3, -5, 'v'   | c);
+    GA(-3, -6, GA_FS | c);
+    
+    if (flags & GFX_ATTACK)
+    {
+      GA(-0, -3, GA_FS | c);
+      GA(-0, -2, GA_FS | c);
+      
+      GA(-1, +3, GA_FS | c);
+      GA(-1, +4, ' '   | c);
+      GA(-1, +5, GA_BS | c);
+      GA(-1, +6, 'V'   | c);
+      GA(-2, +3, GA_FS | c);
+      GA(-2, +4, '_'   | c);
+      GA(-2, +5, '^'   | c);
+      GA(-2, +6, GA_BS | c);
+      GA(-2, +4, '_'   | c);
+      GA(-2, +5, '_'   | c);
+    }
+    else
+    {
+      GA(-1, +3, GA_BS | c);
+      GA(-1, +4, '_'   | c);
+      GA(-1, +5, GA_FS | c);
+      GA(-2, +4, GA_AL | c);
+      GA(-2, +5, ' '   | c);
+      GA(-2, +6, GA_FS | c);
+      GA(-3, +5, 'v'   | c);
+      GA(-3, +6, GA_BS | c);
+    }
+  }
+    
   return;
 }
 

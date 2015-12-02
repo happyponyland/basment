@@ -1623,7 +1623,11 @@ void convert_cellmap(void)
       case CELL_WMONSTER:
       case CELL_WCORRMON:
 	make_water(cy, cx);
-	make_monster(feet, tx, MOB_FISH);
+
+	if (rand() % 2)
+	  make_monster(feet, tx, MOB_FISH);
+	else
+	  make_monster(feet, tx, MOB_CRAB);
 	break;
 	
       case CELL_CAMP:

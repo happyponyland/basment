@@ -178,6 +178,7 @@ void draw_archdemon(int y, int x, int type, bool flip, uint32_t flags);
 void draw_spider(int y, int x, int type, bool flip, uint32_t flags);
 void draw_snake(int y, int x, int type, bool flip, uint32_t flags);
 void draw_fish(int y, int x, int type, bool flip, uint32_t flags);
+void draw_crab(int y, int x, int type, bool flip, uint32_t flags);
 void draw_ghoul(int y, int x, int type, bool flip, uint32_t flags);
 void draw_giant(int y, int x, int type, bool flip, uint32_t flags);
 void draw_lich(int y, int x, int type, bool flip, uint32_t flags);
@@ -230,6 +231,8 @@ int free_mob(void);
 bool on_board(mob_t * mob);
 void mob_walk(int mi, int dist);
 mob_t * find_enemy(mob_t * mob, int y, int x);
+void frustration(mob_t * mob);
+void move_towards_player(mob_t * mob);
 int random_monster(int floor, int branch);
 void add_another_monster(int floor);
 void knave_logic(mob_t * mob);
@@ -240,7 +243,6 @@ bool summon_minions(mob_t * mob);
 /* game.c */
 void play(void);
 void enemy_turn(int mi);
-void move_towards_player(mob_t * mob);
 
 /* player.c */
 char lowmsg[200];
@@ -460,7 +462,8 @@ WINDOW * lowwin;
 #define MOB_SHRUBBERY  36
 #define MOB_BRICKWALL  37
 #define MOB_FISH       38
-#define MOB_LAST       39
+#define MOB_CRAB       39
+#define MOB_LAST       40
 
 extern char * mob_name[MOB_LAST];
 

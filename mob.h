@@ -22,6 +22,8 @@ struct mob_t
   int type;
   int hp;
 
+  int follow_floor;
+  
   int attack_phase;
 
   int shd_type;
@@ -47,6 +49,5 @@ struct mob_t
 
   int gp;
 };
-
 
 #endif

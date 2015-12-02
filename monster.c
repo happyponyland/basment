@@ -42,7 +42,8 @@ char * mob_name[MOB_LAST] =
   [MOB_SHRUBBERY] = "SHRUBBERY",
   [MOB_BIGSPIDER] = "ARAQNO",
   [MOB_BRICKWALL] = "BRICK WALL",
-  [MOB_FISH] = "FISH"
+  [MOB_FISH] = "FISH",
+  [MOB_CRAB] = "CRAB"
 };
 
 
@@ -82,6 +83,8 @@ int make_monster(int y, int x, int type)
   mob->attack_frames = 1;
 
   mob->attack_phase = 0;
+
+  mob->follow_floor = 0;
 
   if (rand() % 2 == 0)
     mob->flip = true;
@@ -212,11 +215,22 @@ int make_monster(int y, int x, int type)
 
   case MOB_FISH:
     mob->w = 3;
-    mob->speed = 8;
-    mob->steps = 4;
+    mob->speed = 7;
+    mob->steps = 3;
     mob->range = 5;
     mob->hp = 40;
     mob->exp = 500;
+    mob->damage = 8;
+    break;
+
+  case MOB_CRAB:
+    mob->follow_floor = 1;
+    mob->w = 4;
+    mob->speed = 6;
+    mob->steps = 4;
+    mob->range = 8;
+    mob->hp = 50;
+    mob->exp = 800;
     mob->damage = 8;
     break;
 
@@ -448,6 +462,13 @@ void mob_walk(int mi, int dist)
       }
     }
 
+    if (mob->follow_floor &&
+	gtile(mob->y + 1, mob->x + (mob->w) * speed) < TL_BLOCKING)
+    {
+      frustration(mob);
+      return;
+    }
+    
     if (gtile(mob->y, mob->x + (mob->w + 1) * speed) > TL_BLOCKING)
       return;
 
@@ -461,6 +482,32 @@ void mob_walk(int mi, int dist)
 	spause();
     }
   }
+
+  return;
+}
+
+
+
+void frustration(mob_t * mob)
+{
+  if (mob->type == MOB_CRAB)
+  {
+    mob->flags = GFX_ATTACK2;
+    draw_board(); lpause();
+    mob->flags = 0;
+  }
+
+  return;
+}
+
+
+
+void move_towards_player(mob_t * mob)
+{
+  if (player->x < mob->x)
+    mob_walk(mob->index, mob->steps * -1);
+  else
+    mob_walk(mob->index, mob->steps);
 
   return;
 }

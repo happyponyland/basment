@@ -121,7 +121,7 @@ retry:
     climb_ladder(-1);
   }
   else if ((input == KEY_DOWN || input == key_down) &&
-	   water_join(tile_below))
+	   (water_join(tile_below) || tile_below == TL_SURFACE))
   {
     climb_ladder(+1);
   }
