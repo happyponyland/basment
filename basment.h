@@ -365,19 +365,7 @@ void add_wide_chasms(void);
 void place_single_cell(int start_y, int cell);
 bool dig_wide_chasm(int start_y, int x);
 bool dig_up(int start_y, int x, int carve);
-void make_lake(void);
-void dig_lake(int start_y, int start_x, int dir);
-void make_water(int cy, int cx);
-int dig_lake_up(int start_y, int start_x, int dir, int rec_depth);
-int air_pocket(int y, int start_x);
 void flatten_rooms(void);
-void put_lakes(void);
-int water_cell(int c);
-int wcorr_cell(int c);
-int wopen_cell(int c);
-int water_join(int t);
-void add_shallow_lakes(void);
-void add_surfaces(void);
 bool make_branch(void);
 void link_portals(void);
 void clear_cellmap(void);
@@ -399,6 +387,21 @@ int get_cell(int y, int x);
 int floor_loot(int cy, int cx);
 bool cell_range(int t, int l, int b, int r, int type, bool write);
 int cell_open(int c);
+
+/* water.c */
+int water_monster(int cy, int cx);
+int water_cell(int c);
+int wcorr_cell(int c);
+int wopen_cell(int c);
+int water_join(int t);
+void make_lake(void);
+void dig_lake(int start_y, int start_x, int dir);
+void make_water(int cy, int cx);
+int dig_lake_up(int start_y, int start_x, int dir, int rec_depth);
+int air_pocket(int y, int start_x);
+void put_lakes(void);
+void add_shallow_lakes(void);
+void add_surfaces(void);
 
 /* hiscore.c */
 char scores_file[DEFLEN];
