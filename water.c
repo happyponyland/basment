@@ -454,18 +454,49 @@ int dig_lake_up(int start_y, int start_x, int dir, int rec_depth)
 
 
 /**
-   Returns a monster type suitabel for the water cell at @cy, @cx.
+   Returns a monster type suitable for the water cell at @cy, @cx.
 */
-int water_monster(int cy, int cx)
+void water_monster(int feet, int tx, int cy, int cx)
 {
-  int tile_floor;
-  int ledge;
-  
-  tile_floor = gtile((cy + 1) * FLOOR_H + FLOOR_Y, cx * CELL_TO_TILES + 4);
-  ledge = (tile_floor > TL_BLOCKING);
+  int left;
+  int right;
 
-  if (ledge)
-    return MOB_CRAB;
-  else
-    return MOB_FISH;
+  int type;
+
+  left  = get_cell(cy, cx - 1);
+  right = get_cell(cy, cx + 1);
+
+  /*
+    If the cell to the left and/or right isn't a water cell, nudge the
+    monster slightly away from the wall. If both sides are walls, it
+    will just be recentered.
+  */
+  if (!water_cell(left))
+    tx += 4;
+
+  if (!water_cell(right))
+    tx -= 4;
+
+  // Default monster
+  type = MOB_FISH;
+  
+  if (!wopen_down(cy, cx))
+    type = MOB_CRAB;
+
+  make_monster(feet, tx, type);
+  
+  return;
+}
+
+
+
+int wopen_down(int cy, int cx)
+{
+  int below;
+
+  below = get_cell(cy + 1, cx);
+  
+  return (below == CELL_WMONSTER  ||
+	  below == CELL_WLOOT     ||
+	  below == CELL_WATER);
 }

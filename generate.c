@@ -930,7 +930,15 @@ void populate_cellmap(void)
 	continue;
       }
 
-      if (original == CELL_WATER)
+      if (original == CELL_WOPENDOWN)
+      {
+	switch (rand() % 5)
+	{
+	case 0:  set_cell(y, x, CELL_WMONSTER);    break;
+	default: break;
+	}
+      }
+      else if (original == CELL_WATER)
       {
 	switch (rand() % 8)
 	{
@@ -1149,7 +1157,7 @@ void convert_cellmap(void)
       case CELL_WMONSTER:
       case CELL_WCORRMON:
 	make_water(cy, cx);
-	make_monster(feet, tx, water_monster(cy, cx));
+	water_monster(feet, tx, cy, cx);
 	break;
 	
       case CELL_CAMP:

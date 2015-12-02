@@ -389,7 +389,8 @@ bool cell_range(int t, int l, int b, int r, int type, bool write);
 int cell_open(int c);
 
 /* water.c */
-int water_monster(int cy, int cx);
+void water_monster(int feet, int tx, int cy, int cx);
+int wopen_down(int cy, int cx);
 int water_cell(int c);
 int wcorr_cell(int c);
 int wopen_cell(int c);
