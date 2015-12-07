@@ -141,6 +141,20 @@ void bookshelf()
 	   " DUNGEON PROP FACTORY\"");
     exp = 500;
     break;
+
+  case 12:
+    strcpy(bookname,
+	   "\"BASMENT DWELLERS: DUNGEON\n"
+	   " MASTERS HANDBOOK (5TH ED.)\"");
+    exp = 400;
+    break;
+
+  case 13:
+    strcpy(bookname,
+	   "\"HITCHHIKERS GUIDE\n"
+	   " TO THE UNDERWORLD\"");
+    exp = 100;
+    break;
   }
 
   game->next_book++;
