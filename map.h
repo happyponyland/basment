@@ -379,6 +379,8 @@ enum decoration_t
   DEC_FOUNTAIN,
   DEC_COFFIN,
 
+  DEC_LASTRND,
+
   // These aren't randomly generated as loot
   DEC_ORB,
   DEC_TABLET,
@@ -417,27 +419,27 @@ enum decoration_t
 
 #define CELL_OPEN     10 /* >= */
 
-#define CELL_RMNDR    10
-#define CELL_ROOM     11
-#define CELL_LADDER_B 12
-#define CELL_LADDER_T 13
-#define CELL_CHASM_T  14
-#define CELL_TRAPDOOR 15
-#define CELL_BOSS     16
-#define CELL_MONSTER  17
-#define CELL_LOOT     18
-#define CELL_START    19
-#define CELL_TRAP     20
-#define CELL_SPIKEPIT 21
-#define CELL_NPC_L    22
-#define CELL_NPC_R    23
-#define CELL_DEADEND  24
-#define CELL_TRICKY   25
-#define CELL_WCHASM   26
-#define CELL_BRANCH   27
-#define CELL_PORTAL   28
-#define CELL_COFFIN   29
-#define CELL_KEEPROOM 30
+#define CELL_RMNDR     10
+#define CELL_ROOM      11
+#define CELL_LADDER_B  12
+#define CELL_LADDER_T  13
+#define CELL_CHASM_T   14
+#define CELL_TRAPDOOR  15
+#define CELL_BOSS      16
+#define CELL_MONSTER   17
+#define CELL_LOOT      18
+#define CELL_START     19
+#define CELL_TRAP      20
+#define CELL_SPIKEPIT  21
+#define CELL_NPC_L     22
+#define CELL_NPC_R     23
+#define CELL_DEADEND   24
+#define CELL_TRICKY    25
+#define CELL_WCHASM    26
+#define CELL_BRANCH    27
+#define CELL_PORTAL    28
+#define CELL_COFFIN    29
+#define CELL_KEEPROOM  30
 #define CELL_GORZOTH_L 31
 #define CELL_GORZOTH_R 32
 #define CELL_DOOR      33
@@ -447,7 +449,8 @@ enum decoration_t
 #define CELL_TABLET    37
 #define CELL_SUSHI_L   38
 #define CELL_SUSHI_R   39
-#define CELL_ORB   40
+#define CELL_ORB       40
+#define CELL_IDOL      41
 
 #define CELL_WSURFACE    80
 

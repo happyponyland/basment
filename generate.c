@@ -868,11 +868,16 @@ void populate_cellmap(void)
   place_single_cell(12, CELL_SWSTONE);
 
   for (i = 0; i < 3; i++)
-    {
-      place_single_cell(1, CELL_TABLET);
-      place_single_cell(1, CELL_ORB);
-    }
-  
+  {
+    place_single_cell(1, CELL_TABLET);
+    place_single_cell(1, CELL_ORB);
+  }
+
+  for (i = 0; i < 5; i++)
+  {
+    place_single_cell(10, CELL_IDOL);
+  }
+ 
   for (y = 0; y < MAX_FLOORS; y++)
   {
     if (rand() % 5)
@@ -1203,7 +1208,6 @@ void convert_cellmap(void)
 
       case CELL_LOOT:
 	tx += slide;
-//	decorate(feet, tx, DEC_ORB);
 	decorate(feet, tx, floor_loot(cy, cx));
 	break;
 
@@ -1222,6 +1226,12 @@ void convert_cellmap(void)
       case CELL_ORB:
 	tx += slide;
 	decorate(feet, tx, DEC_ORB);
+	set_cell(cy, cx, CELL_LOOT);
+	break;
+
+      case CELL_IDOL:
+	tx += slide;
+	decorate(feet, tx, DEC_IDOL);
 	set_cell(cy, cx, CELL_LOOT);
 	break;
 
@@ -1522,31 +1532,13 @@ int floor_loot(int cy, int cx)
 {
   int r;
 
-  /* if (rand() % 10 == 0)
-  {
-    // Rare features
+  r = DEC_FIRSTRND + rand() % (DEC_LASTRND - DEC_FIRSTRND - 1);
+    
+//  r += rand() % 2;
+  
+/*  if (cy > 6)
+    r += rand() % 3;*/
 
-    switch (rand() % 10)
-    {
-    case 0:
-      r = DEC_ORB;
-      break;
-      
-    default:
-      r = DEC_TABLET;
-      break;
-    }
-  }
-  else*/
-  {
-    r = DEC_FIRSTRND + rand() % (DEC_COFFIN - 1);
-    
-    r += rand() % 2;
-    
-    if (cy > 6)
-      r += rand() % 3;
-  }
-    
   return r;
 }
 
