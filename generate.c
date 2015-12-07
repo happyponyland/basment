@@ -878,10 +878,10 @@ void populate_cellmap(void)
     place_single_cell(10, CELL_IDOL);
   }
  
-  for (i = 0; i < 50; i++)
+/*  for (i = 0; i < 50; i++)
   {
     place_single_cell(10, CELL_TRAP);
-  }
+    }*/
  
   for (y = 0; y < MAX_FLOORS; y++)
   {
