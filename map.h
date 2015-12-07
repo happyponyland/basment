@@ -23,6 +23,9 @@ struct game_t
 
   int current_floor;
 
+  int has_torch;
+  int has_scuba;
+
   uint16_t tile[MAP_H][MAP_W];
 
   char cell[MAX_FLOORS][CELLS_W];
@@ -272,6 +275,8 @@ enum tile_t
   TL_WEB_HL,
   TL_WEB_FS,
   TL_WEB_BS,
+  TL_WEB_BURN1,
+  TL_WEB_BURN2,
 
   TL_NPC_LLEG,
   TL_NPC_RLEG,

@@ -195,9 +195,10 @@ void init_ui()
 {
   initscr();
 
-  board = NULL;
-  stats = newwin(4, BOARD_W, 0, (COLS - BOARD_W) / 2 + 1);
+  board  = NULL;
+  stats  = newwin(4, BOARD_W, 0, (COLS - BOARD_W) / 2 + 1);
   lowwin = newwin(4, BOARD_W, BOARD_H + BOARD_T + 2, (COLS - BOARD_W) / 2);
+  rwin   = newwin(BOARD_H, 8, BOARD_T, (COLS - BOARD_W) / 2 + BOARD_W + 2);
 
   cbreak();
   noecho();
@@ -252,6 +253,7 @@ void quit_game()
   delwin(board);
   delwin(lowwin);
   delwin(stats);
+  delwin(rwin);
 
   endwin();
 

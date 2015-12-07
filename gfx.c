@@ -184,6 +184,8 @@ void init_gfx_map()
   gfx_map[TL_WEB_HL]      = ACS_HLINE     | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
   gfx_map[TL_WEB_FS]      = '/'           | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
   gfx_map[TL_WEB_BS]      = '\\'          | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_BURN1]   = '*'           | COLOR_PAIR(PAIR_BROWN) | A_BOLD | A_REVERSE;
+  gfx_map[TL_WEB_BURN2]   = '*'           | COLOR_PAIR(PAIR_RED)   | A_BOLD | A_REVERSE;
 /*  gfx_map[TL_WEB_WEIGHT]  = '\'';
   gfx_map[TL_WEB_FLOAT]   = '_';
   gfx_map[TL_WEB_SLASH]   = 'X';*/
@@ -3335,7 +3337,17 @@ void draw_stats()
   //mvwaddstr(stats, 0, 0, "ᛅᚼᚶᚭᚨᚩᚢᛄ☭⬉⬅⬍∑∞≈≣⊂█▍▜▙↝↝↝†⁇✝✠✫Φ♥♂¶▲▼");
 //  wattrset(stats, 0);
 
+  werase(rwin);
+  wattron(rwin, COLOR_PAIR(PAIR_BLACK) | A_BOLD);
+
+  if (game->has_torch)
+    waddstr(rwin, "TORCH\n");
+
+  if (game->has_scuba)
+    waddstr(rwin, "SCUBA\n");
+
   wrefresh(stats);
+  wrefresh(rwin);
 
   return;
 }

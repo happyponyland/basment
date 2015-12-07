@@ -189,6 +189,8 @@ retry:
   else if (input == 'X' && cheat_mode)
   {
     learn_detect_traps();
+    game->has_torch = true;
+    game->has_scuba = true;
     player->hp += 30;
     player->speed += 3;
     player->strength += 3;

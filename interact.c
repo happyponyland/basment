@@ -254,7 +254,7 @@ void interact()
       strcpy(line, "YOU FIND A LONG-DEAD SKELETON\n\n");
     }
 
-    switch(rand() % 9)
+    switch(rand() % 10)
     {
     case 0:
     case 1:
@@ -268,6 +268,17 @@ void interact()
       find_random_weapon(line);
       break;
 
+    case 6:
+    case 7:
+      if (!game->has_torch /*&& rand() % 4 == 0*/)
+      {
+	game->has_torch = true;
+	strncat(line, "YOU FIND A TORCH", DEFLEN - 1);
+	pwait(line);
+	break;
+      }
+      // else proceed
+    
     default:
       give_gold(line, 5 + rand() % 25);
       break;

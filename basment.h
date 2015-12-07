@@ -440,6 +440,7 @@ mob_t * player;
 WINDOW * board;
 WINDOW * stats;
 WINDOW * lowwin;
+WINDOW * rwin;
 
 #define TURN_COST 100
 

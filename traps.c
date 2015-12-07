@@ -292,21 +292,64 @@ void web_net()
   y = player->y;
   x = player->x;
 
+  player->webbed = WEBBED_TURNS + rand() % WEBBED_TURNS;
+
   if (gtile(y, x) == TL_T_WEB)
   {
     pwait("YOU GET STUCK IN A WEB!!!");
     decorate(y, x, DEC_WEB);
+    draw_board();
+      
+    if (game->has_torch)
+    {
+      pwait("FORTUNATELY, YOU ARE CARRYING A TORCH");
 
-    make_monster(y, x - 5, MOB_SPIDER);
-    make_monster(y, x + 5, MOB_SPIDER);
+//      int old_y; int old_x;
+      int new_y; int new_x;
+      int i;
+
+//      old_y = y - 2;
+//      old_x = x;
+
+      for (i = 0; i < 50; i++)
+      {
+	new_y = y - 5 + rand() % 6;
+	new_x = x - 2 + rand() % 5;
+	new_x += (rand() % 2 ? +1 : -1);
+	stile(new_y, new_x, TL_WEB_BURN1 + rand() % 2);
+	draw_board();
+	spause();
+//	stile(new_y, new_x, TL_VOID);
+      }
+
+      for (new_y = y - 5; new_y <= y; new_y++)
+      {
+	for (new_x = x - 4; new_x <= x + 4; new_x++)
+	{
+	  if (gtile(new_y, new_x) == TL_WEB_BURN1 ||
+	      gtile(new_y, new_x) == TL_WEB_BURN2)
+	    stile(new_y, new_x, TL_VOID);
+	}
+      }
+      
+      draw_board();
+	  
+      player->webbed = 0;
+    }
+    else
+    {
+      pwait("YOUR STRUGGLING HAS ATTRACTED\n"
+	    "SOME UNDESIRED ATTENTION!!!");
+	    
+      make_monster(y, x - 5, MOB_SPIDER);
+      make_monster(y, x + 5, MOB_SPIDER);
+    }
   }
   else if (gtile(y, x) == TL_T_UWNET)
   {
     pwait("YOU GET STUCK IN A NET!!!");
     decorate(y, x, DEC_NET);
   }
-
-  player->webbed = WEBBED_TURNS + rand() % WEBBED_TURNS;
 
   return;
 }
