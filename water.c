@@ -16,6 +16,7 @@ int wcorr_cell(int c)
   case CELL_WCORRLOOT:
   case CELL_WCORRMON:
   case CELL_WOPENDOWN:
+  case CELL_WCORRTRAP:
     return true;
 
   default:
@@ -32,6 +33,7 @@ int wopen_cell(int c)
   case CELL_WATER:
   case CELL_WMONSTER:
   case CELL_WLOOT:
+  case CELL_WTRAP:
     return true;
 
   default:

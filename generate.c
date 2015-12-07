@@ -878,6 +878,11 @@ void populate_cellmap(void)
     place_single_cell(10, CELL_IDOL);
   }
  
+  for (i = 0; i < 50; i++)
+  {
+    place_single_cell(10, CELL_TRAP);
+  }
+ 
   for (y = 0; y < MAX_FLOORS; y++)
   {
     if (rand() % 5)
@@ -947,6 +952,7 @@ void populate_cellmap(void)
 	switch (rand() % 5)
 	{
 	case 0:  set_cell(y, x, CELL_WMONSTER);    break;
+	case 2:  set_cell(y, x, CELL_WTRAP);       break;
 	default: break;
 	}
       }
@@ -970,6 +976,7 @@ void populate_cellmap(void)
 	{
 	case 0:  set_cell(y, x, CELL_WCORRMON);    break;
 	case 1:  set_cell(y, x, CELL_WCORRLOOT);   break;
+//	case 2:  set_cell(y, x, CELL_WCORRTRAP);   break;
 	default: break;
 	}
       }
@@ -1172,6 +1179,13 @@ void convert_cellmap(void)
 	water_monster(feet, tx, cy, cx);
 	break;
 	
+      case CELL_WTRAP:
+      case CELL_WCORRTRAP:
+	make_water(cy, cx);
+	tx += slide;
+	stile(feet, tx, TL_T_UWNET);
+	break;
+	
       case CELL_CAMP:
 	tx += slide;
 	decorate(feet, tx, DEC_CAMP);
@@ -1247,7 +1261,7 @@ void convert_cellmap(void)
 
       case CELL_TRAP:
 	tx += slide;
-	switch (rand() % 2)
+	switch (rand() % 3)
 	{
 	case 0:
 	  stile(feet, tx, TL_T_CAVEIN);
@@ -1255,6 +1269,10 @@ void convert_cellmap(void)
 
 	case 1:
 	  stile(feet, tx, TL_T_POISON);
+	  break;
+
+	case 2:
+	  stile(feet, tx, TL_T_WEB);
 	  break;
 	}
 	break;

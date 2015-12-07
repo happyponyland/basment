@@ -7,7 +7,8 @@
 #define BRANCH_CRYPT    1
 #define BRANCH_CAVE     2
 #define BRANCH_ORGANIC  3
-#define BRANCHES 4
+#define BRANCH_WETCAVE  4
+#define BRANCHES 5
 
 #define BOOKS 14
 
@@ -254,6 +255,24 @@ enum tile_t
   TL_ROOTS3,
   TL_ROOTS4,
 
+  TL_WETROCKS1,
+  TL_WETROCKS2,
+  TL_WETROCKS3,
+  TL_WETROCKS4,
+  
+  TL_WEB_UL,
+  TL_WEB_UR,
+  TL_WEB_LR,
+  TL_WEB_LL,
+  TL_WEB_TTEE,
+  TL_WEB_RTEE,
+  TL_WEB_LTEE,
+  TL_WEB_BTEE,
+  TL_WEB_VL,
+  TL_WEB_HL,
+  TL_WEB_FS,
+  TL_WEB_BS,
+
   TL_NPC_LLEG,
   TL_NPC_RLEG,
   TL_NPC_TORSO,
@@ -264,6 +283,7 @@ enum tile_t
   TL_T_POISON_REV,
   TL_T_GORZOTH_R,
   TL_T_GORZOTH_L,
+  TL_T_WEB,
 
   TL_CAMP_FIRE,
   TL_CAMP_SPENT,
@@ -310,6 +330,11 @@ enum tile_t
   TL_UW_VL,
   TL_UW_UR,
   TL_UW_HL,
+  TL_T_UWNET,
+  TL_UWNET_CROSS,
+/*  TL_UWNET_WEIGHT,
+  TL_UWNET_FLOAT,
+  TL_UWNET_SLASH,*/
   TL_LASTUNDERWATER,
 
   TL_BLOCKING,
@@ -400,6 +425,8 @@ enum decoration_t
   DEC_EMPTY_SHELF,
   DEC_PORTAL,
   DEC_DOOR,
+  DEC_NET,
+  DEC_WEB,
 
   // Underwater
   DEC_UWCHEST,
@@ -464,5 +491,7 @@ enum decoration_t
 #define CELL_WCORRMON    107
 #define CELL_WLOOT       108
 #define CELL_WOPENDOWN   109
+#define CELL_WTRAP       110
+#define CELL_WCORRTRAP   111
 
 #endif

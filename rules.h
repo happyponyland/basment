@@ -19,6 +19,8 @@
 #define COST_MAGGOT_PUDDING 100
 #define MAGGOT_PUDDING_HEAL 5
 
+#define WEBBED_TURNS 7
+
 #define COST_11PCS  150
 #define NIGIRI_HEAL +10
 #define COST_13PCS  200

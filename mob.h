@@ -23,6 +23,7 @@ struct mob_t
   int hp;
 
   int breath;
+  int webbed;
 
   int follow_floor;
   int flying;

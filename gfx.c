@@ -124,6 +124,11 @@ void init_gfx_map()
   gfx_map[TL_ROOTS3] = '(' | COLOR_PAIR(PAIR_BROWN);
   gfx_map[TL_ROOTS4] = ')' | COLOR_PAIR(PAIR_BROWN);
 
+  gfx_map[TL_WETROCKS1] = 'O' | COLOR_PAIR(PAIR_BLUE);
+  gfx_map[TL_WETROCKS2] = '0' | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_WETROCKS3] = 'O' | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_WETROCKS4] = 'o' | COLOR_PAIR(PAIR_GREEN);
+
   gfx_map[TL_DOOR] = //ACS_VLINE | COLOR_PAIR(PAIR_RED_ON_BROWN);
   gfx_map[TL_DOOR_SIDE] = ACS_CKBOARD | COLOR_PAIR(PAIR_BROWN_ON_RED);
   gfx_map[TL_DOOR_HL] = '(';
@@ -167,6 +172,24 @@ void init_gfx_map()
   gfx_map[TL_W_VFLAT]       = ACS_VLINE    | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_W_HFLAT]       = ACS_HLINE    | COLOR_PAIR(PAIR_GREEN);
  
+  gfx_map[TL_WEB_UL]      = ACS_ULCORNER  | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_UR]      = ACS_URCORNER  | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_LR]      = ACS_LRCORNER  | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_LL]      = ACS_LLCORNER  | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_TTEE]    = ACS_TTEE      | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_RTEE]    = ACS_RTEE      | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_LTEE]    = ACS_LTEE      | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_BTEE]    = ACS_BTEE      | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_VL]      = ACS_VLINE     | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_HL]      = ACS_HLINE     | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_FS]      = '/'           | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_WEB_BS]      = '\\'          | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+/*  gfx_map[TL_WEB_WEIGHT]  = '\'';
+  gfx_map[TL_WEB_FLOAT]   = '_';
+  gfx_map[TL_WEB_SLASH]   = 'X';*/
+
+  gfx_map[TL_UWNET_CROSS]   = ACS_PLUS;
+
   gfx_map[TL_VOID] =
     gfx_map[TL_BWALL] =
     gfx_map[TL_CHASM] =
@@ -505,11 +528,18 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
 {
   if (!title_running)
   {
-    if (gtile(mob->y + 1, mob->x)     == TL_SURFACE &&
-	gtile(mob->y + 1, mob->x - 1) == TL_SURFACE &&
-	gtile(mob->y + 1, mob->x + 1) == TL_SURFACE)
+    if (mob->webbed)
     {
-      y++;
+      y--;
+    }
+    else if (!mob->flying)
+    {
+      if (gtile(mob->y + 1, mob->x)     == TL_SURFACE &&
+	  gtile(mob->y + 1, mob->x - 1) == TL_SURFACE &&
+	  gtile(mob->y + 1, mob->x + 1) == TL_SURFACE)
+      {
+	y++;
+      }
     }
   }
   

@@ -4,11 +4,13 @@
 
 bool is_trap(int tile)
 {
-  if (tile == TL_T_CAVEIN ||
-      tile == TL_T_POISON ||
-      tile == TL_T_GORZOTH_L ||
-      tile == TL_T_GORZOTH_R ||
-      tile == TL_T_POISON_REV)
+  if (tile == TL_T_CAVEIN     ||
+      tile == TL_T_POISON     ||
+      tile == TL_T_POISON_REV ||
+      tile == TL_T_GORZOTH_L  ||
+      tile == TL_T_GORZOTH_R  ||
+      tile == TL_T_WEB        ||
+      tile == TL_T_UWNET      || 0)
   {
     return true;
   }
@@ -276,4 +278,66 @@ void tremor(int amount)
 //  draw_board();
 
   return;
+}
+
+
+
+void web_net()
+{
+  int y;
+  int x;
+  
+  game->traps_triggered++;
+
+  y = player->y;
+  x = player->x;
+
+  if (gtile(y, x) == TL_T_WEB)
+  {
+    pwait("YOU GET STUCK IN A WEB!!!");
+    decorate(y, x, DEC_WEB);
+
+    make_monster(y, x - 5, MOB_SPIDER);
+    make_monster(y, x + 5, MOB_SPIDER);
+  }
+  else if (gtile(y, x) == TL_T_UWNET)
+  {
+    pwait("YOU GET STUCK IN A NET!!!");
+    decorate(y, x, DEC_NET);
+  }
+
+  player->webbed = WEBBED_TURNS + rand() % WEBBED_TURNS;
+
+  return;
+}
+
+
+
+
+int trap_sprung(int tile_feet)
+{
+  if (tile_feet == TL_T_CAVEIN)
+  {
+    cavein();
+    return true;
+  }
+  else if (tile_feet == TL_T_UWNET || tile_feet == TL_T_WEB)
+  {
+    web_net();
+    return true;
+  }
+  else if (tile_feet == TL_T_POISON ||
+	   tile_feet == TL_T_POISON_REV)
+  {
+    poison_gas();
+    return true;
+  }
+  else if (tile_feet == TL_T_GORZOTH_L ||
+	   tile_feet == TL_T_GORZOTH_R)
+  {
+    summon_gorzoth();
+    return true;
+  }
+
+  return false;
 }

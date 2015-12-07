@@ -276,6 +276,8 @@ void cavein(void);
 void poison_gas(void);
 void summon_gorzoth(void);
 void tremor(int amount);
+void web_net(void);
+int trap_sprung(int tile_feet);
 
 /* interact.c */
 bool interesting(int tile);

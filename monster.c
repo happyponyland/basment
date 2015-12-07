@@ -72,6 +72,7 @@ int make_monster(int y, int x, int type)
   mob->y = y;
 
   mob->breath = 0;
+  mob->webbed = 0;
 
   mob->strength = 1;
   mob->damage = 1;
@@ -178,7 +179,7 @@ int make_monster(int y, int x, int type)
     mob->w = 4;
     mob->speed = 12;
     mob->steps = 6;
-    mob->range = 10;
+    mob->range = 8;
     mob->hp = 20;
     mob->exp = 100;
     mob->damage = 6;

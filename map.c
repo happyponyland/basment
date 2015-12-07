@@ -318,6 +318,27 @@ void decorate_walls(void)
 
 	stile(y, x, n);
       }
+      else if (branch == BRANCH_WETCAVE)
+      {
+	if (get_cell(cy, cx) == CELL_ROCK)
+	  continue;
+
+	switch (t)
+	{
+	case TL_FLOOR: n = TL_W_HFLAT; break;
+	case TL_WALL:  n = TL_W_VFLAT; break;
+	case TL_CORNER_UR: n = TL_W_CORNER_UR; break;
+	case TL_CORNER_UL: n = TL_W_CORNER_UL; break;
+	case TL_CORNER_LR: n = TL_W_CORNER_LR; break;
+	case TL_CORNER_LL: n = TL_W_CORNER_LL; break;
+	default: goto skip;
+	}
+
+//	n = TL_WETROCKS1 + rand() % 4;
+	
+	stile(y, x, n);
+      skip: ;
+      }
       else if (branch == BRANCH_CRYPT)
       {
 	switch (t)

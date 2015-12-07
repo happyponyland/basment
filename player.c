@@ -121,11 +121,13 @@ retry:
     climb_ladder(-1);
   }
   else if ((input == KEY_DOWN || input == key_down) &&
+	   !player->webbed &&
 	   (water_join(tile_below) || tile_below == TL_SURFACE))
   {
     climb_ladder(+1);
   }
   else if ((input == KEY_UP || input == key_up) &&
+	   !player->webbed &&
 	   water_join(tile_feet) &&
 	   !interesting(tile_feet))
   {
@@ -186,6 +188,7 @@ retry:
   }
   else if (input == 'X' && cheat_mode)
   {
+    learn_detect_traps();
     player->hp += 30;
     player->speed += 3;
     player->strength += 3;
@@ -310,6 +313,7 @@ void debug_teleport(void)
 int player_move(int dir)
 {
   int speed;
+  int old_speed;
   int x_off;
   int i;
   int new_x;
@@ -328,8 +332,10 @@ int player_move(int dir)
   else
     speed = -1;
 
+  old_speed = speed;
+  
   x_off = speed * 2;
-
+  
   /*
     One step at a time. We stop if the player runs into an obstacle
     (blocking wall) or passes a point of interest (loot, etc).
@@ -342,6 +348,15 @@ int player_move(int dir)
   {
     //underwater = true;
     steps = UNDERWATER_STEPS;
+  }
+
+  if (player->webbed == 1)
+    player->webbed = 0;
+    
+  if (player->webbed)
+  {
+    speed = 0;
+    player->webbed--;
   }
 
   for (i = 0; i < steps; i++)
@@ -360,7 +375,7 @@ int player_move(int dir)
       break;
 
     // If there's an enemy in the way, attack it.
-    if (melee(player, speed))
+    if (melee(player, old_speed))
     {
       return moved;
     }
@@ -414,14 +429,8 @@ int player_move(int dir)
   // Recenter player if needed
   recenter(true);
 
-  if (tile_feet == TL_T_CAVEIN)
+  if (trap_sprung(tile_feet))
   {
-    cavein();
-  }
-  else if (tile_feet == TL_T_POISON ||
-	   tile_feet == TL_T_POISON_REV)
-  {
-    poison_gas();
   }
   else if (tile_below == TL_TRAPDOOR_M || tile_below == TL_CHASM)
   {
@@ -445,11 +454,6 @@ int player_move(int dir)
       tile_below = gtile(player->y + 1, player->x);
     } while (tile_below == TL_TRAPDOOR_M);
   }
-  else if (tile_feet == TL_T_GORZOTH_L ||
-	   tile_feet == TL_T_GORZOTH_R)
-  {
-    summon_gorzoth();
-  }
 
   if (tile_feet == TL_P_NPC1 ||
       tile_feet == TL_P_NPC2 ||
@@ -471,7 +475,6 @@ int player_move(int dir)
 
   return moved;
 }
-
 
 
 /*
@@ -700,6 +703,9 @@ void climb_ladder(int dir)
   // Display where we ended up
   draw_stats();
 
+  // Check for traps at the new location (usually a net trap)
+  trap_sprung(gtile(player->y, player->x));
+  
   return;
 }
 
@@ -1316,6 +1322,8 @@ void learn_detect_traps()
   
   gfx_map[TL_T_CAVEIN] = '^' | COLOR_PAIR(PAIR_RED) | A_REVERSE;
   gfx_map[TL_T_POISON] = '^' | COLOR_PAIR(PAIR_RED) | A_REVERSE;
+  gfx_map[TL_T_UWNET]  = '^' | COLOR_PAIR(PAIR_RED) | A_REVERSE;
+  gfx_map[TL_T_WEB]    = '^' | COLOR_PAIR(PAIR_RED) | A_REVERSE;
 
   return;
 }

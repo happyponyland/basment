@@ -3,6 +3,9 @@
 
 void decorate(int y, int x, int type)
 {
+  int i;
+  int j;
+  
   switch (type)
   {
   case DEC_TRAPDOOR:
@@ -370,7 +373,106 @@ void decorate(int y, int x, int type)
     stile(y - 1, x,     TL_UWLOCK);
     stile(y - 1, x + 1, TL_UWWOOD);
     stile(y - 1, x + 2, TL_UWWOOD);
-    break;    
+    break;
+
+  case DEC_WEB:
+    stile(y - 5, x - 3, TL_WEB_BS);
+    stile(y - 5, x - 1, TL_WEB_BTEE);
+    stile(y - 5, x - 0, TL_WEB_VL);
+    stile(y - 5, x + 1, TL_WEB_BTEE);
+    stile(y - 5, x + 3, TL_WEB_FS);
+
+    stile(y - 4, x - 3, TL_WEB_RTEE);
+    stile(y - 4, x - 2, TL_WEB_LR);
+    stile(y - 4, x - 1, TL_WEB_BTEE);
+    stile(y - 4, x - 0, TL_WEB_TTEE);
+    stile(y - 4, x + 1, TL_WEB_BTEE);
+    stile(y - 4, x + 2, TL_WEB_LL);
+    stile(y - 4, x + 3, TL_WEB_LTEE);
+
+    stile(y - 3, x - 4, TL_WEB_BS);
+    stile(y - 3, x - 2, TL_WEB_VL);
+    stile(y - 3, x - 1, TL_WEB_LR);
+    stile(y - 3, x + 1, TL_WEB_LL);
+    stile(y - 3, x + 2, TL_WEB_VL);
+    stile(y - 3, x + 4, TL_WEB_FS);
+
+    stile(y - 2, x - 4, TL_WEB_HL);
+    stile(y - 2, x - 3, TL_WEB_RTEE);
+    stile(y - 2, x + 3, TL_WEB_LTEE);
+    stile(y - 2, x + 4, TL_WEB_HL);
+
+    stile(y - 1, x - 4, TL_WEB_FS);
+    stile(y - 1, x - 3, TL_WEB_UR);
+    stile(y - 1, x - 2, TL_WEB_RTEE);
+    stile(y - 1, x - 1, TL_WEB_UR);
+//    stile(y - 1, x - 0, TL_WEB_TTEE);
+    stile(y - 1, x + 1, TL_WEB_UL);
+    stile(y - 1, x + 2, TL_WEB_LTEE);
+    stile(y - 1, x + 3, TL_WEB_UL);
+    stile(y - 1, x + 4, TL_WEB_BS);
+
+    stile(y - 0, x - 3, TL_WEB_FS);
+    stile(y - 0, x - 2, TL_WEB_UR);
+    stile(y - 0, x - 1, TL_WEB_TTEE);
+    stile(y - 0, x - 0, TL_WEB_VL);
+    stile(y - 0, x + 1, TL_WEB_TTEE);
+    stile(y - 0, x + 2, TL_WEB_UL);
+    stile(y - 0, x + 3, TL_WEB_BS);
+
+    break;
+    
+  case DEC_NET:
+
+    for (j = -5; j <= +1; j++)
+    {
+      for (i = -3; i <= +3; i++)
+      {
+	int t;
+	t = gtile(y + j, x + i);
+      
+	if (t == TL_WATER || t == TL_T_UWNET)
+	{
+	  stile(y + j, x + i, TL_UWNET_CROSS);
+	}
+		  
+/*	if ((j + i) % 2)
+	  stile(y + j, x + i, TL_UWNET_FLOAT);
+	else
+	stile(y + j, x + i, TL_UWNET_SLASH);*/
+      }
+    }
+	
+/*    stile(y - 4, x - 3, TL_UWNET_FLOAT);
+    stile(y - 4, x - 0, TL_UWNET_FLOAT);
+    stile(y - 4, x + 3, TL_UWNET_FLOAT);
+    
+    stile(y - 3, x - 3, TL_UWNET_UL);
+    stile(y - 3, x + 3, TL_UWNET_UR);
+    
+    for (i = -2; i <= +2; i++)
+      stile(y - 3, x + i, TL_UWNET_TTEE);
+    
+    for (j = -2; j <= 0; j++)
+    {
+      stile(y + j, x - 3, TL_UWNET_LTEE);
+      stile(y + j, x + 3, TL_UWNET_RTEE);
+      
+      for (i = -2; i <= +2; i++)
+	stile(y + j, x + i, TL_UWNET_CROSS);
+    }
+
+    stile(y + 1, x - 3, TL_UWNET_LL);
+    stile(y + 1, x + 3, TL_UWNET_LR);
+    
+    for (i = -2; i <= +2; i++)
+      stile(y + 1, x + i, TL_UWNET_BTEE);
+    
+    stile(y + 2, x - 3, TL_UWNET_WEIGHT);
+    stile(y + 2, x - 0, TL_UWNET_WEIGHT);
+    stile(y + 2, x + 3, TL_UWNET_WEIGHT);*/
+
+    break;
     
   case DEC_CHEST:
   default:
