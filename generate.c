@@ -1025,7 +1025,7 @@ void populate_cellmap(void)
 	    if (y < MAX_FLOORS - 1 &&
 		game->cell[y + 1][x] == CELL_ROCK &&
 		y > 10 &&
-		rand() % 5 == 0)
+		rand() % 4 == 0)
 	    {
 	      set_cell(y, x, CELL_TRAPDOOR);
 	      set_cell(y + 1, x, CELL_SPIKEPIT);

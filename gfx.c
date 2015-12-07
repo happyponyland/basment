@@ -3115,7 +3115,9 @@ void draw_lowmsg(void)
 
 
 
-void make_bar(char * title, int amount, int c1, int c2, int c3, int c4)
+void make_bar(WINDOW * win, int y,
+	      char * title, int amount,
+	      int c1, int c2, int c3, int c4)
 {
   int overflow;
   int v;
@@ -3124,17 +3126,24 @@ void make_bar(char * title, int amount, int c1, int c2, int c3, int c4)
   int bg;
   int fg;
 
+  wmove(win, y, 0);
+
   wprintw(lowwin, "%12s  ", title);
 
-  w = 20;
+  w = 40;
   v = amount / w;
 
-  if (amount > 100)
+/*  if (amount > 100)
     overflow = w * 2;
   else if (amount > 60)
     overflow = amount % 60;
+    else
+    overflow = (amount % w) * 2;*/
+
+  if (amount >= w * 4)
+    overflow = w;
   else
-    overflow = (amount % w) * 2;
+    overflow = (amount % w);
   
   if (v >= 3)
   {
@@ -3157,7 +3166,7 @@ void make_bar(char * title, int amount, int c1, int c2, int c3, int c4)
     fg = c1;
   }
 
-  for (i = 0; i < w * 2; i++)
+  for (i = 0; i < w; i++)
   {
     if (i < overflow)
     {
@@ -3169,23 +3178,26 @@ void make_bar(char * title, int amount, int c1, int c2, int c3, int c4)
     }
   }
 
+  wclrtoeol(lowwin);
+
+  if (amount >= w * 4)
+  {
+    wmove(win, y, 55);
+    waddch(lowwin, '+');
+  }
+
   return;
 }
 
 
 void draw_bars(void)
 {
-  wmove(lowwin, 1, 0);
-
-  make_bar("HEALTH", player->hp,
+  make_bar(lowwin, 1,
+	   "HEALTH", player->hp,
 	   COLOR_PAIR(PAIR_RED),
 	   COLOR_PAIR(PAIR_RED) | A_BOLD,
 	   COLOR_PAIR(PAIR_BROWN) | A_BOLD,
 	   COLOR_PAIR(PAIR_WHITE));
-
-  wclrtoeol(lowwin);
-  
-  wmove(lowwin, 3, 0);
 
   if (enemy_bar > 0)
   {
@@ -3195,7 +3207,8 @@ void draw_bars(void)
 
     if (enemy > MOB_NONE)
     {
-      make_bar((game->hallucination ? "???" : mob_name[enemy]),
+      make_bar(lowwin, 3,
+	       (game->hallucination ? "???" : mob_name[enemy]),
 	       game->mob[enemy_bar].hp,
 	       COLOR_PAIR(PAIR_CYAN),
 	       COLOR_PAIR(PAIR_BLUE) | A_BOLD,
@@ -3203,8 +3216,6 @@ void draw_bars(void)
 	       COLOR_PAIR(PAIR_BLACK) | A_BOLD);
     }
   }
-
-  wclrtoeol(lowwin);
 
   wrefresh(lowwin);
 }

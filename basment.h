@@ -162,7 +162,9 @@ extern int enemy_bar_time;
 
 void init_gfx_map(void);
 void draw_bars(void);
-void make_bar(char * title, int amount, int c1, int c2, int c3, int c4);
+void make_bar(WINDOW * win, int y,
+	      char * title, int amount,
+	      int c1, int c2, int c3, int c4);
 void draw_board(void);
 void draw_frames(void);
 void draw_stats(void);
