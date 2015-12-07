@@ -447,6 +447,7 @@ enum decoration_t
 #define CELL_TABLET    37
 #define CELL_SUSHI_L   38
 #define CELL_SUSHI_R   39
+#define CELL_ORB   40
 
 #define CELL_WSURFACE    80
 

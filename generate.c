@@ -861,10 +861,17 @@ void populate_cellmap(void)
   int x;
   int original;
   int dir;
+  int i;
 
   NOW_WORKING;
     
   place_single_cell(12, CELL_SWSTONE);
+
+  for (i = 0; i < 3; i++)
+    {
+      place_single_cell(1, CELL_TABLET);
+      place_single_cell(1, CELL_ORB);
+    }
   
   for (y = 0; y < MAX_FLOORS; y++)
   {
@@ -1212,6 +1219,12 @@ void convert_cellmap(void)
 	set_cell(cy, cx, CELL_LOOT);
 	break;
 
+      case CELL_ORB:
+	tx += slide;
+	decorate(feet, tx, DEC_ORB);
+	set_cell(cy, cx, CELL_LOOT);
+	break;
+
       case CELL_TABLET:
 	tx += slide;
 	decorate(feet, tx, DEC_TABLET);
@@ -1509,7 +1522,7 @@ int floor_loot(int cy, int cx)
 {
   int r;
 
-  if (rand() % 10 == 0)
+  /* if (rand() % 10 == 0)
   {
     // Rare features
 
@@ -1524,7 +1537,7 @@ int floor_loot(int cy, int cx)
       break;
     }
   }
-  else
+  else*/
   {
     r = DEC_FIRSTRND + rand() % (DEC_COFFIN - 1);
     
