@@ -36,6 +36,9 @@
 #define COFFIN_GOLD  45
 
 #define BREATH_NORMAL 40
+#define BREATH_SCUBA  80
+
+#define SCUBA_COST 100
 
 #define ALTAR_LOOT_PENALTY  400
 #define ALTAR_PRAYER_PIETY  200

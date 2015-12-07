@@ -297,6 +297,8 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
 	
   case CELL_NPC_L:
   case CELL_NPC_R: 
+  case CELL_SUSHI_L:
+  case CELL_SUSHI_R: 
     *glyph = 'N';
     *attr = COLOR_PAIR(PAIR_CYAN);
     break;

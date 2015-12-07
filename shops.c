@@ -469,3 +469,60 @@ void shop_sushi()
   
   return;
 }
+
+
+
+void shop_scuba()
+{
+  int leave;
+  int sel;
+  char line[DEFLEN];
+
+  if (gtile(player->y - 1, player->x - 3) == TL_DESK)
+    leave = POPUP_LEAVE_LEFT;
+  else
+    leave = POPUP_LEAVE_RIGHT;
+  
+  snprintf(line, DEFLEN,
+	   "HELLO WOULD YOU LIKE TO BUY\n"
+	   "SOME FANTASTIC SCUBA GEAR???\n\n"
+	   "  YES (%d GOLD)  \n"
+	   "  NO",
+	   SCUBA_COST);
+  
+  sel = pchoose(line, 3, 2, leave);
+  
+  draw_board();
+  
+  if (sel < 0)
+    return;
+
+  if (sel == 0)
+  {
+    if (game->has_scuba)
+    {
+      pwait("YOU ALREADY HAVE SCUBA GEAR");
+      return;
+    }
+  }
+  else
+  {
+    pwait("WELL WHAT ARE YOU HERE FOR THEN???");
+    return;
+  }
+
+  if (spend_gold(SCUBA_COST) == false)
+  {
+    pwait("YOU CANNOT AFFORD IT! THIS IS MOST UNFORTUNATE\n"
+	  "I HOPE YOU DO NOT DROWN. PLEASE COME BACK LATER");
+    return;
+  }
+
+  pwait("EXCELLENT! YOU NOW HAVE SCUBA GEAR");
+  game->has_scuba = true;
+  draw_stats();
+  
+//  draw_board();
+  
+  return;
+}

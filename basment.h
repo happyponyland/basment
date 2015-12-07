@@ -300,6 +300,7 @@ void shop_train(void);
 void shop_map(void);
 void shop_blacksmith(void);
 void shop_sushi(void);
+void shop_scuba(void);
 
 /* weapon.c */
 #define WPN_UNARMED   0

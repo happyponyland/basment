@@ -201,6 +201,7 @@ void init_gfx_map()
     gfx_map[TL_P_NPC3] =
     gfx_map[TL_P_NPC4] =
     gfx_map[TL_P_NPC5] =
+    gfx_map[TL_P_NPC_SCUBA] =
     gfx_map[TL_P_NPC_SUSHI] = ' ';
 
   gfx_map[TL_L_A] = 'A';
@@ -3233,16 +3234,25 @@ void breath_bar(WINDOW * win, int y, int amount)
     wattron(lowwin, COLOR_PAIR(PAIR_RED) | A_BLINK);
     wprintw(lowwin, "%12s  ", "BREATH");
     wattrset(lowwin, 0);
+    wclrtoeol(lowwin);
   }
   else
   {
     wprintw(lowwin, "%12s  ", "BREATH");
 
-    for (i = 0; i < amount; i++)
-      waddch(lowwin, 'O' | COLOR_PAIR(PAIR_CYAN));
-  }
+    for (i = 0; i < MIN(40, amount); i++)
+      waddch(lowwin, 'o' | COLOR_PAIR(PAIR_CYAN));
 
-  wclrtoeol(lowwin);
+    wclrtoeol(lowwin);
+
+    if (amount > 40)
+    {
+      wmove(lowwin, y, 14);
+      
+      for (i = 40; i < amount; i++)
+	waddch(lowwin, 'O' | COLOR_PAIR(PAIR_GREEN));
+    }
+  }
 
   return;
 }

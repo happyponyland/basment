@@ -90,6 +90,7 @@ enum tile_t
   TL_P_NPC3,
   TL_P_NPC4,
   TL_P_NPC5,
+  TL_P_NPC_SCUBA,
   TL_P_NPC_SUSHI,
   TL_P_ENTRANCE,
 

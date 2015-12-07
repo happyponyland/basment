@@ -190,7 +190,7 @@ retry:
   {
     learn_detect_traps();
     game->has_torch = true;
-    game->has_scuba = true;
+//    game->has_scuba = true;
     player->hp += 30;
     player->speed += 3;
     player->strength += 3;
@@ -462,6 +462,7 @@ int player_move(int dir)
       tile_feet == TL_P_NPC3 ||
       tile_feet == TL_P_NPC4 ||
       tile_feet == TL_P_NPC5 ||
+      tile_feet == TL_P_NPC_SCUBA ||
       tile_feet == TL_P_NPC_SUSHI)
   {
     interact();

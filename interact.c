@@ -20,6 +20,8 @@ bool interesting(int tile)
   case TL_P_NPC3:
   case TL_P_NPC4:
   case TL_P_NPC5:
+  case TL_P_NPC_SCUBA:
+  case TL_P_NPC_SUSHI:
   case TL_P_CAMP:
   case TL_P_COFFIN:
   case TL_P_PORTAL:
@@ -102,7 +104,12 @@ void feet_instruction(int tile)
   case TL_P_NPC3:
   case TL_P_NPC4:
   case TL_P_NPC5:
+  case TL_P_NPC_SCUBA:
     snprintf(lowmsg, DEFLEN, "PRESS <UP> TO TALK TO SHOPKEEP");
+    break;
+
+  case TL_P_NPC_SUSHI:
+    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO TALK TO ITAMAE");
     break;
   }
 
@@ -149,6 +156,10 @@ void interact()
   else if (tile == TL_P_NPC5)
   {
     pwait("SORRY WE ARE CLOSED FOR RENOVATION");
+  }
+  else if (tile == TL_P_NPC_SCUBA)
+  {
+    shop_scuba();
   }
   else if (tile == TL_P_NPC_SUSHI)
   {

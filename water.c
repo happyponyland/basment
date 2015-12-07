@@ -525,7 +525,10 @@ int spend_breath(mob_t * m, int amount)
 
 void take_breath(mob_t * m)
 {
-  m->breath = BREATH_NORMAL;
+  if (game->has_scuba)
+    m->breath = BREATH_SCUBA;
+  else
+    m->breath = BREATH_NORMAL;
 
   return;
 }

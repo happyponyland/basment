@@ -1476,9 +1476,19 @@ void npc_room(int y, int x, int cell_type)
   int x_off;
 
   if (cell_type == CELL_SUSHI_L || cell_type == CELL_SUSHI_R)
-    npc_type = TL_P_NPC_SUSHI;
+  {
+    if (rand() % 2 == 0)
+      npc_type = TL_P_NPC_SUSHI;
+    else
+      npc_type = TL_P_NPC_SCUBA;
+  }
   else
+  {
     npc_type = TL_P_NPC1 + rand() % 4;
+
+    if (rand() % 10 == 0)
+      npc_type = TL_P_NPC_SCUBA;
+  }
 
   if (cell_type == CELL_NPC_R || cell_type == CELL_SUSHI_R)
   {
@@ -1504,12 +1514,28 @@ void npc_room(int y, int x, int cell_type)
   }
   else if (npc_type == TL_P_NPC2)
   {
-    stile(y - 5, x + x_off - 1, TL_L_S);
-    stile(y - 5, x + x_off + 0, TL_L_M);
-    stile(y - 5, x + x_off + 1, TL_L_I);
-    stile(y - 5, x + x_off + 2, TL_L_T);
-    stile(y - 5, x + x_off + 3, TL_L_H);
-    stile(y - 5, x + x_off + 4, TL_L_Y);
+    if (rand() % 2)
+    {
+      stile(y - 5, x + x_off - 1, TL_L_B);
+      stile(y - 5, x + x_off + 0, TL_L_L);
+      stile(y - 5, x + x_off + 1, TL_L_A);
+      stile(y - 5, x + x_off + 2, TL_L_C);
+      stile(y - 5, x + x_off + 3, TL_L_K);
+      stile(y - 4, x + x_off - 1, TL_L_S);
+      stile(y - 4, x + x_off + 0, TL_L_M);
+      stile(y - 4, x + x_off + 1, TL_L_I);
+      stile(y - 4, x + x_off + 2, TL_L_T);
+      stile(y - 4, x + x_off + 3, TL_L_H);
+    }
+    else
+    {
+      stile(y - 5, x + x_off - 1, TL_L_S);
+      stile(y - 5, x + x_off + 0, TL_L_M);
+      stile(y - 5, x + x_off + 1, TL_L_I);
+      stile(y - 5, x + x_off + 2, TL_L_T);
+      stile(y - 5, x + x_off + 3, TL_L_H);
+      stile(y - 5, x + x_off + 4, TL_L_Y);
+    }
   }
   else if (npc_type == TL_P_NPC3)
   {
@@ -1526,6 +1552,18 @@ void npc_room(int y, int x, int cell_type)
     stile(y - 5, x + x_off + 1, TL_L_A);
     stile(y - 5, x + x_off + 2, TL_L_P);
     stile(y - 5, x + x_off + 3, TL_L_S);
+  }
+  else if (npc_type == TL_P_NPC_SCUBA)
+  {
+    stile(y - 5, x + x_off - 1, TL_L_S);
+    stile(y - 5, x + x_off + 0, TL_L_C);
+    stile(y - 5, x + x_off + 1, TL_L_U);
+    stile(y - 5, x + x_off + 2, TL_L_B);
+    stile(y - 5, x + x_off + 3, TL_L_A);
+    stile(y - 4, x + x_off + 0, TL_L_G);
+    stile(y - 4, x + x_off + 1, TL_L_E);
+    stile(y - 4, x + x_off + 2, TL_L_A);
+    stile(y - 4, x + x_off + 3, TL_L_R);
   }
 
   return;
