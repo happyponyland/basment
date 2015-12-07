@@ -9,7 +9,7 @@
 #define BRANCH_ORGANIC  3
 #define BRANCHES 4
 
-#define BOOKS 11
+#define BOOKS 12
 
 typedef struct game_t game_t;
 

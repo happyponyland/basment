@@ -87,6 +87,7 @@ int make_monster(int y, int x, int type)
   mob->attack_phase = 0;
 
   mob->follow_floor = 0;
+  mob->flying = 0;
 
   if (rand() % 2 == 0)
     mob->flip = true;
@@ -126,6 +127,7 @@ int make_monster(int y, int x, int type)
     mob->armor_type = ARMOR_SPIDER;
     mob->exp = 400;
     mob->damage = 6;
+    mob->flying = 1; // not actually flying but too large to submerge
     break;
 
   case MOB_EVILTREE:
@@ -180,6 +182,7 @@ int make_monster(int y, int x, int type)
     mob->hp = 20;
     mob->exp = 100;
     mob->damage = 6;
+    mob->flying = 1;
     break;
 
   case MOB_MIMIC:
@@ -203,6 +206,7 @@ int make_monster(int y, int x, int type)
     mob->hp = 22;
     mob->exp = 250;
     mob->damage = 8;
+    mob->flying = 1;
     break;
 
   case MOB_MOTH:
@@ -213,6 +217,7 @@ int make_monster(int y, int x, int type)
     mob->hp = 30;
     mob->exp = 400;
     mob->damage = 12;
+    mob->flying = 1;
     break;
 
   case MOB_FISH:
@@ -244,6 +249,7 @@ int make_monster(int y, int x, int type)
     mob->hp = 25;
     mob->exp = 400;
     mob->damage = 3;
+    mob->flying = 1;
     break;
 
   case MOB_EYE:
@@ -254,6 +260,7 @@ int make_monster(int y, int x, int type)
     mob->hp = 25;
     mob->exp = 500;
     mob->damage = 12;
+    mob->flying = 1;
     break;
 
   case MOB_GHOUL:
@@ -307,6 +314,7 @@ int make_monster(int y, int x, int type)
     mob->hp = 28;
     mob->exp = 400;
     mob->damage = 6;
+    mob->follow_floor = 1;
     break;
 
   case MOB_GIANT:
@@ -376,6 +384,7 @@ int make_monster(int y, int x, int type)
     mob->exp = 5000;
     mob->damage = 8;
     mob->article = ART_NONE;
+    mob->flying = 1;
     break;
   }
 

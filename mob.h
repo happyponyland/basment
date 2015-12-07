@@ -25,6 +25,7 @@ struct mob_t
   int breath;
 
   int follow_floor;
+  int flying;
   
   int attack_phase;
 

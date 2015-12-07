@@ -337,11 +337,12 @@ int player_move(int dir)
 
   steps = player->steps;
 
-/*  if (gtile(player->y, player->x) == TL_WATER)
+//  if (gtile(player->y, player->x) == TL_WATER)
+  if (player_underwater())
   {
-    underwater = true;
+    //underwater = true;
     steps = UNDERWATER_STEPS;
-    }*/
+  }
 
   for (i = 0; i < steps; i++)
   {

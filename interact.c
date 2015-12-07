@@ -241,17 +241,16 @@ void interact()
   {
     altar();
   }
-  else if (tile == TL_P_CORPSE ||
-	   tile == TL_P_SKELETON)
+  else if (tile == TL_P_CORPSE || tile == TL_P_SKELETON)
   {
     if (tile == TL_P_CORPSE)
     {
-      stile(player->y, player->x, TL_CORPSE3);
+      stile(player->y, player->x, TL_VOID);
       strcpy(line, "YOU FIND A DECAYING CORPSE\n\n");
     }
     else
     {
-      stile(player->y, player->x, TL_BONE2);
+      stile(player->y, player->x, TL_VOID);
       strcpy(line, "YOU FIND A LONG-DEAD SKELETON\n\n");
     }
 

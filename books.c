@@ -134,6 +134,13 @@ void bookshelf()
 	   "\"BUSINESS PRACTICES\"");
     exp = 200;
     break;
+
+  case 11:
+    strcpy(bookname,
+	   "\"HELP I'M STUCK IN A\n"
+	   " DUNGEON PROP FACTORY\"");
+    exp = 500;
+    break;
   }
 
   game->next_book++;
