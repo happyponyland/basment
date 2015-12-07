@@ -277,6 +277,7 @@ void tremor(int amount);
 bool interesting(int tile);
 void interact(void);
 void feet_instruction(int tile);
+void loot_chest(int ty, int tx);
 void altar(void);
 void fountain(void);
 void idol(void);

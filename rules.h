@@ -29,7 +29,8 @@
 #define COST_BENTO  100
 #define BENTO_HEAL  +20
 
-#define CHEST_GOLD   60
+#define CHEST_GOLD   55
+#define UWCHEST_GOLD 95
 #define COFFIN_GOLD  45
 
 #define ALTAR_LOOT_PENALTY  400

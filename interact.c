@@ -122,69 +122,12 @@ void interact()
 {
   int tile;
   char line[DEFLEN];
-//  int sel;
 
   tile = gtile(player->y, player->x);
 
   if (tile == TL_P_CHEST || tile == TL_P_UWCHEST)
   {
-    if (!game->skill_lockpick && game->weapon == WPN_UNARMED)
-    {
-      pwait("YOU HAVE NOTHING TO\n"
-	    "OPEN THE CHEST WITH");
-      return;
-    }
-
-    //draw_board();
-
-    if (game->skill_lockpick)
-    {
-      strcpy(line, "YOU PICK THE LOCK\n\n");
-    }
-    else if (game->weapon == WPN_AXE ||
-	game->weapon == WPN_MACE ||
-	game->weapon == WPN_DIAMOND ||
-	game->weapon == WPN_FLAIL)
-    {
-      strcpy(line, "YOU SMASH THE CHEST OPEN\n\n");
-    }
-    else
-      strcpy(line, "YOU PRY THE CHEST OPEN\n\n");
-
-    /*
-      Weapon has a random chance of breaking, but even if it does we
-      still get the loot. Don't damage weapon if we're capable of
-      lockpicking
-    */
-    if (!game->skill_lockpick)
-      damage_weapon(rand() % 10);
-
-/*    if (game->skill_lockpick || damage_weapon(rand() % 10) == false)
-      {*/
-
-    if (tile == TL_P_UWCHEST)
-      {
-	stile(player->y, player->x, TL_UWWOOD);
-	stile(player->y - 1, player->x - 2, TL_UW_UL);
-	stile(player->y - 1, player->x - 1, TL_UW_HL);
-	stile(player->y - 1, player->x, TL_UW_HL);
-	stile(player->y - 1, player->x + 1, TL_UW_HL);
-	stile(player->y - 1, player->x + 2, TL_UW_UR);
-      }
-      else
-      {
-	stile(player->y, player->x, TL_WOOD);
-	stile(player->y - 1, player->x - 2, TL_BR_UL);
-	stile(player->y - 1, player->x - 1, TL_BR_HL);
-	stile(player->y - 1, player->x, TL_BR_HL);
-	stile(player->y - 1, player->x + 1, TL_BR_HL);
-	stile(player->y - 1, player->x + 2, TL_BR_UR);
-      }
-
-      draw_board();
-      give_gold(line, 10 + rand() % CHEST_GOLD);
-//    }
-
+    loot_chest(player->y, player->x);
     return;
   }
   else if (tile == TL_P_NPC1)
@@ -336,6 +279,75 @@ void interact()
     return;
   }
 
+  return;
+}
+
+
+
+void loot_chest(int ty, int tx)
+{
+  char line[DEFLEN];
+  int tile;
+  int gold_amount;
+
+  tile = gtile(ty, tx);
+
+  if (!game->skill_lockpick && game->weapon == WPN_UNARMED)
+  {
+    pwait("YOU HAVE NOTHING TO\n"
+	  "OPEN THE CHEST WITH");
+    return;
+  }
+  
+  if (game->skill_lockpick)
+  {
+    strcpy(line, "YOU PICK THE LOCK\n\n");
+  }
+  else if (game->weapon == WPN_AXE ||
+	   game->weapon == WPN_MACE ||
+	   game->weapon == WPN_DIAMOND ||
+	   game->weapon == WPN_FLAIL)
+  {
+    strcpy(line, "YOU SMASH THE CHEST OPEN\n\n");
+  }
+  else
+    strcpy(line, "YOU PRY THE CHEST OPEN\n\n");
+  
+  /*
+    Weapon has a random chance of breaking, but even if it does we
+    still get the loot. Don't damage weapon if we're capable of
+    lockpicking.
+  */
+  if (!game->skill_lockpick)
+    damage_weapon(rand() % 10);
+  
+  if (tile == TL_P_UWCHEST)
+  {
+    gold_amount = 10 + rand() % UWCHEST_GOLD;
+
+    stile(player->y, player->x, TL_UWWOOD);
+    stile(player->y - 1, player->x - 2, TL_UW_UL);
+    stile(player->y - 1, player->x - 1, TL_UW_HL);
+    stile(player->y - 1, player->x, TL_UW_HL);
+    stile(player->y - 1, player->x + 1, TL_UW_HL);
+    stile(player->y - 1, player->x + 2, TL_UW_UR);
+  }
+  else
+  {
+    gold_amount = 10 + rand() % CHEST_GOLD;
+	
+    stile(player->y, player->x, TL_WOOD);
+    stile(player->y - 1, player->x - 2, TL_BR_UL);
+    stile(player->y - 1, player->x - 1, TL_BR_HL);
+    stile(player->y - 1, player->x, TL_BR_HL);
+    stile(player->y - 1, player->x + 1, TL_BR_HL);
+    stile(player->y - 1, player->x + 2, TL_BR_UR);
+  }
+  
+  draw_board();
+
+  give_gold(line, gold_amount);
+  
   return;
 }
 
