@@ -39,6 +39,8 @@ int wopen_cell(int c)
   }
 }
 
+
+
 int water_join(int t)
 {
   if (t >= TL_UNDERWATER && t < TL_LASTUNDERWATER)
@@ -499,4 +501,52 @@ int wopen_down(int cy, int cx)
   return (below == CELL_WMONSTER  ||
 	  below == CELL_WLOOT     ||
 	  below == CELL_WATER);
+}
+
+
+
+int spend_breath(mob_t * m, int amount)
+{
+  int b;
+
+  m->breath -= amount;
+  
+  if (m->breath >= 0)
+    return 0;
+
+  b = m->breath * -1;
+  m->breath = 0;
+  return b;
+}
+
+
+
+void take_breath(mob_t * m)
+{
+  m->breath = BREATH_NORMAL;
+
+  return;
+}
+
+
+int player_underwater()
+{
+  return water_join(gtile(player->y, player->x));
+}
+
+
+void try_to_breathe()
+{
+  if (player_underwater())
+  {
+    player->hp -= spend_breath(player, 1);
+
+    if (player->hp <= 0)
+      game_over("YOU DROWNED", false);
+
+    // Update breath bar
+    draw_bars();
+  }
+
+  return;
 }

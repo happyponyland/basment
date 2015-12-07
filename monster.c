@@ -71,6 +71,8 @@ int make_monster(int y, int x, int type)
   mob->x = x;
   mob->y = y;
 
+  mob->breath = 0;
+
   mob->strength = 1;
   mob->damage = 1;
 
@@ -490,7 +492,7 @@ void mob_walk(int mi, int dist)
 
 void frustration(mob_t * mob)
 {
-  if (mob->type == MOB_CRAB)
+  if (mob->type == MOB_CRAB && on_board(mob))
   {
     mob->flags = GFX_ATTACK2;
     draw_board(); lpause();
@@ -790,6 +792,9 @@ bool summon_minions(mob_t * mob)
   int i;
   int t;
 
+  if (!on_board(mob))
+    return false;
+  
   if (mob->gp > 0)
   {
     mob->gp--;

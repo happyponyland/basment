@@ -165,6 +165,8 @@ void draw_bars(void);
 void make_bar(WINDOW * win, int y,
 	      char * title, int amount,
 	      int c1, int c2, int c3, int c4);
+void breath_bar(WINDOW * win, int y, int amount);
+void force_breath_bar(mob_t * m);
 void draw_board(void);
 void draw_frames(void);
 void draw_stats(void);
@@ -406,6 +408,10 @@ int air_pocket(int y, int start_x);
 void put_lakes(void);
 void add_shallow_lakes(void);
 void add_surfaces(void);
+int spend_breath(mob_t * m, int amount);
+void take_breath(mob_t * m);
+int player_underwater(void);
+void try_to_breathe(void);
 
 /* hiscore.c */
 char scores_file[DEFLEN];

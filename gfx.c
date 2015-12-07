@@ -3190,6 +3190,43 @@ void make_bar(WINDOW * win, int y,
 }
 
 
+void breath_bar(WINDOW * win, int y, int amount)
+{
+  int i;
+
+  wmove(win, y, 0);
+
+  if (amount <= 0)
+  {
+    wattron(lowwin, COLOR_PAIR(PAIR_RED) | A_BLINK);
+    wprintw(lowwin, "%12s  ", "BREATH");
+    wattrset(lowwin, 0);
+  }
+  else
+  {
+    wprintw(lowwin, "%12s  ", "BREATH");
+
+    for (i = 0; i < amount; i++)
+      waddch(lowwin, 'O' | COLOR_PAIR(PAIR_CYAN));
+  }
+
+  wclrtoeol(lowwin);
+
+  return;
+}
+
+
+
+
+void force_breath_bar(mob_t * m)
+{
+  breath_bar(lowwin, 2, m->breath);
+  wrefresh(lowwin);
+  return;
+}
+
+
+
 void draw_bars(void)
 {
   make_bar(lowwin, 1,
@@ -3199,6 +3236,14 @@ void draw_bars(void)
 	   COLOR_PAIR(PAIR_BROWN) | A_BOLD,
 	   COLOR_PAIR(PAIR_WHITE));
 
+  if (water_join(gtile(player->y, player->x)))
+    breath_bar(lowwin, 2, player->breath);
+  else
+  {
+    wmove(lowwin, 2, 0);
+    wclrtoeol(lowwin);
+  }
+  
   if (enemy_bar > 0)
   {
     int enemy;
@@ -3216,8 +3261,15 @@ void draw_bars(void)
 	       COLOR_PAIR(PAIR_BLACK) | A_BOLD);
     }
   }
+  else
+  {
+    wmove(lowwin, 3, 0);
+    wclrtoeol(lowwin);
+  }
 
   wrefresh(lowwin);
+
+  return;
 }
 
 

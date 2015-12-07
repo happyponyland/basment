@@ -399,8 +399,7 @@ int damage(mob_t * attacker, mob_t * target)
 
   amount = attacker->strength + rand() % (1 + attacker->damage);
 
-  if ((target->type == MOB_EVILTREE ||
-       target->type == MOB_SHRUBBERY) &&
+  if ((target->type == MOB_EVILTREE || target->type == MOB_SHRUBBERY) &&
       attacker == player &&
       game->weapon == WPN_AXE)
   {
@@ -421,6 +420,12 @@ int damage(mob_t * attacker, mob_t * target)
 
   amount = MAX(amount, 1);
 
+  if (target == player &&
+      player_underwater())
+  {
+    amount = spend_breath(player, amount);
+  } 
+  
   target->hp -= amount;
 
   return amount;
@@ -488,3 +493,7 @@ void kill_enemy(mob_t * target)
   
   return;
 }
+
+
+
+

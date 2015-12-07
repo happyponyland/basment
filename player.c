@@ -159,11 +159,13 @@ retry:
   else if (input == KEY_RIGHT || input == key_right)
   {
     player->flip = false;
+    try_to_breathe();
     player_move(1);
   }
   else if (input == KEY_LEFT || input == key_left)
   {
     player->flip = true;
+    try_to_breathe();
     player_move(-1);
   }
   else if (input == 's' && cheat_mode)
@@ -205,13 +207,15 @@ retry:
   {
     // If the player has a shield, raise it for a few turns.
 
+    try_to_breathe();
+
     if (game->weapon == WPN_BOW)
     {
       if (game->player_gold <= 0)
       {
 	pwait("YOUR BROKE");
       }
-      else if (damage_weapon(1))
+      else if (damage_weapon(1)) // Might break
       {
       }
       else
@@ -313,7 +317,7 @@ int player_move(int dir)
   int tile_below;
   int tile_feet;
   int steps;
-  int underwater = false;
+//  int underwater = false;
 
   /*
     Figure out in which direction we want to move, and how far off
@@ -333,12 +337,12 @@ int player_move(int dir)
 
   steps = player->steps;
 
-  if (gtile(player->y, player->x) == TL_WATER)
+/*  if (gtile(player->y, player->x) == TL_WATER)
   {
     underwater = true;
     steps = UNDERWATER_STEPS;
-  }
-  
+    }*/
+
   for (i = 0; i < steps; i++)
   {
     new_x = player->x + x_off + speed;
@@ -464,18 +468,6 @@ int player_move(int dir)
     feet_instruction(gtile(player->y, player->x));
   }
 
-  if (underwater)
-  {
-    player->hp--;
-
-    draw_bars();
-
-    if (player->hp <= 0)
-    {
-      game_over("YOU DROWNED", false);
-    }
-  }
-  
   return moved;
 }
 
@@ -615,6 +607,13 @@ void climb_ladder(int dir)
   else if (dir == +1 &&
 	   ((tile_below == TL_SURFACE) || water_join(tile_below)))
   {
+    if (tile_below == TL_SURFACE)
+    {
+      take_breath(player);
+      force_breath_bar(player);
+      //draw_bars();
+    }
+    
     if (!water_join(gtile(player->y + FLOOR_H, player->x)))
       return;
 
@@ -675,6 +674,16 @@ void climb_ladder(int dir)
     lpause();
   }
 
+  if (swimming && dir == -1)
+  {
+    //if (gtile(player->y, player->x) == TL_SURFACE)
+	  //if (!water_join(gtile(player->y, player->x)))
+    if (!player_underwater())
+    {
+      draw_bars();
+    }
+  }
+  
   // We should now be on a new floor
   calculate_floor();
 

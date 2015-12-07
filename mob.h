@@ -22,6 +22,8 @@ struct mob_t
   int type;
   int hp;
 
+  int breath;
+
   int follow_floor;
   
   int attack_phase;
