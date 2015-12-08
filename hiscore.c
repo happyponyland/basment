@@ -4,6 +4,21 @@
 
 
 
+void blank_score(score_t * score)
+{
+}
+
+
+void make_score(score_t * score)
+{
+}
+
+
+void list_score(void)
+{
+}
+
+
 /*
   Calculates player score for the current game. See SCORE_* in rules.h
  for weighting.

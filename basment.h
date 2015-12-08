@@ -417,8 +417,20 @@ int player_underwater(void);
 void try_to_breathe(void);
 
 /* hiscore.c */
+struct score_t
+{
+  char label[DEFLEN];
+  char amount;
+  char multiply;
+};
+
+typedef struct score_t score_t;
+
 char scores_file[DEFLEN];
 
+void blank_score(score_t * score);
+void make_score(score_t * score);
+void list_score(void);
 int calculate_score(void);
 int add_highscore(long score, char * name, char * reason);
 void show_highscore(int top_entries, int highlight, bool fancy);

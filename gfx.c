@@ -2818,6 +2818,8 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   uint32_t climb = 0;
   int skin = PAIR_WHITE;
   int dive = false;
+  int snorkel = false;
+  int head_y = -2;
 
   dive = flags & GFX_HUMAN_DIVE;
 
@@ -2829,6 +2831,16 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   weapon = flags & GFX_HUMAN_WEAPONS;
   attack = flags & GFX_ATTACK;
   bow = flags & GFX_HUMAN_BOW;
+  
+  if (!title_running &&
+      (flags & GFX_HUMAN_PLAYER) &&
+      (game->has_scuba) &&
+      water_join(gtile(player->y - (dive ? 0 : 2), player->x)))// &&
+//      water_join(gtile(player->y, player->x)) &&
+//player_underwater())
+  {
+    snorkel = true;
+  }
 
   rbicp = attack || (weapon ? true : false) || shd_up;
   lbicp = shd_type;
@@ -2868,6 +2880,7 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   if (dive)
   {
     GA(0, 0, '@' | skin);
+//    GA(0, -1, ACS_LLCORNER | skin);
     
     GA((climb == GFX_HUMAN_CLIMB1 ? -1 : 0), -1, GA_AL);
     GA((climb == GFX_HUMAN_CLIMB2 ? -1 : 0), +1, GA_AR);
@@ -2876,9 +2889,35 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
     GA(-2, -0, ' '   | skin);
     GA(-2, +1, GA_FS | skin);
 
-    return;
+    head_y = 0;
   }
   
+  if (snorkel)
+  {
+    int second_y = -2;
+    
+    GA(head_y, -1, GA_LL);
+
+    if (dive || climb)
+      second_y = -1;
+
+    switch ((game->turns +/* player->x +*/ player->y) % 9)
+    {
+    case 0: GA(head_y - 1, -1, ' '); break;
+    case 1: GA(head_y - 1, -1, '.'); break;
+    case 2: GA(head_y - 1, -1, '\''); break;
+    case 3: GA(head_y - 1, -1, ':'); break;
+    case 4: GA(head_y - 1, -1, 'o'); break;
+    case 5: GA(head_y - 1, -1, '\''); break;
+    case 6: GA(head_y + second_y, -1, '.'); break;
+    case 7: GA(head_y + second_y, -1, 'o'); break;
+    case 8: GA(head_y + second_y, -1, '\''); break;
+    }
+  }
+
+  if (dive)
+    return;
+
   // Head
 
   if (flags & GFX_HUMAN_PLAYER)
