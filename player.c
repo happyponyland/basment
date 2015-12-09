@@ -777,12 +777,12 @@ void game_over(char * cause, bool won)
 
     if (won)
     {
-      snprintf(line, DEFLEN, "YOU HAD:\n\n");
+      snprintf(line, DEFLEN, "YOU HAD:\n");
       strcat(morgue, line);
     }
     else
     {
-      snprintf(line, DEFLEN, "WHEN YOU DIED, YOU HAD:\n\n");
+      snprintf(line, DEFLEN, "WHEN YOU DIED, YOU HAD:\n");
       strcat(morgue, line);
     }
 
@@ -791,14 +791,6 @@ void game_over(char * cause, bool won)
     if (game->player_gold)
     {
       snprintf(line, DEFLEN, "  %d GOLD PIECES\n", game->player_gold);
-      strcat(morgue, line);
-      anything = true;
-    }
-
-    if (player->armor_type)
-    {
-      snprintf(line, DEFLEN, "  %s\n",
-	       armor_name[player->armor_type]);
       strcat(morgue, line);
       anything = true;
     }
@@ -814,10 +806,15 @@ void game_over(char * cause, bool won)
       anything = true;
     }
 
-    if (player->shd_type)
+    if (player->armor_type || player->shd_type)
     {
-      snprintf(line, DEFLEN, "  A %s\n",
-	       armor_name[player->shd_type]);
+      if (player->armor_type && player->shd_type)
+	snprintf(line, DEFLEN, "  %s AND A %s\n", armor_name[player->armor_type], armor_name[player->shd_type]);
+      else if (player->armor_type)
+	snprintf(line, DEFLEN, "  %s\n", armor_name[player->armor_type]);
+      else if (player->shd_type)
+	snprintf(line, DEFLEN, "  A %s\n", armor_name[player->shd_type]);
+      
       strcat(morgue, line);
       anything = true;
     }
@@ -865,7 +862,7 @@ void game_over(char * cause, bool won)
 
     if (line[0] != '\0')
     {
-      strcat(morgue, "YOU HAD THE FOLLOWING SKILLS:\n  ");
+      strcat(morgue, "YOU HAD THE FOLLOWING SKILL(S):\n  ");
       strcat(morgue, line);
       strcat(morgue, "\n\n");
     }
@@ -908,7 +905,7 @@ void game_over(char * cause, bool won)
     
     list_score(&sheet);
 
-    move(20, 30);
+    move(20, 28);
     printw("FINAL SCORE: %ld", score);
     
     move(22, 14);
