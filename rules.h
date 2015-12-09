@@ -97,7 +97,7 @@
 #define SCORE_LEVELS        100
 #define SCORE_SKILLS        400
 #define SCORE_TOOLS         400
-#define SCORE_ATTR_MULT     10
+#define SCORE_HP_MULT       10
 #define SCORE_GOLD_MULT     10
 #define SCORE_WEAPON        500
 #define SCORE_ARMOR_MULT    200

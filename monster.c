@@ -716,6 +716,12 @@ void add_another_monster(int floor)
 				  branch_at_tile(floor, x)));
       break;
     }
+    else if (game->cell[floor][x] == CELL_WATER)
+    {
+      water_monster(floor * FLOOR_H + FEET_Y, x * CELL_TO_TILES, floor, x);
+
+      break;
+    }
 
     // If we get back to the start position without finding a suitable
     // spawn location, no monster is created. This won't happen the

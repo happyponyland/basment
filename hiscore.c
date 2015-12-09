@@ -41,6 +41,9 @@ void make_score(score_t * score)
   
   temp = (game->has_torch ? 1 : 0) + (game->has_torch ? 1 : 0);
   add_score(score, "TOOLS", temp, SCORE_TOOLS);
+
+  if (player->hp > 0)
+    add_score(score, "HEALTH", player->hp, SCORE_HP_MULT);
   
   add_score(score, "TURNS TAKEN", game->turns, SCORE_TURN_PEN);
 

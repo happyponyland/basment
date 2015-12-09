@@ -3,7 +3,9 @@ version 0.8
 - FISH and CRAB added
 - NET and WEB traps added
 - SCUBA GEAR and TORCH added
-- Score sheet added to game over screen
+- Reworked scoring; score sheet added to game over screen
+- WIN STREAK bonus added (for multiple wins in a row)
+- 
 - ROGUEs are now slightly more likely to steal
 - Health bar has higher resolution (40 for each color)
 - Dungeon branches are no longer displayed grey

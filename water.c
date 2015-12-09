@@ -458,7 +458,7 @@ int dig_lake_up(int start_y, int start_x, int dir, int rec_depth)
 
 
 /**
-   Returns a monster type suitable for the water cell at @cy, @cx.
+   Adds a monster suitable for the water cell at @cy, @cx.
 */
 void water_monster(int feet, int tx, int cy, int cx)
 {
