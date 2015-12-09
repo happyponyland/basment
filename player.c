@@ -723,11 +723,13 @@ void game_over(char * cause, bool won)
   char morgue[4000];
   bool any_skill;
   long score;
+  score_t sheet;
   
   if (won)
     game->won = true;
 
-  score = calculate_score();
+  make_score(&sheet);
+  score = calc_score(&sheet);
 
   if (cause != NULL || won)
   {
@@ -752,7 +754,7 @@ void game_over(char * cause, bool won)
       char * p;
       for (p = t; *p != '\0'; p++) { if (*p == '\n') *p = ' '; }
       
-      snprintf(line, DEFLEN, " ON FLOOR %d ", game->current_floor);
+      snprintf(line, DEFLEN, "\nON FLOOR %d ", game->current_floor);
       strcat(morgue, line);
       
       if (game->max_floor > game->current_floor)
@@ -826,6 +828,18 @@ void game_over(char * cause, bool won)
       anything = true;
     }
 
+    if (game->has_scuba)
+    {
+      strcat(morgue, "  SCUBA GEAR\n");
+      anything = true;
+    }
+
+    if (game->has_torch)
+    {
+      strcat(morgue, "  A TORCH\n");
+      anything = true;
+    }
+    
     if (!anything)
       strcat(morgue, "  NOTHING AT ALL\n");
 
@@ -851,7 +865,7 @@ void game_over(char * cause, bool won)
 
     if (line[0] != '\0')
     {
-      strcat(morgue, "YOU HAD THE FOLLOWING SKILLS: ");
+      strcat(morgue, "YOU HAD THE FOLLOWING SKILLS:\n  ");
       strcat(morgue, line);
       strcat(morgue, "\n\n");
     }
@@ -882,15 +896,24 @@ void game_over(char * cause, bool won)
       strcat(morgue, line);
     }
 
-    snprintf(line, DEFLEN, "\n\nFINAL SCORE: %ld", score);
-    strcat(morgue, line);
-
-    strcat(morgue, "\n\nTHANK YOU FOR PLAYING\n");
+//    snprintf(line, DEFLEN, "\n\nFINAL SCORE: %ld", score);
+//    strcat(morgue, line);
 
     clear();
-    mvaddstr(1, 0, morgue);
+    mvaddstr(1, 1, morgue);
 
-    addstr("\nPRESS ENTER TO CONTINUE");
+    refresh();
+
+    opause();
+    
+    list_score(&sheet);
+
+    move(20, 30);
+    printw("FINAL SCORE: %ld", score);
+    
+    move(22, 14);
+    addstr("-- THANK YOU FOR PLAYING -- PRESS ENTER TO CONTINUE --");
+//    strcat(morgue, "\n\n\n");
 
     while (getch() != '\n') { }
   }

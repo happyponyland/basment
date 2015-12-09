@@ -92,17 +92,18 @@
 #define HIGHSCORE_TOP_ENTRIES 10
 
 
-#define SCORE_PER_LEVEL     100
-#define SCORE_PER_SKILL     400
+#define SCORE_LEVELS        100
+#define SCORE_SKILLS        400
+#define SCORE_TOOLS         400
 #define SCORE_ATTR_MULT     10
 #define SCORE_GOLD_MULT     10
 #define SCORE_WEAPON        500
-#define SCORE_ARMOR_MULT    100
-#define SCORE_FLOOR_BONUS   50
-#define SCORE_WIN_BONUS     5000
+#define SCORE_ARMOR_MULT    200
+#define SCORE_MAX_DEPTH     100
+#define SCORE_WIN_BONUS     10000
 
 #define SCORE_MONSTER_PEN   -10
 #define SCORE_TRAP_PEN      -50
-#define SCORE_TURN_PEN      (-0.5f)
+#define SCORE_TURN_PEN      (-1)
 
 #endif

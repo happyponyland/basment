@@ -176,6 +176,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_ELEMENTAL:
+    mob->article = ART_AN;
     mob->w = 4;
     mob->speed = 12;
     mob->steps = 6;

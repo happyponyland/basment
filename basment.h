@@ -417,11 +417,13 @@ int player_underwater(void);
 void try_to_breathe(void);
 
 /* hiscore.c */
+#define SCORE_ITEMS 20
+
 struct score_t
 {
-  char label[DEFLEN];
-  char amount;
-  char multiply;
+  char label[SCORE_ITEMS][DEFLEN];
+  int amount[SCORE_ITEMS];
+  int multi[SCORE_ITEMS];
 };
 
 typedef struct score_t score_t;
@@ -430,7 +432,9 @@ char scores_file[DEFLEN];
 
 void blank_score(score_t * score);
 void make_score(score_t * score);
-void list_score(void);
+void list_score(score_t * score);
+int calc_score(score_t * score);
+void add_score(score_t * score, char * new_label, int new_amount, int new_multi);
 int calculate_score(void);
 int add_highscore(long score, char * name, char * reason);
 void show_highscore(int top_entries, int highlight, bool fancy);

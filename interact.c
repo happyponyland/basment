@@ -135,7 +135,7 @@ void interact()
   if (tile == TL_P_CHEST || tile == TL_P_UWCHEST)
   {
     loot_chest(player->y, player->x);
-    return;
+//    return;
   }
   else if (tile == TL_P_NPC1)
   {
@@ -284,6 +284,7 @@ void interact()
       if (!game->has_torch /*&& rand() % 4 == 0*/)
       {
 	game->has_torch = true;
+	draw_stats();
 	strncat(line, "YOU FIND A TORCH", DEFLEN - 1);
 	pwait(line);
 	break;

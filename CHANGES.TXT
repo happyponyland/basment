@@ -1,5 +1,6 @@
 version 0.8
 - Water added
+- Fixed "an" article for ELEMENTAL
 
 
 version 0.7 (2015-08-04)

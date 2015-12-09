@@ -6,17 +6,150 @@
 
 void blank_score(score_t * score)
 {
+  int i;
+
+  for (i = 0; i < SCORE_ITEMS; i++)
+  {
+    score->label[i][0] = 0;
+    score->amount[i] = 0;
+    score->multi[i] = 0;
+  }
+
+  return;
 }
 
 
 void make_score(score_t * score)
 {
+  int temp;
+  
+  blank_score(score);
+
+  add_score(score, "EXPERIENCE", game->player_exp, 1);
+  add_score(score, "GOLD EARNED", game->total_gold_earned, SCORE_GOLD_MULT);
+
+  if (game->max_floor > 1)
+    add_score(score, "MAX DEPTH", game->max_floor, SCORE_MAX_DEPTH);
+  
+  if (game->weapon > WPN_DAGGER)
+    add_score(score, "WEAPON BONUS", game->weapon, 100);
+
+  add_score(score, "ARMOR BONUS", player->armor_type, SCORE_ARMOR_MULT);
+
+  if (game->won)
+    add_score(score, "WINNER BONUS", 1, SCORE_WIN_BONUS);
+
+  temp = (game->skill_lockpick ? 1 : 0) + (game->skill_detect_traps ? 1 : 0);
+  add_score(score, "SKILLS", temp, SCORE_SKILLS);
+  
+  temp = (game->has_torch ? 1 : 0) + (game->has_torch ? 1 : 0);
+  add_score(score, "TOOLS", temp, SCORE_TOOLS);
+  
+  add_score(score, "TURNS TAKEN", game->turns, SCORE_TURN_PEN);
+
+  add_score(score, "TRAPS SPRUNG", game->traps_triggered, SCORE_TRAP_PEN);
+
+
+  return;
+  
+//  sum += (player->strength - 1) * SCORE_ATTR_MULT;
+//  sum += MAX(0, player->speed - 10) * SCORE_ATTR_MULT;
+
+/*  if (game->skill_lockpick)
+   sum += SCORE_PER_SKILL;
+  if (game->skill_detect_traps)
+  sum += SCORE_PER_SKILL;*/
+
+  // Penalties
+//  sum += game->monsters_killed * SCORE_MONSTER_PEN;
+//  sum += game->traps_triggered * SCORE_TRAP_PEN;
+
+//  sum += game->turns * SCORE_TURN_PEN;
+
+//  if (sum < 0)
+//    return 0;
 }
 
 
-void list_score(void)
+void list_score(score_t * score)
 {
+  int i;
+  int x = 50;
+  int y = 1;
+  int total;
+  int lines = 0;
+
+  for (i = 0; i < SCORE_ITEMS; i++)
+  {
+    if (score->label[i][0] == 0)
+      break;
+
+    lines++;
+  }
+
+  lines += 2; // For total
+      
+    
+  for (i = 0; i < SCORE_ITEMS; i++)
+  {
+    if (score->label[i][0] == 0)
+      break;
+
+    mvprintw(y, x, "%-16s  %5d X %-5d", score->label[i], score->amount[i], score->multi[i]);
+
+    refresh();
+    lpause();
+    
+    y++;
+  }
+
+  total = calc_score(score);
+  
+  y++;
+  mvprintw(y, x, "%-16s  %-6d", "TOTAL", total);
+
+  return;
 }
+
+
+void add_score(score_t * score, char * new_label, int new_amount, int new_multi)
+{
+  int i;
+
+  if (new_amount == 0)
+    return;
+
+  for (i = 0; i < SCORE_ITEMS; i++)
+  {
+    if (score->label[i][0] == 0)
+    {
+      snprintf(score->label[i], DEFLEN, "%s", new_label);
+      score->amount[i] = new_amount;
+      score->multi[i] = new_multi;
+      return;
+    }
+  }
+
+  return;
+}
+
+
+int calc_score(score_t * score)
+{
+  int i;
+  int total = 0;
+
+  for (i = 0; i < SCORE_ITEMS; i++)
+  {
+    if (score->label[i][0] == 0)
+      break;
+
+    total += score->amount[i] * score->multi[i];
+  }
+
+  return total;
+}
+
 
 
 /*
@@ -25,7 +158,7 @@ void list_score(void)
 */
 int calculate_score()
 {
-  int sum = 0;
+/*  int sum = 0;
 
   sum += game->player_exp;
   sum += (game->player_level - 1) * SCORE_PER_LEVEL;
@@ -56,10 +189,10 @@ int calculate_score()
 
   sum += game->turns * SCORE_TURN_PEN;
 
-  if (sum < 0)
+  if (sum < 0)*/
     return 0;
 
-  return sum;
+//  return sum;
 }
 
 
