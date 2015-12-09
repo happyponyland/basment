@@ -165,6 +165,7 @@ void draw_bars(void);
 void make_bar(WINDOW * win, int y,
 	      char * title, int amount,
 	      int c1, int c2, int c3, int c4);
+void reset_trap_tiles(void);
 void breath_bar(WINDOW * win, int y, int amount);
 void force_breath_bar(mob_t * m);
 void draw_board(void);

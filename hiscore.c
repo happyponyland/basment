@@ -36,9 +36,6 @@ void make_score(score_t * score)
 
   add_score(score, "ARMOR BONUS", player->armor_type, SCORE_ARMOR_MULT);
 
-  if (game->won)
-    add_score(score, "WINNER BONUS", 1, SCORE_WIN_BONUS);
-
   temp = (game->skill_lockpick ? 1 : 0) + (game->skill_detect_traps ? 1 : 0);
   add_score(score, "SKILLS", temp, SCORE_SKILLS);
   
@@ -49,25 +46,13 @@ void make_score(score_t * score)
 
   add_score(score, "TRAPS SPRUNG", game->traps_triggered, SCORE_TRAP_PEN);
 
+  if (game->won)
+    add_score(score, "WINNER BONUS", 1, SCORE_WIN_BONUS);
+
+  if (game->win_streak > 1)
+    add_score(score, "WIN STREAK", game->win_streak, SCORE_WIN_STREAK);
 
   return;
-  
-//  sum += (player->strength - 1) * SCORE_ATTR_MULT;
-//  sum += MAX(0, player->speed - 10) * SCORE_ATTR_MULT;
-
-/*  if (game->skill_lockpick)
-   sum += SCORE_PER_SKILL;
-  if (game->skill_detect_traps)
-  sum += SCORE_PER_SKILL;*/
-
-  // Penalties
-//  sum += game->monsters_killed * SCORE_MONSTER_PEN;
-//  sum += game->traps_triggered * SCORE_TRAP_PEN;
-
-//  sum += game->turns * SCORE_TURN_PEN;
-
-//  if (sum < 0)
-//    return 0;
 }
 
 

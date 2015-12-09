@@ -1,8 +1,15 @@
 version 0.8
-- Water added
-- Fixed "an" article for ELEMENTAL
+- Underwater sections added
+- FISH and CRAB added
+- NET and WEB traps added
+- SCUBA GEAR and TORCH added
+- Score sheet added to game over screen
 - ROGUEs are now slightly more likely to steal
 - Health bar has higher resolution (40 for each color)
+- Dungeon branches are no longer displayed grey
+- Stone tablets and orbs are now much more rare
+- Stone tablets now give experience instead of strength
+- Fixed "an" article for ELEMENTAL
 
 
 version 0.7 (2015-08-04)

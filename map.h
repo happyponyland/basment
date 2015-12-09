@@ -17,6 +17,7 @@ typedef struct game_t game_t;
 struct game_t
 {
   bool won;
+  int win_streak;
 
   int hallucination;
   bool scrying;

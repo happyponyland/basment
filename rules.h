@@ -81,9 +81,8 @@
 // Chance in % that a rogue will try to steal gold
 #define ROGUE_STEAL_CHANCE  20
 
-// How many steps stone tablets have
+// How many steps stone tablets have (incremented for each success)
 #define TABLET_START_DIFF 7
-#define TABLET_DIFF_INCR  2
 
 // How many characters (excluding null byte) names can be in the highscore table
 #define PLNAME_LEN 10
@@ -104,6 +103,7 @@
 #define SCORE_ARMOR_MULT    200
 #define SCORE_MAX_DEPTH     100
 #define SCORE_WIN_BONUS     10000
+#define SCORE_WIN_STREAK    1000
 
 #define SCORE_MONSTER_PEN   -10
 #define SCORE_TRAP_PEN      -50

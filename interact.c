@@ -1129,8 +1129,8 @@ void stone_tablet()
   switch (states)
   {
   case 7:  exp = 1000; break;
-  case 9:  exp = 2000; break;
-  case 11: exp = 3000; break;
+  case 8:  exp = 2000; break;
+  case 9:  exp = 3000; break;
   default: exp = 1000; break;
   }
     
@@ -1140,12 +1140,13 @@ void stone_tablet()
 	   exp);
 
   pwait(line);
-
+  draw_board();
+  
   give_exp(exp);
-  draws_stats();
+  draw_stats();
 
   // Make it harder next time
-  game->tablet_diff += TABLET_DIFF_INCR;
+  game->tablet_diff += 1;
   
   draw_stats();
   

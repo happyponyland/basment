@@ -82,11 +82,6 @@ void init_gfx_map()
 
   gfx_map[TL_STOP]        = ' ';
   
-  gfx_map[TL_T_POISON]  =
-    gfx_map[TL_T_GORZOTH_L] =
-    gfx_map[TL_T_GORZOTH_R] =
-    gfx_map[TL_T_CAVEIN]  = ' ';
-
   gfx_map[TL_P_CAMP] =
     gfx_map[TL_CAMP_FIRE] = ',' | COLOR_PAIR(PAIR_RED) | A_BOLD;
   gfx_map[TL_CAMP_SPENT] = '_' | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
@@ -313,6 +308,24 @@ void init_gfx_map()
   gfx_map[TL_UW_UR]         = ACS_URCORNER | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
   gfx_map[TL_UW_VL]         = ACS_VLINE    | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
   gfx_map[TL_UW_HL]         = ACS_HLINE    | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
+
+  return;
+}
+
+
+
+/**
+   Sets all trap tiles invisible. When gaining the detect traps skills
+   these will be changed.
+*/
+void reset_trap_tiles()
+{
+  gfx_map[TL_T_POISON]  =
+    gfx_map[TL_T_WEB]  =
+    gfx_map[TL_T_UWNET]  =
+    gfx_map[TL_T_GORZOTH_L] =
+    gfx_map[TL_T_GORZOTH_R] =
+    gfx_map[TL_T_CAVEIN]  = ' ';
 
   return;
 }

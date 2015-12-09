@@ -730,7 +730,15 @@ void game_over(char * cause, bool won)
   score_t sheet;
   
   if (won)
+  {
     game->won = true;
+    game->win_streak++;
+  }
+  else
+  {
+    // Don't give any bonus if player died
+    game->win_streak = 0;
+  }
 
   make_score(&sheet);
   score = calc_score(&sheet);
@@ -978,7 +986,7 @@ void game_over(char * cause, bool won)
   }
 
 restart_prompt:
-  if (!cause)
+  if (!cause && !won)
     goto the_end;
 
   erase();

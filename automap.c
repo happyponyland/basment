@@ -106,8 +106,8 @@ void draw_cellmap()
       if ((game->automap[y][x] & AUTOMAP_VISITED) == 0)
 	attr = COLOR_PAIR(PAIR_BLACK) | A_BOLD;
 
-      if (game->branch[y][x])
-	attr = COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+//      if (game->branch[y][x])
+//	attr = COLOR_PAIR(PAIR_BLACK) | A_BOLD;
 
       addch(glyph | attr);
     }

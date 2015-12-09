@@ -127,12 +127,15 @@ void new_game(void)
 {
   int i;
 
-  setjmp(restart_game);
-
   title_running = false;
   
   // Start a new game
   game = malloc(sizeof(game_t));
+
+  // This must be set before the jump point; it's reset in game_over
+  game->win_streak = 0;
+  
+  setjmp(restart_game);
 
   if (game == NULL)
     exit(1);
@@ -148,6 +151,8 @@ void new_game(void)
   game->won = false;
 
   game->tablet_diff = TABLET_START_DIFF;
+
+  reset_trap_tiles();
 
   generate_map();
   
