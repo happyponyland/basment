@@ -1055,28 +1055,26 @@ void draw_tablet(int highlight)
 
 void stone_tablet()
 {
-  int seq[9];
-  int inp_seq[9];
+  char line[DEFLEN];
+  int seq[15];
+  int inp_seq[15];
   int i;
   int states = 7;
+  int exp;
 
   pwait("YOU FIND A MYSTERIOUS STONE TABLET");
 
   stile(player->y, player->x, TL_VOID);
   stile(player->y - 1, player->x, TL_VOID);
   
-  states = 7;
+  states = game->tablet_diff;
   
-//  current = -1;
-
   draw_tablet(-1);
 
   pwait("REPEAT THE SEQUENCE\n"
 	"USING THE DIRECTIONAL KEYS");
 
   draw_tablet(-1);
-
-//  opause();
 
   for (i = 0; i < states; i++)
   {
@@ -1127,9 +1125,28 @@ void stone_tablet()
   }
 
   draw_board();
-  pwait("GENERIC STRENGTH BOOST !!!");
 
-  change_pl_st(+3);
+  switch (states)
+  {
+  case 7:  exp = 1000; break;
+  case 9:  exp = 2000; break;
+  case 11: exp = 3000; break;
+  default: exp = 1000; break;
+  }
+    
+  snprintf(line, DEFLEN,
+	   "YOU HAVE DECODED THE MYSTIC RUNES\n"
+	   "\nYOU GET %d EXP",
+	   exp);
+
+  pwait(line);
+
+  give_exp(exp);
+  draws_stats();
+
+  // Make it harder next time
+  game->tablet_diff += TABLET_DIFF_INCR;
+  
   draw_stats();
   
   return;

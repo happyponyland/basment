@@ -695,7 +695,11 @@ void climb_ladder(int dir)
   calculate_floor();
 
   // Add a random monster on the level we just left
-  add_another_monster(old_floor);
+  // Reduced chance if we're swimming
+  if (!swimming || rand() % 4 == 0)
+  {
+    add_another_monster(old_floor);
+  }
   
   // Throw away anything entered by the player while they were climbing
   flush_input();

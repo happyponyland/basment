@@ -76,11 +76,14 @@
 #define SWORD_IN_STONE_STR 15
 
 // How much gold the player needs to have for a rogue to bother to steal any
-#define ROGUE_STEAL_GOLD    70
+#define ROGUE_STEAL_GOLD    50
 
 // Chance in % that a rogue will try to steal gold
-#define ROGUE_STEAL_CHANCE  10
+#define ROGUE_STEAL_CHANCE  20
 
+// How many steps stone tablets have
+#define TABLET_START_DIFF 7
+#define TABLET_DIFF_INCR  2
 
 // How many characters (excluding null byte) names can be in the highscore table
 #define PLNAME_LEN 10
@@ -105,5 +108,6 @@
 #define SCORE_MONSTER_PEN   -10
 #define SCORE_TRAP_PEN      -50
 #define SCORE_TURN_PEN      (-1)
+
 
 #endif

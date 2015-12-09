@@ -61,6 +61,8 @@ struct game_t
   int turns;
   int max_floor;
 
+  int tablet_diff;
+
   int book[BOOKS];
   int next_book;
 } * game;

@@ -1,6 +1,8 @@
 version 0.8
 - Water added
 - Fixed "an" article for ELEMENTAL
+- ROGUEs are now slightly more likely to steal
+- Health bar has higher resolution (40 for each color)
 
 
 version 0.7 (2015-08-04)

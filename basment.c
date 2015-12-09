@@ -147,6 +147,8 @@ void new_game(void)
   game->traps_triggered = 0;
   game->won = false;
 
+  game->tablet_diff = TABLET_START_DIFF;
+
   generate_map();
   
   new_player();

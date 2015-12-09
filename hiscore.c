@@ -95,7 +95,7 @@ void list_score(score_t * score)
     if (score->label[i][0] == 0)
       break;
 
-    mvprintw(y, x, "%-14s %5d X %-5d", score->label[i], score->amount[i], score->multi[i]);
+    mvprintw(y, x, "%-13s %6d X %-5d", score->label[i], score->amount[i], score->multi[i]);
 
     refresh();
     lpause();
@@ -106,7 +106,7 @@ void list_score(score_t * score)
   total = calc_score(score);
   
   y++;
-  mvprintw(y, x, "%-14s %-6d", "TOTAL", total);
+  mvprintw(y, x, "%-12s %6d", "TOTAL", total);
 
   return;
 }

@@ -284,6 +284,7 @@ void tremor(int amount)
 
 void web_net()
 {
+  char line[DEFLEN];
   int y;
   int x;
   
@@ -349,7 +350,36 @@ void web_net()
   {
     pwait("YOU GET STUCK IN A NET!!!");
     decorate(y, x, DEC_NET);
+    draw_board();
+
+    if (game->weapon == WPN_DAGGER ||
+	game->weapon == WPN_DRAIN ||
+	game->weapon == WPN_SWORD ||
+	game->weapon == WPN_GLASS ||
+	game->weapon == WPN_RUNESWORD)
+    {
+      if (game->weapon == WPN_RUNESWORD)
+      {
+	snprintf(line, DEFLEN,
+		 "FORTUNATELY, YOU HAVE\n"
+		 "THE FABLED *RUNESWORD*\n"
+		 "TO CUT YOURSELF FREE");
+      }
+      else
+      {
+	snprintf(line, DEFLEN,
+		 "FORTUNATELY, YOU HAVE A %s\n"
+		 "TO CUT YOURSELF FREE",
+		 weapon_name[game->weapon]);
+      }
+      
+      pwait(line);
+
+      player->webbed = 0;
+      draw_board();
+    }
   }
+  
 
   return;
 }
