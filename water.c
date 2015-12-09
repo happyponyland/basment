@@ -178,8 +178,8 @@ int air_pocket(int y, int start_x)
   if (rand() % 2)
   {
     dir = (rand() % 2 ? -1 : +1);
-    corridor(y, start_x, dir,  true);
-    corridor(y, start_x, -dir, true);
+    corridor(y, start_x, dir,  2);
+    corridor(y, start_x, -dir, 2);
   }
   else
   {

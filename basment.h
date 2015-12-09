@@ -367,8 +367,8 @@ bool map_demo;
 #define AUTOMAP_KNOWN   (1<<1)
 
 void generate_map(void);
-void dig(int start_y, int x, int speed, int depth);
-void corridor(int y, int start_x, int speed, bool remainder);
+void dig(int start_y, int x, int speed, int depth, int allow_chasms);
+void corridor(int y, int start_x, int speed, int remainder);
 void add_extra_rooms(void);
 void add_wide_chasms(void);
 void place_single_cell(int start_y, int cell);

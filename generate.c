@@ -418,12 +418,12 @@ bool dig_up(int start_y, int x, int carve)
 /*
   Digs a ladder on the cellmap from (START_Y, X).
 */
-void dig(int start_y, int x, int speed, int depth)
+void dig(int start_y, int x, int speed, int depth, int allow_chasms)
 {
   int y;
   bool chasm = false;
 
-  if (speed < 0 && rand() % 3 == 0)
+  if (allow_chasms && speed < 0 && rand() % 3 == 0)
     chasm = true;
 
   y = start_y;
@@ -478,7 +478,7 @@ void dig(int start_y, int x, int speed, int depth)
 
 
 
-void corridor(int y, int start_x, int speed, bool remainder)
+void corridor(int y, int start_x, int speed, int remainder)
 {
   int x;
   int i;
@@ -569,7 +569,7 @@ void corridor(int y, int start_x, int speed, bool remainder)
     // floors, biased towards 1) and start a new corridor.
 
 //    dig(y, x, +1, 1 + (rand() % (1 + rand() % 3)));
-    dig(y, x, +1, 1);
+    dig(y, x, +1, 1, false);
 
     corridor(y, x, speed, true);
   }
@@ -596,7 +596,10 @@ void corridor(int y, int start_x, int speed, bool remainder)
     }
 
     if (up > 0)
-      dig(y, x, -1, up);
+    {
+      // Don't dig chasms from air pockets
+      dig(y, x, -1, up, (remainder == 2 ? false : true));
+    }
   }
 
   if (!remainder && y >= 0)

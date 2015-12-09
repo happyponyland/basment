@@ -106,7 +106,7 @@ void cavein(void)
   {
     player->type = MOB_GORE;
     draw_board();
-    game_over("YOU WERE SMASHED\n"
+    game_over("YOU WERE CRUSHED\n"
 	      "BY FALLING ROCKS", false);
   }
   else

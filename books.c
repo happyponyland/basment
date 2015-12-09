@@ -146,13 +146,13 @@ void bookshelf()
     strcpy(bookname,
 	   "\"BASMENT DWELLERS: DUNGEON\n"
 	   " MASTERS HANDBOOK (5TH ED.)\"");
-    exp = 400;
+    exp = 1000;
     break;
 
   case 13:
     strcpy(bookname,
 	   "\"HITCHHIKERS GUIDE\n"
-	   " TO THE UNDERWORLD\"");
+	   " TO THE BASMENT\"");
     exp = 100;
     break;
   }
