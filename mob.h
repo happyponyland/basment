@@ -15,6 +15,9 @@ struct mob_t
   int y;
   int x;
   int w;
+  int pack_w;
+  int front_w;
+  int rear_w;
 
   int article;
 

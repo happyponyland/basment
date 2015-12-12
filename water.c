@@ -224,18 +224,6 @@ int air_pocket(int y, int start_x)
     }
   }
   
-  //  set_cell(y, start_x - 1, CELL_LADDER_B);
-//  set_cell(y, start_x - 1, CELL_RESERVED);
-//  set_cell(y, start_x + 1, CELL_RESERVED);
-	    
-  /*if (get_cell(y, start_x)     != CELL_ROCK ||
-      get_cell(y, start_x - 1) != CELL_ROCK ||
-      get_cell(y, start_x + 1) != CELL_ROCK)
-  {
-    return false;
-    }*/
-
-  
   return true;
 }
 

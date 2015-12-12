@@ -1,14 +1,14 @@
-version 0.8
+version 0.8 (2015-12-09)
 - Underwater sections added
 - FISH and CRAB added
 - NET and WEB traps added
 - SCUBA GEAR and TORCH added
 - Reworked scoring; score sheet added to game over screen
 - WIN STREAK bonus added (for multiple wins in a row)
-- 
 - ROGUEs are now slightly more likely to steal
 - Health bar has higher resolution (40 for each color)
 - Dungeon branches are no longer displayed grey
+- Skeletons/corpses now change appearance after being looted
 - Stone tablets and orbs are now much more rare
 - Stone tablets now give experience instead of strength
 - Fixed "an" article for ELEMENTAL

@@ -9,7 +9,7 @@
 #ifndef _BASMENT_H_
 #define _BASMENT_H_
 
-#define BD_VERSION "0.8"
+#define BD_VERSION "0.9"
 
 #ifdef _WIN32
 #include <curses.h>
@@ -233,7 +233,10 @@ extern char * article[];
 
 int make_monster(int y, int x, int type);
 int free_mob(void);
-bool on_board(mob_t * mob);
+int on_board(mob_t * mob);
+int anyone_there(int y, int x);
+int mob_packwl(mob_t * mob);
+int mob_packwr(mob_t * mob);
 void mob_walk(int mi, int dist);
 mob_t * find_enemy(mob_t * mob, int y, int x);
 void frustration(mob_t * mob);
