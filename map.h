@@ -110,6 +110,7 @@ enum tile_t
   TL_P_CAMP,
   TL_P_SWSTONE,
   TL_P_TABLET,
+  TL_P_DISCO,
 
   TL_WOOD,
   TL_LOCK,
@@ -383,6 +384,19 @@ enum tile_t
 
   TL_ROOFBOULDER,
 
+  TL_DANCEFLOOR1,
+  TL_DANCEFLOOR2,
+
+  TL_DISCOLIGHT1,
+  TL_DISCOLIGHT2,
+  TL_DISCOLIGHT3,
+  TL_DISCOLIGHT4,
+  TL_DISCOLIGHT5,
+  TL_DISCOLIGHT6,
+  TL_DISCOLIGHT7,
+  TL_DISCOLIGHT8,
+  TL_DISCOLIGHT9,
+
   TL_W_CORNER_UR,
   TL_W_CORNER_UL,
   TL_W_CORNER_LR,
@@ -428,6 +442,7 @@ enum decoration_t
   DEC_INTERESTING,
   DEC_SPENTCAMP,
   DEC_CAVEIN,
+  DEC_DISCO,
   DEC_BRICKS,
   DEC_NPC,
   DEC_TRAPDOOR,
@@ -449,61 +464,62 @@ enum decoration_t
 
   
 
-#define CELL_ROCK     0
-#define CELL_LADDER   1
-#define CELL_CHASM    2
-#define CELL_RESERVED 3
+#define CELL_ROCK       0
+#define CELL_LADDER     1
+#define CELL_CHASM      2
+#define CELL_RESERVED   3
 
-#define CELL_BLOCKING 9 /* <= */
+#define CELL_BLOCKING   9 /* <= */
 
-#define CELL_OPEN     10 /* >= */
+#define CELL_OPEN       10 /* >= */
 
-#define CELL_RMNDR     10
-#define CELL_ROOM      11
-#define CELL_LADDER_B  12
-#define CELL_LADDER_T  13
-#define CELL_CHASM_T   14
-#define CELL_TRAPDOOR  15
-#define CELL_BOSS      16
-#define CELL_MONSTER   17
-#define CELL_LOOT      18
-#define CELL_START     19
-#define CELL_TRAP      20
-#define CELL_SPIKEPIT  21
-#define CELL_NPC_L     22
-#define CELL_NPC_R     23
-#define CELL_DEADEND   24
-#define CELL_TRICKY    25
-#define CELL_WCHASM    26
-#define CELL_BRANCH    27
-#define CELL_PORTAL    28
-#define CELL_COFFIN    29
-#define CELL_KEEPROOM  30
-#define CELL_GORZOTH_L 31
-#define CELL_GORZOTH_R 32
-#define CELL_DOOR      33
-#define CELL_CAMP      34
-#define CELL_BRICKWALL 35
-#define CELL_SWSTONE   36
-#define CELL_TABLET    37
-#define CELL_SUSHI_L   38
-#define CELL_SUSHI_R   39
-#define CELL_ORB       40
-#define CELL_IDOL      41
+#define CELL_RMNDR      10
+#define CELL_ROOM       11
+#define CELL_LADDER_B   12
+#define CELL_LADDER_T   13
+#define CELL_CHASM_T    14
+#define CELL_TRAPDOOR   15
+#define CELL_BOSS       16
+#define CELL_MONSTER    17
+#define CELL_LOOT       18
+#define CELL_START      19
+#define CELL_TRAP       20
+#define CELL_SPIKEPIT   21
+#define CELL_NPC_L      22
+#define CELL_NPC_R      23
+#define CELL_DEADEND    24
+#define CELL_TRICKY     25
+#define CELL_WCHASM     26
+#define CELL_BRANCH     27
+#define CELL_PORTAL     28
+#define CELL_COFFIN     29
+#define CELL_KEEPROOM   30
+#define CELL_GORZOTH_L  31
+#define CELL_GORZOTH_R  32
+#define CELL_DOOR       33
+#define CELL_CAMP       34
+#define CELL_BRICKWALL  35
+#define CELL_SWSTONE    36
+#define CELL_TABLET     37
+#define CELL_SUSHI_L    38
+#define CELL_SUSHI_R    39
+#define CELL_ORB        40
+#define CELL_IDOL       41
+#define CELL_DISCO      42
 
-#define CELL_WSURFACE    80
+#define CELL_WSURFACE   80
 
-#define CELL_CLOSED      100
+#define CELL_CLOSED     100
 
-#define CELL_WFALL       102
-#define CELL_WATER       103
-#define CELL_WMONSTER    104
-#define CELL_WCORR       105
-#define CELL_WCORRLOOT   106
-#define CELL_WCORRMON    107
-#define CELL_WLOOT       108
-#define CELL_WOPENDOWN   109
-#define CELL_WTRAP       110
-#define CELL_WCORRTRAP   111
+#define CELL_WFALL      102
+#define CELL_WATER      103
+#define CELL_WMONSTER   104
+#define CELL_WCORR      105
+#define CELL_WCORRLOOT  106
+#define CELL_WCORRMON   107
+#define CELL_WLOOT      108
+#define CELL_WOPENDOWN  109
+#define CELL_WTRAP      110
+#define CELL_WCORRTRAP  111
 
 #endif

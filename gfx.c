@@ -78,7 +78,21 @@ void init_gfx_map()
 
   gfx_map[TL_ROOFBOULDER] =
     gfx_map[TL_BOULDER]     = 'o' | COLOR_PAIR(PAIR_BROWN);
-  
+
+  gfx_map[TL_P_DISCO] = ' ';
+  gfx_map[TL_DANCEFLOOR1] = ACS_CKBOARD | A_REVERSE | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_DANCEFLOOR2] = ACS_CKBOARD | A_REVERSE | COLOR_PAIR(PAIR_WHITE);
+
+  gfx_map[TL_DISCOLIGHT1] = 'D' | COLOR_PAIR(PAIR_BROWN) | A_BOLD;
+  gfx_map[TL_DISCOLIGHT2] = 'o' | COLOR_PAIR(PAIR_GREEN)          | A_BLINK;
+  gfx_map[TL_DISCOLIGHT3] = 'I' | COLOR_PAIR(PAIR_MAGENTA);
+  gfx_map[TL_DISCOLIGHT4] = 'o' | COLOR_PAIR(PAIR_RED)            | A_BLINK;
+  gfx_map[TL_DISCOLIGHT5] = 'S' | COLOR_PAIR(PAIR_CYAN);
+  gfx_map[TL_DISCOLIGHT6] = 'o' | COLOR_PAIR(PAIR_BLUE)  | A_BOLD | A_BLINK;
+  gfx_map[TL_DISCOLIGHT7] = 'C' | COLOR_PAIR(PAIR_GREEN) | A_BOLD;
+  gfx_map[TL_DISCOLIGHT8] = 'o' | COLOR_PAIR(PAIR_BLACK) | A_BOLD | A_BLINK;
+  gfx_map[TL_DISCOLIGHT9] = 'O' | COLOR_PAIR(PAIR_RED)   | A_BOLD;
+
   gfx_map[TL_REDSPIKE]    = '^' | COLOR_PAIR(PAIR_RED);
 
   gfx_map[TL_FLOOR]       = ACS_HLINE | COLOR_PAIR(PAIR_WHITE) | A_REVERSE;
@@ -543,6 +557,8 @@ void g_uadd(int y, int x, char * s, chtype a)
 
 
 
+
+
 void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
 {
   if (!title_running)
@@ -605,6 +621,10 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
     flags |= GFX_HUMAN_PLAYER;
 
     draw_human(y, x, type, flip, flags);
+    break;
+
+  case MOB_DANCER:
+    draw_dancer(y, x, type, flip, flags);
     break;
 
   case MOB_GNOBLIN:
@@ -2819,6 +2839,187 @@ void draw_lich(int y, int x, int type, bool flip, uint32_t flags)
 
 
 
+chtype player_armor()
+{
+  switch (player->armor_type)
+  {
+  case ARMOR_NONE:    return 'T';
+  case ARMOR_LEATHER: return ACS_CKBOARD | COLOR_PAIR(PAIR_BROWN);
+  case ARMOR_SCALE:   return ACS_CKBOARD | COLOR_PAIR(PAIR_WHITE);
+  case ARMOR_PLATE:   return ACS_CKBOARD | COLOR_PAIR(PAIR_BLUE) | A_BOLD;
+  case ARMOR_MAGIC:   return ACS_CKBOARD | COLOR_PAIR(PAIR_RED);
+  case ARMOR_DRAGON:  return ACS_CKBOARD | COLOR_PAIR(PAIR_MAGENTA);
+  default:            return '?';
+  }
+}
+
+
+
+void draw_dancer(int y, int x, int type, bool flip, uint32_t flags)
+{
+  chtype torso;
+  chtype head;
+
+  head = '@';
+  torso = player_armor();
+
+  switch(flags)
+  {
+  case 0:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_FS);
+    GA(-1, +1, GA_BS);
+    GA(-0, -1, GA_FS);
+    GA(-0, +1, GA_BS);
+    break;
+
+  case 1:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_FS);
+    GA(-2, +1, GA_FS);
+    GA(-0, -1, GA_FS);
+    GA(-0, +1, GA_AR);
+    break;
+
+  case 10:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_AL);
+    GA(-1, +1, GA_AR);
+    GA(-0, -1, GA_FS);
+    GA(-0, +1, GA_BS);
+    break;
+
+  case 11:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_AL);
+    GA(-2, +1, GA_FS);
+    GA(-0, -1, GA_FS);
+    GA(-0, +1, GA_BS);
+    break;
+
+  case 12:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-2, -1, GA_BS);
+    GA(-2, +1, GA_FS);
+    GA(-0, -1, GA_FS);
+    GA(-0, +1, GA_BS);
+    break;
+
+  case 20:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_AL);
+    GA(-1, +1, GA_AR);
+    GA(-0, -1, GA_AL);
+    GA(-0, +1, GA_AR);
+    break;
+
+  case 21:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_AL);
+    GA(-1, +1, GA_AR);
+    GA(-0, -1, GA_AL);
+    GA(-0, +1, GA_BS);
+    break;
+    
+  case 22:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-2, -1, GA_BS);
+    GA(-1, +1, GA_AR);
+    GA(-0, -1, GA_AL);
+    GA(-0, +1, GA_BS);
+    break;
+    
+  case 30:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-2, -1, GA_AL);
+    GA(-2, +1, GA_FS);
+    GA(-1, -1, '_');
+    GA(-0, -0, '|');
+    break;
+
+  case 31:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-2, -1, GA_BS);
+    GA(-2, +1, GA_AR);
+    GA(-0, -1, GA_AL);
+    GA(-0, -0, '|');
+    break;
+
+  case 40:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_AL);
+    GA(-2, +1, GA_FS);
+    GA(-1, +1, '_');
+    GA(-0, +1, GA_FS);
+    GA(-0, -1, GA_FS);
+    break;
+
+  case 50:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_AL);
+    GA(-2, +1, GA_AR);
+    GA(-0, -0, GA_AR);
+    GA(-0, +1, GA_FS);
+    GA(-1, +1, '_');
+    break;
+
+  case 51:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_AL);
+    GA(-2, +1, GA_AR);
+    GA(-0, -1, GA_FS);
+    GA(-0, +1, GA_AR);
+    break;
+
+  case 60:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-2, -1, GA_BS);
+    GA(-2, +1, GA_FS);
+    GA(-1, -1, '_');
+    GA(-1, +1, '_');
+    break;
+
+  case 70:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_AL);
+    GA(-2, +1, GA_FS);
+    GA(-2, +2, '~' | COLOR_PAIR(PAIR_CYAN));
+    GA(-0, -1, GA_FS);
+    GA(-0, +1, GA_AR);
+    break;
+
+  case 71:
+    GA(-2, -0, head);
+    GA(-1, -0, torso);
+    GA(-1, -1, GA_AL);
+    GA(-1, +1, '^');
+    GA(-1, +2, '~' | COLOR_PAIR(PAIR_CYAN));
+    GA(-0, -1, GA_FS);
+    GA(-0, +1, GA_AR);
+    break;
+
+
+  }
+  
+}
+
+
+
 void draw_human(int y, int x, int type, bool flip, uint32_t flags)
 {
   bool lbicp = false;
@@ -2836,6 +3037,8 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   int dive = false;
   int snorkel = false;
   int head_y = -2;
+  int is_player;
+  chtype torso;
 
   dive = flags & GFX_HUMAN_DIVE;
 
@@ -2844,16 +3047,15 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   armor_type = flags & (GFX_HUMAN_ARMOR1 |
 			GFX_HUMAN_ARMOR2 |
 			GFX_HUMAN_ARMOR3);
+  is_player = flags & GFX_HUMAN_PLAYER;
   weapon = flags & GFX_HUMAN_WEAPONS;
   attack = flags & GFX_ATTACK;
   bow = flags & GFX_HUMAN_BOW;
   
   if (!title_running &&
-      (flags & GFX_HUMAN_PLAYER) &&
+      is_player &&
       (game->has_scuba) &&
-      water_join(gtile(player->y - (dive ? 0 : 2), player->x)))// &&
-//      water_join(gtile(player->y, player->x)) &&
-//player_underwater())
+      water_join(gtile(player->y - (dive ? 0 : 2), player->x)))
   {
     snorkel = true;
   }
@@ -2862,7 +3064,7 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   lbicp = shd_type;
 
   climb = flags & (GFX_HUMAN_CLIMB1 | GFX_HUMAN_CLIMB2);
-  fall = flags & (GFX_HUMAN_FALL1 | GFX_HUMAN_FALL2);
+  fall  = flags & (GFX_HUMAN_FALL1  | GFX_HUMAN_FALL2 );
 
   if (flip)
   {
@@ -2880,18 +3082,27 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
 
   // Torso
 
-  if (armor_type == (GFX_HUMAN_ARMOR3 | GFX_HUMAN_ARMOR1))
-    GA(-1, 0, ACS_CKBOARD | COLOR_PAIR(PAIR_MAGENTA));
-  else if (armor_type == GFX_HUMAN_ARMOR3)
-    GA(-1, 0, ACS_CKBOARD | COLOR_PAIR(PAIR_RED));
-  else if (armor_type == (GFX_HUMAN_ARMOR1 | GFX_HUMAN_ARMOR2))
-    GA(-1, 0, ACS_CKBOARD | COLOR_PAIR(PAIR_BLUE) | A_BOLD);
-  else if (armor_type == GFX_HUMAN_ARMOR2)
-    GA(-1, 0, ACS_CKBOARD | COLOR_PAIR(PAIR_WHITE));
-  else if (armor_type == GFX_HUMAN_ARMOR1)
-    GA(-1, 0, ACS_CKBOARD | COLOR_PAIR(PAIR_BROWN));
+  if (is_player && !title_running)
+  {
+    torso = player_armor();
+  }
   else
-    GA(-1, 0, 'T' | skin); //GU(-1, 0, "ℿ", 0);//
+  {
+    if (armor_type == (GFX_HUMAN_ARMOR3 | GFX_HUMAN_ARMOR1))
+      torso = ACS_CKBOARD | COLOR_PAIR(PAIR_MAGENTA);
+    else if (armor_type == GFX_HUMAN_ARMOR3)
+      torso = ACS_CKBOARD | COLOR_PAIR(PAIR_RED);
+    else if (armor_type == (GFX_HUMAN_ARMOR1 | GFX_HUMAN_ARMOR2))
+      torso = ACS_CKBOARD | COLOR_PAIR(PAIR_BLUE) | A_BOLD;
+    else if (armor_type == GFX_HUMAN_ARMOR2)
+      torso = ACS_CKBOARD | COLOR_PAIR(PAIR_WHITE);
+    else if (armor_type == GFX_HUMAN_ARMOR1)
+      torso = ACS_CKBOARD | COLOR_PAIR(PAIR_BROWN);
+    else
+      torso = 'T' | skin;
+  }
+
+  GA(-1, 0, torso);
 
   if (dive)
   {
@@ -2917,7 +3128,7 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
     if (dive || climb)
       second_y = -1;
 
-    switch ((game->turns +/* player->x +*/ player->y) % 9)
+    switch ((game->turns + player->y) % 9)
     {
     case 0: GA(head_y - 1, -1, ' '); break;
     case 1: GA(head_y - 1, -1, '.'); break;

@@ -175,10 +175,12 @@ void draw_stats(void);
 void draw_lowmsg(void);
 void board_attr(chtype a, chtype c);
 void g_add(int y, int x, chtype c);
+chtype player_armor(void);
 void g_uadd(int y, int x, char * s, chtype a);
 void draw_imp(int y, int x, int type, bool flip, uint32_t flags);
 void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags);
 void draw_human(int y, int x, int type, bool flip, uint32_t flags);
+void draw_dancer(int y, int x, int type, bool flip, uint32_t flags);
 void draw_demon(int y, int x, int type, bool flip, uint32_t flags);
 void draw_archdemon(int y, int x, int type, bool flip, uint32_t flags);
 void draw_spider(int y, int x, int type, bool flip, uint32_t flags);
@@ -287,8 +289,8 @@ int trap_sprung(int tile_feet);
 int monster_trap(mob_t * mob);
 
 /* interact.c */
-bool interesting(int tile);
-void interact(void);
+int interesting(int tile);
+int interact(void);
 void feet_instruction(int tile);
 void loot_chest(int ty, int tx);
 void altar(void);
@@ -300,6 +302,8 @@ void gaze_orb(void);
 void draw_tablet(int highlight);
 void stone_tablet(void);
 void sword_in_stone(void);
+void disco(void);
+int anything_near(void);
 
 /* shops.c */
 void shop_chef(void);
@@ -503,7 +507,8 @@ WINDOW * rwin;
 #define MOB_BRICKWALL  37
 #define MOB_FISH       38
 #define MOB_CRAB       39
-#define MOB_LAST       40
+#define MOB_DANCER     40
+#define MOB_LAST       41
 
 extern char * mob_name[MOB_LAST];
 

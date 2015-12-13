@@ -54,6 +54,8 @@
 #define IDOL_SACRIFICE_LIMIT 6
 #define IDOL_HP_REFILL       26
 
+#define DISCO_EXP 1000
+
 // In percent
 #define SHD_WOODEN_BLOCK 75
 #define SHD_METAL_BLOCK 85

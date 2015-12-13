@@ -3,6 +3,7 @@ version 0.9
 - Change direction (free action) at top and bottom of ladders
 - Rogues now steal less gold and have faster run animation
 - Climbing/swimming animation sped up
+- Cave-in traps are now visible and can be triggered by enemies
 
 
 version 0.8 (2015-12-09)

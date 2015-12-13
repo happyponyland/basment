@@ -869,6 +869,7 @@ void populate_cellmap(void)
   NOW_WORKING;
     
   place_single_cell(12, CELL_SWSTONE);
+  place_single_cell(8, CELL_DISCO);
 
   for (i = 0; i < 3; i++)
   {
@@ -881,9 +882,8 @@ void populate_cellmap(void)
     place_single_cell(10, CELL_IDOL);
   }
  
-  for (i = 0; i < 500; i++)
+  for (i = 0; i < 100; i++)
   {
-    place_single_cell(1, CELL_TRAP);
   }
  
   for (y = 0; y < MAX_FLOORS; y++)
@@ -1203,6 +1203,10 @@ void convert_cellmap(void)
 	make_monster(feet, tx, MOB_BRICKWALL);
 	break;
 
+      case CELL_DISCO:
+	decorate(feet, tx, DEC_DISCO);
+	break;
+	
       case CELL_LADDER_T:
 	make_ladder(feet + 1, tx, 4, false);
 	break;

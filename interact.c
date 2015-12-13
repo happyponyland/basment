@@ -5,7 +5,7 @@
 /*
   Returns if TILE is a point of interest that can be interacted with
 */
-bool interesting(int tile)
+int interesting(int tile)
 {
   switch (tile)
   {
@@ -30,6 +30,7 @@ bool interesting(int tile)
   case TL_P_SWSTONE:
   case TL_P_TABLET:
   case TL_P_UWCHEST:
+  case TL_P_DISCO:
     return true;
 
   default:
@@ -95,6 +96,10 @@ void feet_instruction(int tile)
     snprintf(lowmsg, DEFLEN, "PRESS <UP> TO REST");
     break;
 
+  case TL_P_DISCO:
+    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO DANCE");
+    break;
+
   case TL_P_SWSTONE:
     snprintf(lowmsg, DEFLEN, "PRESS <UP> TO DRAW SWORD");
     break;
@@ -125,7 +130,7 @@ void feet_instruction(int tile)
   Interacts with the tile at players feet. This will usually change
   the tile to an identical-looking but functionally inert tile.
 */
-void interact()
+int interact()
 {
   int tile;
   char line[DEFLEN];
@@ -135,7 +140,6 @@ void interact()
   if (tile == TL_P_CHEST || tile == TL_P_UWCHEST)
   {
     loot_chest(player->y, player->x);
-//    return;
   }
   else if (tile == TL_P_NPC1)
   {
@@ -246,7 +250,23 @@ void interact()
   }
   else if (tile == TL_P_CAMP)
   {
+    if (anything_near())
+    {
+      pwait("YOU CANNOT REST NOW!\nENEMIES ARE NEAR");
+      return false;
+    }
+
     camp();
+  }
+  else if (tile == TL_P_DISCO)
+  {
+    if (anything_near())
+    {
+      pwait("YOU CANNOT DANCE WHILE\nSOMEONE IS WATCHING");
+      return false;
+    }
+
+    disco();
   }
   else if (tile == TL_P_ALTAR)
   {
@@ -298,10 +318,10 @@ void interact()
 
     //pwait(line);
 
-    return;
+    return true;
   }
 
-  return;
+  return true;
 }
 
 
@@ -722,29 +742,193 @@ void idol()
 }
 
 
-
-void camp(void)
+int anything_near()
 {
   int i;
+  
+  for (i = 1; i < MAX_MOBS; i++)
+    if (game->mob[i].type != MOB_NONE && on_board(&game->mob[i]))
+      return true;
+
+  return false;
+}
+
+
+
+#define NOW_DANCE(a) m->flags = a; draw_board(); lpause();
+#define Q_DANCE(a)   m->flags = a; draw_board(); mpause();
+#define DANCE_FLIP() m->flip = !m->flip;
+
+void disco()
+{
+  bool old_flip;
+  mob_t * m;
+  int i;
+
+  pwait("THIS LOOKS LIKE A DANCE FLOOR!");
+
+  stile(player->y, player->x, TL_VOID);
+
+  m = player;
+  old_flip = m->flip;
+
+  m->flip = true;
+  m->type = MOB_DANCER;
+
+  draw_board();
+  opause();
+
+  for (i = 0; i < 9; i++)
+  {
+    stile(m->y - 5 + i % 2, m->x - 4 + i, TL_DISCOLIGHT1 + i);
+    draw_board();
+    lpause();
+  }
+
+  NOW_DANCE(0); NOW_DANCE(1); NOW_DANCE(0); NOW_DANCE(1);
+  DANCE_FLIP();
+  NOW_DANCE(0); NOW_DANCE(1); NOW_DANCE(0); NOW_DANCE(1);
+
+  NOW_DANCE(0);
+  
+  NOW_DANCE(10);
+
+  NOW_DANCE(11);
+  NOW_DANCE(12);
+  DANCE_FLIP();
+  NOW_DANCE(11); 
+
+  NOW_DANCE(10);
+
+  NOW_DANCE(11);
+  NOW_DANCE(12);
+  DANCE_FLIP();
+  NOW_DANCE(11);
+
+  DANCE_FLIP();
+  NOW_DANCE(20); NOW_DANCE(21); NOW_DANCE(20); NOW_DANCE(22);
+  DANCE_FLIP();
+  NOW_DANCE(20); NOW_DANCE(21); NOW_DANCE(20); NOW_DANCE(22);
+
+//  DANCE_FLIP();
+  m->x -= 1; NOW_DANCE(30);
+  DANCE_FLIP();
+  m->x += 1; NOW_DANCE(30);
+  DANCE_FLIP();
+  m->x += 1; NOW_DANCE(30);
+  DANCE_FLIP();
+  m->x -= 1; NOW_DANCE(30);
+  DANCE_FLIP();
+  m->x -= 1; NOW_DANCE(30);
+  DANCE_FLIP();
+  m->x += 1; NOW_DANCE(30);
+  DANCE_FLIP();
+  m->x += 1; NOW_DANCE(30);
+  DANCE_FLIP();
+  m->x -= 1; NOW_DANCE(30);
+  
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+  m->x += 1;
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+  m->x += 1;
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+
+  //DANCE_FLIP();
+  m->x -= 1; m->y -= 1;
+  NOW_DANCE(40);
+  m->x -= 1;
+  NOW_DANCE(40);
+  m->x -= 1; m->y += 1;
+  NOW_DANCE(40);
+
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+
+  DANCE_FLIP();
+  m->x += 1; m->y -= 1;
+  NOW_DANCE(40);
+  m->x += 1;
+  NOW_DANCE(40);
+  m->x += 1; m->y += 1;
+  NOW_DANCE(40);
+
+  NOW_DANCE(50);
+  m->x -= 1;
+  NOW_DANCE(51);
+  NOW_DANCE(50);
+  m->x -= 1;
+  NOW_DANCE(51);
+  NOW_DANCE(50);
+  m->x -= 1;
+  NOW_DANCE(51);
+  NOW_DANCE(50);
+  m->x -= 1;
+  NOW_DANCE(51);
+  NOW_DANCE(50);
+//  NOW_DANCE(51);
+
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+  m->x += 1;
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+  m->x += 1;
+  DANCE_FLIP(); Q_DANCE(31);
+  DANCE_FLIP(); Q_DANCE(31);
+
+  NOW_DANCE(60);
+  DANCE_FLIP();
+  NOW_DANCE(60);
+  m->y += 1;
+  NOW_DANCE(60);
+
+  DANCE_FLIP();
+  m->y -= 1;
+  NOW_DANCE(70); lpause();
+  NOW_DANCE(71); lpause();
+  NOW_DANCE(70); lpause();
+  NOW_DANCE(71);
+
+  opause();
+
+  for (i = 0; i < 9; i++)
+  {
+    stile(m->y - 5, m->x - 4 + i, TL_VOID);
+    stile(m->y - 4, m->x - 4 + i, TL_VOID);
+  }
+
+  m->type = MOB_PLAYER;
+  m->flags = 0;
+  m->flip = old_flip;
+
+  draw_board();
+
+  lpause();
+
+  char line[DEFLEN];
+  snprintf(line, DEFLEN, "YOU GET %d EXPERIENCE", DISCO_EXP);
+  pwait(line);
+  draw_board();
+  give_exp(DISCO_EXP);
+  draw_stats();
+  
+  return;
+}
+
+
+
+void camp()
+{
   int dish;
   int meat;
-  bool anything_near = false;
   char food[100];
-
-  for (i = 1; i < MAX_MOBS; i++)
-  {
-    if (game->mob[i].type != MOB_NONE && on_board(&game->mob[i]))
-    {
-      anything_near = true;
-      break;
-    }
-  }
-  
-  if (anything_near)
-  {
-    pwait("YOU CANNOT REST NOW!\nENEMIES ARE NEAR");
-    return;
-  }
 
   strcpy(food, "YOU SPEND AN HOUR EATING\n");
 

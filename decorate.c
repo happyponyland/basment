@@ -125,6 +125,26 @@ void decorate(int y, int x, int type)
     stile(y - 2, x + 2, TL_TAB_T);
 
     break;
+
+  case DEC_DISCO:
+    stile(y, x, TL_P_DISCO);
+
+/*    stile(y - 5, x - 2, TL_L_D);
+    stile(y - 5, x - 1, TL_L_I);
+    stile(y - 5, x - 0, TL_L_S);
+    stile(y - 5, x + 1, TL_L_C);
+    stile(y - 5, x + 2, TL_L_O);
+*/  
+    stile(y + 1, x - 4, TL_DANCEFLOOR1);
+    stile(y + 1, x - 3, TL_DANCEFLOOR2);
+    stile(y + 1, x - 2, TL_DANCEFLOOR1);
+    stile(y + 1, x - 1, TL_DANCEFLOOR2);
+    stile(y + 1, x - 0, TL_DANCEFLOOR1);
+    stile(y + 1, x + 1, TL_DANCEFLOOR2);
+    stile(y + 1, x + 2, TL_DANCEFLOOR1);
+    stile(y + 1, x + 3, TL_DANCEFLOOR2);
+    stile(y + 1, x + 4, TL_DANCEFLOOR1);
+    break;
     
   case DEC_SWSTONE:
     stile(y,     x,     TL_P_SWSTONE);
