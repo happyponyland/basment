@@ -2,72 +2,17 @@
 
 
 
-void open_door(int dir)
+void close_door(int y, int c_x)
 {
-  int i;
-  int c_x;
-  int y;
+  int dir = 0;
 
-  y = player->y;
+  if (gtile(y - 1, c_x - 3) == TL_DOOR_HF)
+    dir = -1;
+  else if (gtile(y - 1, c_x + 3) == TL_DOOR_HF)
+    dir = +1;
 
-  c_x = player->x + dir * 5;
-
-  // Remove handle
-  stile(y - 1, c_x - dir, TL_VOID);
-
-  stile(y - 0, c_x, TL_DOOR_SIDE);
-  stile(y - 1, c_x, TL_DOOR_SIDE);
-  stile(y - 2, c_x, TL_DOOR_SIDE);
-  stile(y - 3, c_x, TL_DOOR_SIDE);
-
-  stile(y - 0, c_x + dir, TL_DOOR);
-//  stile(y - 1, c_x + dir, TL_DOOR);
-  stile(y - 1, c_x + dir, (dir > 0 ? TL_DOOR_HF : TL_DOOR_HF));
-  stile(y - 2, c_x + dir, TL_DOOR);
-  stile(y - 3, c_x + dir, TL_DOOR);
-
-  draw_board();
-  lpause();
-
-  stile(y - 1, c_x, TL_DOOR_SIDE);
-
-  stile(y - 0, c_x + dir, TL_DOOR_SIDE);
-  stile(y - 1, c_x + dir, TL_DOOR_SIDE);
-  stile(y - 2, c_x + dir, TL_DOOR_SIDE);
-  stile(y - 3, c_x + dir, TL_DOOR_SIDE);
-
-  stile(y - 0, c_x + dir * 2, TL_DOOR);
-//  stile(y - 1, c_x + dir * 2, TL_DOOR);
-  stile(y - 1, c_x + dir * 2, (dir > 0 ? TL_DOOR_HF : TL_DOOR_HF));
-  stile(y - 2, c_x + dir * 2, TL_DOOR);
-  stile(y - 3, c_x + dir * 2, TL_DOOR);
-
-  draw_board();
-  lpause();
-
-  stile(y - 1, c_x + dir, TL_DOOR_SIDE);
-
-  stile(y - 0, c_x + dir * 2, TL_DOOR_SIDE);
-  stile(y - 1, c_x + dir * 2, TL_DOOR_SIDE);
-  stile(y - 2, c_x + dir * 2, TL_DOOR_SIDE);
-  stile(y - 3, c_x + dir * 2, TL_DOOR_SIDE);
-
-  stile(y - 0, c_x + dir * 3, TL_DOOR_SIDE);
-//  stile(y - 1, c_x + dir * 2, TL_DOOR_SIDE);
-  stile(y - 1, c_x + dir * 3, TL_DOOR_HF);
-  stile(y - 2, c_x + dir * 3, TL_DOOR_SIDE);
-  stile(y - 3, c_x + dir * 3, TL_DOOR_SIDE);
-
-
-  draw_board();
-  lpause();
-
-  for (i = 0; i < 10; i++)
-  {
-    player->x += dir;
-    draw_board();
-    lpause();
-  }
+  if (dir == 0)
+    return;
 
   stile(y - 0, c_x + dir * 3, TL_VOID);
   stile(y - 1, c_x + dir * 3, TL_VOID);
@@ -112,8 +57,74 @@ void open_door(int dir)
   stile(y, c_x - 2, TL_DOOR_BLOCK);
   stile(y, c_x + 2, TL_DOOR_BLOCK);
 
+  stile(y, c_x - 5, TL_DOOR_L);
+  stile(y, c_x + 5, TL_DOOR_R);
+
   draw_board();
 //  opause();
+
+  return;
+}
+
+
+
+void open_door(int dir)
+{
+  int i;
+  int c_x;
+  int y;
+
+  recenter(true);
+
+  y = player->y;
+
+  c_x = player->x + dir * 5;
+
+  stile(y, c_x - 5, TL_DOOR_OPEN_L);
+  stile(y, c_x + 5, TL_DOOR_OPEN_R);
+  
+  // Remove handle
+  stile(y - 1, c_x - dir, TL_VOID);
+
+  stile(y - 0, c_x, TL_DOOR_SIDE);
+  stile(y - 1, c_x, TL_DOOR_SIDE);
+  stile(y - 2, c_x, TL_DOOR_SIDE);
+  stile(y - 3, c_x, TL_DOOR_SIDE);
+
+  stile(y - 0, c_x + dir, TL_DOOR);
+  stile(y - 1, c_x + dir, (dir > 0 ? TL_DOOR_HF : TL_DOOR_HF));
+  stile(y - 2, c_x + dir, TL_DOOR);
+  stile(y - 3, c_x + dir, TL_DOOR);
+
+  draw_board(); mpause();
+  
+  stile(y - 1, c_x, TL_DOOR_SIDE);
+
+  stile(y - 0, c_x + dir, TL_DOOR_SIDE);
+  stile(y - 1, c_x + dir, TL_DOOR_SIDE);
+  stile(y - 2, c_x + dir, TL_DOOR_SIDE);
+  stile(y - 3, c_x + dir, TL_DOOR_SIDE);
+
+  stile(y - 0, c_x + dir * 2, TL_DOOR);
+  stile(y - 1, c_x + dir * 2, (dir > 0 ? TL_DOOR_HF : TL_DOOR_HF));
+  stile(y - 2, c_x + dir * 2, TL_DOOR);
+  stile(y - 3, c_x + dir * 2, TL_DOOR);
+
+  draw_board(); mpause();
+
+  stile(y - 1, c_x + dir, TL_DOOR_SIDE);
+
+  stile(y - 0, c_x + dir * 2, TL_DOOR_SIDE);
+  stile(y - 1, c_x + dir * 2, TL_DOOR_SIDE);
+  stile(y - 2, c_x + dir * 2, TL_DOOR_SIDE);
+  stile(y - 3, c_x + dir * 2, TL_DOOR_SIDE);
+
+  stile(y - 0, c_x + dir * 3, TL_DOOR_SIDE);
+  stile(y - 1, c_x + dir * 3, TL_DOOR_HF);
+  stile(y - 2, c_x + dir * 3, TL_DOOR_SIDE);
+  stile(y - 3, c_x + dir * 3, TL_DOOR_SIDE);
+
+  draw_board();// mpause();
 
   return;
 }

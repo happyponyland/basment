@@ -87,6 +87,8 @@ void decorate(int y, int x, int type)
     stile(y - 1, x + 1, TL_DOOR_HR);
 
     stile(y, x - 5, TL_DOOR_L);
+//    stile(y, x + 4, TL_DOOR_R);
+    // DOOR_R can't be placed since it will be overwritten by the next cell!
 
     stile(y, x - 2, TL_DOOR_BLOCK);
     stile(y, x + 2, TL_DOOR_BLOCK);

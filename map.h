@@ -312,6 +312,8 @@ enum tile_t
   TL_DOOR_HF,
   TL_DOOR_L,
   TL_DOOR_R,
+  TL_DOOR_OPEN_L,
+  TL_DOOR_OPEN_R,
   TL_DOOR_SIDE,
 
   TL_SWSTONE_UL,

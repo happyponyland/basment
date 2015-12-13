@@ -125,6 +125,7 @@ void rogue_escape(mob_t * m);
 
 // doors.c
 void open_door(int dir);
+void close_door(int y, int c_x);
 
 // pause.c
 void spause(void);

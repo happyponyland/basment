@@ -148,7 +148,8 @@ retry:
   else if ((input == KEY_UP || input == key_up) &&
 	   interesting(tile_feet))
   {
-    interact();
+    if (interact() == false)
+      goto retry;
   }
   else if (input == KEY_RIGHT || input == key_right)
   {
@@ -410,14 +411,26 @@ int player_move(int dir)
     if (tile_feet == TL_DOOR_L && speed > 0)
     {
       open_door(+1);
-      return 1;
+      steps += 10;
+      //return 1;
     }
     else if (tile_feet == TL_DOOR_R && speed < 0)
     {
       open_door(-1);
+      steps += 10;
+      //return 1;
+    }
+    else if (tile_feet == TL_DOOR_OPEN_L && player->flip)
+    {
+      close_door(player->y, player->x + 5);
       return 1;
     }
-
+    else if (tile_feet == TL_DOOR_OPEN_R && !player->flip)
+    {
+      close_door(player->y, player->x - 5);
+      return 1;
+    }
+    
     /*
       Move (we don't use new_x since that is the edge of the player,
       we are moving the center)
@@ -433,14 +446,14 @@ int player_move(int dir)
     
     tile_below = gtile(player->y + 1, player->x);
     tile_feet = gtile(player->y, player->x);
-    
-    if (tile_below == TL_CHASM ||
+
+    if (tile_below == TL_CHASM      ||
 	tile_below == TL_TRAPDOOR_M ||
-	tile_below == TL_LADDER_M ||
-	tile_feet == TL_STOP ||
-	tile_feet == TL_LADDER_M ||
-	tile_feet == TL_DOOR_L ||
-	tile_feet == TL_DOOR_R ||
+	tile_below == TL_LADDER_M   ||
+	tile_feet  == TL_STOP       ||
+	tile_feet  == TL_LADDER_M   ||
+//	tile_feet  == TL_DOOR_L     ||
+//	tile_feet  == TL_DOOR_R     ||
 	is_trap(tile_feet) ||
 	interesting(tile_feet))
     {

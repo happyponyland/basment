@@ -148,6 +148,8 @@ void init_gfx_map()
   gfx_map[TL_DOOR_HF] = 'O';
 
   gfx_map[TL_DOOR_BLOCK] = //'X';
+    gfx_map[TL_DOOR_OPEN_L] =
+    gfx_map[TL_DOOR_OPEN_R] =
     gfx_map[TL_DOOR_L] =
     gfx_map[TL_DOOR_R] = ' ';
 

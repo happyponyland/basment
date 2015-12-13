@@ -1373,15 +1373,11 @@ void convert_cellmap(void)
 	break;
       }
       
+      // Hack: add DOOR_R trigger if left cell is door
       if (cx > 0 && get_cell(cy, cx - 1) == CELL_DOOR)
       {
 	stile(feet, tx - 4, TL_DOOR_R);
       }
-/*      else if (cx < CELLS_W - 1 && get_cell(cy, cx + 1) == CELL_DOOR)
-      {
-	stile(feet, tx + 5, TL_DOOR_L);
-      }
-*/
     }
   }
 }
