@@ -189,7 +189,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_SHRUBBERY:
     mob->w = 2;
-    mob->pack_w = 3;
+    mob->pack_w = 2;
     mob->speed = 0;
     mob->steps = 0;
     mob->range = 0;
@@ -382,7 +382,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_DEMON:
     mob->w = 3;
-    mob->pack_w = 4;
+    mob->pack_w = 3;
     mob->speed = 9;
     mob->steps = 6;
     mob->range = 5;

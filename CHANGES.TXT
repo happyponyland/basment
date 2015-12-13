@@ -4,6 +4,9 @@ version 0.9
 - Rogues now steal less gold and have faster run animation
 - Climbing/swimming animation sped up
 - Cave-in traps are now visible and can be triggered by enemies
+- Disco added
+- Doors can now remain open and won't close if anything is in the way
+- Door animations sped up
 
 
 version 0.8 (2015-12-09)

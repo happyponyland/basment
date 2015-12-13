@@ -2,7 +2,7 @@
 
 
 
-void close_door(int y, int c_x)
+int close_door(int y, int c_x)
 {
   int dir = 0;
 
@@ -12,8 +12,15 @@ void close_door(int y, int c_x)
     dir = +1;
 
   if (dir == 0)
-    return;
+    return -1;
 
+  if (anyone_there(y, c_x - 3) > 0 ||
+      anyone_there(y, c_x - 0) > 0 ||
+      anyone_there(y, c_x + 3) > 0)
+  {
+    return 1;
+  }
+      
   stile(y - 0, c_x + dir * 3, TL_VOID);
   stile(y - 1, c_x + dir * 3, TL_VOID);
   stile(y - 2, c_x + dir * 3, TL_VOID);
@@ -24,8 +31,7 @@ void close_door(int y, int c_x)
   stile(y - 2, c_x + dir * 2, TL_DOOR);
   stile(y - 3, c_x + dir * 2, TL_DOOR);
 
-  draw_board();
-  lpause();
+  draw_board(); mpause();
 
   stile(y - 0, c_x + dir * 2, TL_VOID);
   stile(y - 1, c_x + dir * 2, TL_VOID);
@@ -37,12 +43,10 @@ void close_door(int y, int c_x)
   stile(y - 2, c_x + dir, TL_DOOR);
   stile(y - 3, c_x + dir, TL_DOOR);
 
-  draw_board();
-  lpause();
+  draw_board(); mpause();
 
   stile(y - 0, c_x, TL_DOOR);
   stile(y - 1, c_x, TL_DOOR);
-//  stile(y - 1, c_x + dir, (dir > 0 ? TL_DOOR_HL : TL_DOOR_HR));
   stile(y - 2, c_x, TL_DOOR);
   stile(y - 3, c_x, TL_DOOR);
 
@@ -57,20 +61,23 @@ void close_door(int y, int c_x)
   stile(y, c_x - 2, TL_DOOR_BLOCK);
   stile(y, c_x + 2, TL_DOOR_BLOCK);
 
+  // Re-add door open triggers
   stile(y, c_x - 5, TL_DOOR_L);
   stile(y, c_x + 5, TL_DOOR_R);
 
-  draw_board();
-//  opause();
+  // Re-add door stops so they block enemies
+  stile(y, c_x - 2, TL_DOOR_BLOCK);
+  stile(y, c_x + 2, TL_DOOR_BLOCK);
 
-  return;
+  draw_board();
+
+  return 0;
 }
 
 
 
 void open_door(int dir)
 {
-  int i;
   int c_x;
   int y;
 
@@ -124,7 +131,11 @@ void open_door(int dir)
   stile(y - 2, c_x + dir * 3, TL_DOOR_SIDE);
   stile(y - 3, c_x + dir * 3, TL_DOOR_SIDE);
 
-  draw_board();// mpause();
+  // Remove door stop so enemies can pass through open doors
+  // The other side has already been overwritten by the open door itself
+  stile(y, c_x - dir * 2, TL_VOID);
+
+  draw_board();
 
   return;
 }

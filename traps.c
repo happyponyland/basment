@@ -116,6 +116,9 @@ void cavein(mob_t * mob)
   int dam;
   dam = CAVEIN_DAMAGE_ROLL;
 
+  if (mob != player)
+    dam *= 3;
+
   mob->hp -= dam;
   draw_bars();
 

@@ -422,13 +422,13 @@ int player_move(int dir)
     }
     else if (tile_feet == TL_DOOR_OPEN_L && player->flip)
     {
-      close_door(player->y, player->x + 5);
-      return 1;
+      if (close_door(player->y, player->x + 5) == 0)
+	return 1;
     }
     else if (tile_feet == TL_DOOR_OPEN_R && !player->flip)
     {
-      close_door(player->y, player->x - 5);
-      return 1;
+      if (close_door(player->y, player->x - 5) == 0)
+	return 1;
     }
     
     /*
