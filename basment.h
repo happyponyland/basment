@@ -260,6 +260,7 @@ void game_over(char * cause, bool won);
 int player_move(int);
 void climb_ladder(int dir);
 bool trapdoor(void);
+int ladder_flip(int dir);
 void player_fall(void);
 void calculate_floor(void);
 void give_exp(int exp);

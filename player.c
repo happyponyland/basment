@@ -135,22 +135,14 @@ retry:
   }
   else if (input == 'm' || input == 'M')
   {
-/*    if (map->has_map == false)
-    {
-      snprintf(lowmsg, DEFLEN, "YOU HAVE NO MAP!");
-      draw_lowmsg();
-    }
-    else
-    {*/
-      draw_cellmap();
-      getch();
-      clear();
-      draw_frames();
-      draw_bars();
-      draw_stats();
-      draw_board();
-//    }
-
+    draw_cellmap();
+    getch();
+    clear();
+    draw_frames();
+    draw_bars();
+    draw_stats();
+    draw_board();
+    
     goto retry;
   }
   else if ((input == KEY_UP || input == key_up) &&
@@ -160,12 +152,18 @@ retry:
   }
   else if (input == KEY_RIGHT || input == key_right)
   {
+    if (ladder_flip(+1))
+      goto retry;
+
     player->flip = false;
     try_to_breathe();
     player_move(1);
   }
   else if (input == KEY_LEFT || input == key_left)
   {
+    if (ladder_flip(-1))
+      goto retry;
+    
     player->flip = true;
     try_to_breathe();
     player_move(-1);
@@ -253,6 +251,31 @@ retry:
 
   return;
 }
+
+
+
+/**
+   Checks if player is standing at the top or bottom of a ladder and
+   tries to change direction. This will only make them flip and remain
+   in place, then return true.
+*/
+int ladder_flip(int dir)
+{
+  if (gtile(player->y,     player->x) == TL_LADDER_M ||
+      gtile(player->y + 1, player->x) == TL_LADDER_M)
+  {
+    if ((player->flip == true  && dir == +1) ||
+	(player->flip == false && dir == -1))
+    {
+      player->flip = !player->flip;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
 
 
 void debug_teleport(void)

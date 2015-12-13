@@ -1,3 +1,8 @@
+version 0.9
+- Monsters now line up instead of overlap
+- 
+
+
 version 0.8 (2015-12-09)
 - Underwater sections added
 - FISH and CRAB added
