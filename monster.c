@@ -534,12 +534,15 @@ void mob_walk(int mi, int dist)
 
     if (anyone_there(mob->y, mob->x + (speed == +1 ? mob_packwr(mob) + 1 : -mob_packwl(mob) - 1)) >= 0)
       return;
-//    (mob->pack_w + 1) * speed
+    
     mob->x += speed;
 
     if (on_board(mob))
     {
       draw_board();
+
+      if (monster_trap(mob))
+	return;
 
       if (remaining > 0 || dist == 1)
 	spause();

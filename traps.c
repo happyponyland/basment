@@ -20,18 +20,25 @@ bool is_trap(int tile)
 
 
 /*
-  Drop some boulders on the player
+  Drop some boulders on someone
 */
-void cavein(void)
+void cavein(mob_t * mob)
 {
-  int sc_x;
+  char line[DEFLEN];
+  int trap_y;
+  int trap_x;
   int sc_y;
+  int sc_x;
   int x;
   int y;
 
   game->traps_triggered++;
 
-  stile(player->y, player->x, TL_VOID);
+  trap_y = mob->y;
+  trap_x = mob->x;
+
+  // Remove trap trigger
+  stile(trap_y, trap_x, TL_VOID);
 
   recenter(false);
   
@@ -41,19 +48,28 @@ void cavein(void)
 
   tremor(5);
 
-  stile(player->y - 6, player->x - 1, TL_VOID);
-  stile(player->y - 6, player->x + 0, TL_VOID);
-  stile(player->y - 6, player->x + 1, TL_VOID);
-
-  // Catch stalactites as well
-  stile(player->y - 5, player->x - 1, TL_VOID);
-  stile(player->y - 5, player->x + 0, TL_VOID);
-  stile(player->y - 5, player->x + 1, TL_VOID);
-
   draw_board();
 
+//  stile(player->y - 9, player->x - 1, TL_VOID);
+//  stile(player->y - 9, player->x + 0, TL_VOID);
+//  stile(player->y - 9, player->x + 1, TL_VOID);
+  stile(trap_y - 8, trap_x - 1, TL_VOID);
+  stile(trap_y - 8, trap_x + 0, TL_VOID);
+  stile(trap_y - 8, trap_x + 1, TL_VOID);
+  stile(trap_y - 7, trap_x - 1, TL_VOID);
+  stile(trap_y - 7, trap_x + 0, TL_VOID);
+  stile(trap_y - 7, trap_x + 1, TL_VOID);
+  stile(trap_y - 6, trap_x - 1, TL_VOID);
+  stile(trap_y - 6, trap_x + 0, TL_VOID);
+  stile(trap_y - 6, trap_x + 1, TL_VOID);
+
+  // Catch stalactites as well
+  stile(trap_y - 5, trap_x - 1, TL_VOID);
+  stile(trap_y - 5, trap_x + 0, TL_VOID);
+  stile(trap_y - 5, trap_x + 1, TL_VOID);
+
   sc_y = 1;
-  sc_x = player->x - view_x;
+  sc_x = trap_x - view_x;
 
   for (x = 0; x < 3; x++)
   {
@@ -80,18 +96,18 @@ void cavein(void)
     }
   }
 
-  stile(player->y, player->x - 2, TL_BOULDER);
-  stile(player->y, player->x - 1, TL_BOULDER);
-  stile(player->y, player->x + 0, TL_BOULDER);
-  stile(player->y, player->x + 1, TL_BOULDER);
-  stile(player->y, player->x + 2, TL_BOULDER);
+  stile(trap_y, trap_x - 2, TL_BOULDER);
+  stile(trap_y, trap_x - 1, TL_BOULDER);
+  stile(trap_y, trap_x + 0, TL_BOULDER);
+  stile(trap_y, trap_x + 1, TL_BOULDER);
+  stile(trap_y, trap_x + 2, TL_BOULDER);
 
-  stile(player->y - 1, player->x - 1, TL_BOULDER);
-  stile(player->y - 1, player->x + 1, TL_BOULDER);
+  stile(trap_y - 1, trap_x - 1, TL_BOULDER);
+  stile(trap_y - 1, trap_x + 1, TL_BOULDER);
   
   draw_board();
 
-  if (rand() % player->speed > 8)
+  if (mob == player && rand() % player->speed > 8)
   {
     pwait("YOU AVOID THE FALLING ROCKS!");
     return;
@@ -99,23 +115,60 @@ void cavein(void)
 
   int dam;
   dam = CAVEIN_DAMAGE_ROLL;
-  player->hp -= dam;
+
+  mob->hp -= dam;
   draw_bars();
 
-  if (player->hp <= 0)
+  if (mob == player)
   {
-    player->type = MOB_GORE;
-    draw_board();
-    game_over("YOU WERE CRUSHED\n"
-	      "BY FALLING ROCKS", false);
+    if (mob->hp <= 0)
+    {
+      player->type = MOB_GORE;
+      draw_board();
+      game_over("YOU WERE CRUSHED\n"
+		"BY FALLING ROCKS", false);
+    }
+    else
+    {
+      pwait("YOU ARE HIT BY\n"
+	    "FALLING ROCKS!");
+    }
   }
   else
   {
-    pwait("YOU ARE HIT BY\n"
-	  "FALLING ROCKS!");
+    mob->flags = GFX_HURT;
+    draw_board();
+    lpause();
+    mob->flags = 0;
+   
+    if (mob->hp <= 0)
+    {
+      snprintf(line, DEFLEN, "%s%s WAS CRUSHED\nBY FALLING ROCKS!",
+	       article[mob->article], mob_name[mob->type]);
+      mob->type = MOB_NONE;
+      draw_board();
+      pwait(line);
+    }
   }
 
   return;
+}
+
+
+
+int monster_trap(mob_t * mob)
+{
+  int tile_feet;
+
+  tile_feet = gtile(mob->y, mob->x);
+
+  if (tile_feet == TL_T_CAVEIN)
+  {
+    cavein(mob);
+    return true;
+  }
+
+  return false;
 }
 
 
@@ -267,8 +320,9 @@ void tremor(int amount)
     view_y = keep_in_range(0, old_view_y - 1 + rand() % 3, MAP_H - BOARD_H - 1);
     view_x = keep_in_range(0, old_view_x - 1 + rand() % 3, MAP_W - BOARD_W - 1);
     draw_board();
-    spause(); spause();
-    spause(); spause();
+    mpause();
+    ///spause();
+//    spause(); spause();
   }
 
   // Reset view but do not redraw
@@ -391,7 +445,7 @@ int trap_sprung(int tile_feet)
 {
   if (tile_feet == TL_T_CAVEIN)
   {
-    cavein();
+    cavein(player);
     return true;
   }
   else if (tile_feet == TL_T_UWNET || tile_feet == TL_T_WEB)

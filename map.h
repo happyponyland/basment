@@ -251,8 +251,6 @@ enum tile_t
   TL_L_Y,
   TL_L_Z,
 
-  TL_BOULDER,
-
   TL_STALACTITE1,
   TL_STALACTITE2,
   TL_STALACTITE3,
@@ -346,6 +344,8 @@ enum tile_t
   TL_UWNET_SLASH,*/
   TL_LASTUNDERWATER,
 
+  TL_BOULDER,
+
   TL_BLOCKING,
 
   TL_DOOR_BLOCK,
@@ -380,6 +380,8 @@ enum tile_t
   TL_IWALL,
 
   TL_NO_MODIFY,
+
+  TL_ROOFBOULDER,
 
   TL_W_CORNER_UR,
   TL_W_CORNER_UL,
@@ -425,6 +427,7 @@ enum decoration_t
   // Below this point stuff that isn't "interesting"
   DEC_INTERESTING,
   DEC_SPENTCAMP,
+  DEC_CAVEIN,
   DEC_BRICKS,
   DEC_NPC,
   DEC_TRAPDOOR,

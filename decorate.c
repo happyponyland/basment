@@ -141,6 +141,19 @@ void decorate(int y, int x, int type)
     stile(y - 2, x,     TL_SWSTONE_2);
     
     break;
+
+  case DEC_CAVEIN:
+    stile(y - 6, x - 1, TL_ROOFBOULDER);
+    stile(y - 6, x - 0, TL_ROOFBOULDER);
+    stile(y - 6, x + 1, TL_ROOFBOULDER);
+    stile(y - 7, x - 1, TL_ROOFBOULDER);
+    stile(y - 7, x - 0, TL_ROOFBOULDER);
+    stile(y - 7, x + 1, TL_ROOFBOULDER);
+    stile(y - 8, x - 1, TL_ROOFBOULDER);
+    stile(y - 8, x - 0, TL_ROOFBOULDER);
+    stile(y - 8, x + 1, TL_ROOFBOULDER);
+    stile(y, x, TL_T_CAVEIN);
+    break;
     
   case DEC_ALTAR:
     stile(y, x,     TL_P_ALTAR);

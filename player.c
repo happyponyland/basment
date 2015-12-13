@@ -701,7 +701,7 @@ void climb_ladder(int dir)
       player->flags |= GFX_HUMAN_DIVE;
     
     draw_board();
-    lpause();
+    mpause();
   }
 
   if (swimming && dir == -1)

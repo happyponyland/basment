@@ -1,6 +1,8 @@
 version 0.9
 - Monsters now line up instead of overlap
-- 
+- Change direction (free action) at top and bottom of ladders
+- Rogues now steal less gold and have faster run animation
+- Climbing/swimming animation sped up
 
 
 version 0.8 (2015-12-09)

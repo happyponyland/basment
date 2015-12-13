@@ -75,7 +75,10 @@ void init_gfx_map()
   gfx_map[TL_WOOD]        =
     gfx_map[TL_P_CHEST]     = ACS_CKBOARD | COLOR_PAIR(PAIR_BROWN);
   gfx_map[TL_LOCK]        = 'X' | COLOR_PAIR(PAIR_BROWN) | A_BOLD | A_REVERSE;
-  gfx_map[TL_BOULDER]     = 'o' | COLOR_PAIR(PAIR_BROWN);
+
+  gfx_map[TL_ROOFBOULDER] =
+    gfx_map[TL_BOULDER]     = 'o' | COLOR_PAIR(PAIR_BROWN);
+  
   gfx_map[TL_REDSPIKE]    = '^' | COLOR_PAIR(PAIR_RED);
 
   gfx_map[TL_FLOOR]       = ACS_HLINE | COLOR_PAIR(PAIR_WHITE) | A_REVERSE;

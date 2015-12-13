@@ -128,6 +128,7 @@ void open_door(int dir);
 
 // pause.c
 void spause(void);
+void mpause(void);
 void lpause(void);
 void opause(void);
 void delay(long);
@@ -277,12 +278,13 @@ void get_player_name(char * dest, int maxlen);
 
 /* traps.c */
 bool is_trap(int tile);
-void cavein(void);
+void cavein(mob_t * mob);
 void poison_gas(void);
 void summon_gorzoth(void);
 void tremor(int amount);
 void web_net(void);
 int trap_sprung(int tile_feet);
+int monster_trap(mob_t * mob);
 
 /* interact.c */
 bool interesting(int tile);

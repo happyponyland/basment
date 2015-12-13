@@ -10,10 +10,17 @@ void spause()
 }
 
 
+/* Causes a medium delay */
+void mpause()
+{
+  delay(80);
+}
+
+
 /* Causes a long delay */
 void lpause()
 {
-  delay(150);
+  delay(160);
 }
 
 

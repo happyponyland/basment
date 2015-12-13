@@ -174,9 +174,9 @@ void rogue_escape(mob_t * m)
   for (i = 0; i < 2; i++)
   {
     m->flags = GFX_HUMAN_FALL1;
-    draw_board(); lpause();
+    draw_board(); mpause();
     m->flags = GFX_HUMAN_FALL2;
-    draw_board(); lpause();
+    draw_board(); mpause();
   }
 
   m->flags = 0;
@@ -184,14 +184,14 @@ void rogue_escape(mob_t * m)
   while (m->x > view_x - 2 && m->x <= view_x + BOARD_W + 2)
   {
     m->x += dir;
-    draw_board(); lpause();
+    draw_board(); spause();
   }
 
   m->type = MOB_NONE;
 
   if (game->player_gold)
   {
-    stolen = 1 + rand() % game->player_gold;
+    stolen = 1 + rand() % ROGUE_STEAL_GOLD; //game->player_gold;
 
     game->player_gold -= stolen;
 

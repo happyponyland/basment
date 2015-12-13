@@ -881,10 +881,10 @@ void populate_cellmap(void)
     place_single_cell(10, CELL_IDOL);
   }
  
-/*  for (i = 0; i < 50; i++)
+  for (i = 0; i < 500; i++)
   {
-    place_single_cell(10, CELL_TRAP);
-    }*/
+    place_single_cell(1, CELL_TRAP);
+  }
  
   for (y = 0; y < MAX_FLOORS; y++)
   {
@@ -1267,7 +1267,8 @@ void convert_cellmap(void)
 	switch (rand() % 3)
 	{
 	case 0:
-	  stile(feet, tx, TL_T_CAVEIN);
+	  decorate(feet, tx, DEC_CAVEIN);
+//	  stile(feet, tx, TL_T_CAVEIN);
 	  break;
 
 	case 1:
