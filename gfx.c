@@ -113,6 +113,7 @@ void init_gfx_map()
 
   gfx_map[TL_DIRT]       = ACS_CKBOARD | COLOR_PAIR(PAIR_BROWN);
   gfx_map[TL_CRYPTF]     = ACS_PLUS | A_REVERSE | COLOR_PAIR(PAIR_BLUE);
+  gfx_map[TL_HELL_WALL]  = ACS_CKBOARD | COLOR_PAIR(PAIR_RED);
 
   gfx_map[TL_ORG11] = 'O' | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_ORG12] = 'O' | COLOR_PAIR(PAIR_RED);

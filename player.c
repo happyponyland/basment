@@ -135,8 +135,18 @@ retry:
   }
   else if (input == 'm' || input == 'M')
   {
+  redraw_cellmap:
     draw_cellmap();
-    getch();
+
+    input = getch();
+    
+    if (cheat_mode &&
+	(input == 'f' || input == 'F'))
+    {
+      flip_automap();
+      goto redraw_cellmap;
+    }
+    
     clear();
     draw_frames();
     draw_bars();
@@ -144,6 +154,32 @@ retry:
     draw_board();
     
     goto retry;
+  }
+  else if (input == 'X' && cheat_mode)
+  {
+    learn_detect_traps();
+    game->has_torch = true;
+//    game->has_scuba = true;
+    player->hp += 30;
+    player->speed += 3;
+    player->strength += 3;
+    give_weapon(WPN_SWORD);
+    give_armor(SHD_MAGIC);
+    give_armor(ARMOR_MAGIC);
+    fill_automap(2);
+    game->player_gold += 500;
+    draw_stats();
+    draw_bars();
+    goto retry;
+  }
+  else if (input == 'T' && cheat_mode)
+  {
+    debug_teleport();
+    clear();
+    draw_frames();
+    draw_bars();
+    draw_stats();
+    draw_board();
   }
   else if ((input == KEY_UP || input == key_up) &&
 	   interesting(tile_feet))
@@ -175,32 +211,6 @@ retry:
     sprintf(line, "YOU'RE SCORE: %d", calculate_score());
     pwait(line);
     draw_board();
-  }
-  else if (input == 'T' && cheat_mode)
-  {
-    debug_teleport();
-    clear();
-    draw_frames();
-    draw_bars();
-    draw_stats();
-    draw_board();
-  }
-  else if (input == 'X' && cheat_mode)
-  {
-    learn_detect_traps();
-    game->has_torch = true;
-//    game->has_scuba = true;
-    player->hp += 30;
-    player->speed += 3;
-    player->strength += 3;
-    give_weapon(WPN_SWORD);
-    give_armor(SHD_MAGIC);
-    give_armor(ARMOR_MAGIC);
-    fill_automap(2);
-    game->player_gold += 500;
-    draw_stats();
-    draw_bars();
-    goto retry;
   }
   else if (input == '?' || input == KEY_F(1) || input == KEY_HELP)
   {
@@ -289,10 +299,15 @@ void debug_teleport(void)
   x = player->x / CELL_TO_TILES;
   y = player->y / FLOOR_H;
 
+  if (y >= 24)
+    automap_view_y = 24;
+  else
+    automap_view_y = 0;
+
   while (1)
   {
     draw_cellmap();
-    mvaddch(y, x, 'X' | A_BOLD);
+    mvaddch(y - automap_view_y, x, 'X' | A_BOLD);
     refresh();
 
     i = getch();
@@ -311,19 +326,29 @@ void debug_teleport(void)
     }
     else if (i == KEY_DOWN || i == key_down)
     {
-      y++;
+      if (y == 23)
+	flip_automap();
+
+      if (y < MAX_FLOORS - 1)
+	y++;
     }
     else if (i == KEY_UP || i == key_up)
     {
-      y--;
+      if (y == 24)
+	flip_automap();
+
+      if (y > 0)
+	y--;
     }
     else if (i == KEY_RIGHT || i == key_right)
     {
-      x++;
+      if (x < CELLS_W)
+	x++;
     }
     else if (i == KEY_LEFT || i == key_left)
     {
-      x--;
+      if (x > 0)
+	x--;
     }
   }
   

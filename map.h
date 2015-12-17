@@ -8,6 +8,7 @@
 #define BRANCH_CAVE     2
 #define BRANCH_ORGANIC  3
 #define BRANCH_WETCAVE  4
+#define BRANCH_HELL     5
 #define BRANCHES 5
 
 #define BOOKS 14
@@ -360,6 +361,8 @@ enum tile_t
   TL_WALL,
   TL_BWALL,
 
+  TL_HELL_WALL,
+  
   TL_DIRT,
   TL_CRYPTF,
   TL_ORG11,

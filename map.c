@@ -29,17 +29,6 @@ void fix_walls()
       tt = gtile(y - 1, x);
       bt = gtile(y + 1, x);
 
-/*
-      water =
- 	lt == TL_WATER || lt == TL_SURFACE ||
- 	rt == TL_WATER || rt == TL_SURFACE ||
- 	tt == TL_WATER || tt == TL_SURFACE ||
- 	bt == TL_WATER || bt == TL_SURFACE ||
-	gtile(y - 1, x - 1) == TL_WATER ||
-	gtile(y + 1, x - 1) == TL_WATER ||
-	gtile(y + 1, x + 1) == TL_WATER ||
-	gtile(y - 1, x + 1) == TL_WATER;
-*/
       water =
  	water_join(lt) ||
  	water_join(rt) ||
@@ -193,11 +182,9 @@ void decorate_walls(void)
       cy = y / FLOOR_H;
       cx = x / CELL_TO_TILES;
 
-//      branch_ll = get_branch(cy, cx - 2);
       branch_l = get_branch(cy, cx - 1);
       branch = get_branch(cy, cx);
       branch_r = get_branch(cy, cx + 1);
-//      branch_rr = get_branch(cy, cx + 2);
 
       t = gtile(y, x);
       
@@ -220,11 +207,27 @@ void decorate_walls(void)
 	}
       }
       
-      // Ceiling decorations
-      if (cy == MAX_FLOORS - 1)
+/*      if (cy == MAX_FLOORS - 1)
       {
 	if (y % FLOOR_H == 3 && gtile(y, x) > TL_JOIN_WALL)
 	  stile(y, x, TL_IWALL);
+      }
+      else*/
+      
+      if (branch == BRANCH_HELL)
+      {
+	switch (t)
+	{
+	case TL_FLOOR:
+	case TL_WALL:
+	case TL_CORNER_UR:
+	case TL_CORNER_UL:
+	case TL_CORNER_LR:
+	case TL_CORNER_LL:
+	  stile(y, x, TL_HELL_WALL);
+	  
+	default: break;
+	}
       }
       else if (branch == BRANCH_CAVE)
       {

@@ -235,7 +235,7 @@ void put_lakes()
   int x;
   int dir;
    
-  for (y = MAX_FLOORS - 2; y > 3; y--)
+  for (y = LAST_NORMAL_FLOOR - 1; y > 3; y--)
   {
     x = 5 + rand() % (CELLS_W - 10);
     dir = (rand() % 2 ? +1 : -1);

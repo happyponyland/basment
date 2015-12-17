@@ -2,6 +2,13 @@
 
 
 
+int corridor_stop_y = 0;
+int corridor_stop_x = 0;
+int hell_ent_y = 0;
+int hell_ent_x = 0;
+
+
+
 void generate_map()
 {
   int start_x;
@@ -23,21 +30,23 @@ void generate_map()
     // Recursively build dungeon
     corridor(0, start_x, 0, false);
 
-    // map_demo = true;
+    // 
+    hell_ent_y = corridor_stop_y;
+    hell_ent_x = corridor_stop_x;
+    set_cell(hell_ent_y, hell_ent_x, CELL_CHASM_T);
+
+    // Build Hell below the regular dungeon
+    corridor(hell_ent_y + 1, hell_ent_x, 0, false);
+    paint_branch(FIRST_HELL_FLOOR, 0, LAST_HELL_FLOOR, CELLS_W - 1, BRANCH_HELL);
+
+    // Fix the entrance
+    set_cell(hell_ent_y + 1, hell_ent_x - 1, CELL_ROOM);
+    set_cell(hell_ent_y + 1, hell_ent_x - 0, CELL_ROOM);
+    set_cell(hell_ent_y + 1, hell_ent_x + 1, CELL_ROOM);
 
     add_extra_rooms();
-
     add_surfaces();
-
     add_shallow_lakes();
-    
-
-    /*
-      nodelay(stdscr, false);
-      getch();
-      nodelay(stdscr, true);
-    */
-
     link_portals();
     replace_remainders();
     add_ambushes();
@@ -199,8 +208,8 @@ void add_wide_chasms(void)
 
 //  i = 20;
 
-/*  while (i--)
-  {
+/*  while (i--) 
+ {
     y = rand() % (BOARD_H - 2);
     x = 1 + rand() % (BOARD_W - 2);*/
 
@@ -309,7 +318,7 @@ void add_extra_rooms(void)
   NOW_WORKING;
 
 //  for (y = MAX_FLOORS - 2; y >= 1; y--)
-  for (y = 1; y < MAX_FLOORS - 2; y++)
+  for (y = 1; y < LAST_NORMAL_FLOOR - 2; y++)
   {
     if (rand() % 2)
     {
@@ -548,27 +557,25 @@ void corridor(int y, int start_x, int speed, int remainder)
     dug++;
   }
 
-  if (y >= MAX_FLOORS - 1)
+  if (y == LAST_NORMAL_FLOOR || y == LAST_HELL_FLOOR)
   {
     if (!remainder)
     {
+      corridor_stop_y = y;
+      corridor_stop_x = x;
+
       set_cell(y, x, CELL_BOSS);
 
       for (i = 0; i < 3; i++)
 	make_branch();
 
       put_lakes();
-      
-//      for (i = 0; i < 7; i++)
-//	make_lake();
     }
   }
   else if (!remainder)
   {
-    // We're still in the main corridor; dig down (random number of
-    // floors, biased towards 1) and start a new corridor.
+    // We're still in the main corridor; dig down and start a new corridor.
 
-//    dig(y, x, +1, 1 + (rand() % (1 + rand() % 3)));
     dig(y, x, +1, 1, false);
 
     corridor(y, x, speed, true);
@@ -581,7 +588,8 @@ void corridor(int y, int start_x, int speed, int remainder)
 
     for (i = 0; i < up; i++)
     {
-      if (y - i - 1 < 1)
+      if (y - i - 1 < 1 ||
+	  (y >= FIRST_HELL_FLOOR && y - i - 1 < FIRST_HELL_FLOOR))
       {
 	up = 0;
 	break;
@@ -613,6 +621,20 @@ void corridor(int y, int start_x, int speed, int remainder)
 
 
 
+void paint_branch(int t, int l, int b, int r, int branch)
+{
+  int y;
+  int x;
+
+  for (y = t; y <= b; y++)
+    for (x = l; x <= r; x++)
+      set_branch(y, x, branch);
+
+  return;
+}
+
+
+
 
 bool make_branch()
 {
@@ -632,7 +654,7 @@ bool make_branch()
 //  branch = BRANCH_ORGANIC;
   branch = 1 + rand() % (BRANCHES - 1);
 
-  start_y = 1 + rand() % (MAX_FLOORS - 6);
+  start_y = 1 + rand() % (LAST_NORMAL_FLOOR - 4);
 
   if (rand() % 2)
   {
@@ -779,10 +801,18 @@ void set_cell(int y, int x, int token)
 
   if (map_demo)
   {
+    int input;
+  
     draw_cellmap();
     spause();
-    
-    if (getch() != ERR)
+
+    input = getch();
+
+    if (input == 'f')
+    {
+      flip_automap();
+    }
+    else if (input != ERR)
     {
       quit_game();
       exit(0);

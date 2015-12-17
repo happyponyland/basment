@@ -40,7 +40,15 @@ extern jmp_buf restart_game;
 
 #define CELL_TO_TILES 9
 #define CELLS_W       60
-#define MAX_FLOORS    24          // How deep we want the dungeon to be
+
+// Floors below the final boss are for special areas
+
+#define MAX_FLOORS        48     // How deep we want the dungeon to be
+#define NORMAL_FLOORS     24
+#define LAST_NORMAL_FLOOR (NORMAL_FLOORS - 1)
+#define HELL_FLOORS       5
+#define FIRST_HELL_FLOOR  (NORMAL_FLOORS)
+#define LAST_HELL_FLOOR   (NORMAL_FLOORS + HELL_FLOORS - 1)
 
 #define MAP_W (CELL_TO_TILES * CELLS_W)   // Width of each floor
 #define MAP_H ((MAX_FLOORS + 1) * FLOOR_H)  // Total height needed
@@ -407,6 +415,7 @@ int get_cell(int y, int x);
 int floor_loot(int cy, int cx);
 bool cell_range(int t, int l, int b, int r, int type, bool write);
 int cell_open(int c);
+void paint_branch(int t, int l, int b, int r, int branch);
 
 /* water.c */
 void water_monster(int feet, int tx, int cy, int cx);
@@ -456,6 +465,7 @@ char * read_file(char * filename);
 
 #define NOW_WORKING now_working(__func__);
 extern char working_label[DEFLEN];
+extern int automap_view_y;
 void now_working(const char * func);
 
 void update_automap(void);
@@ -463,6 +473,7 @@ void draw_cellmap(void);
 void fill_automap(int mode);
 void automap_glyph(int celltype, chtype * glyph, chtype * attr);
 void map_legend(void);
+void flip_automap(void);
 
 mob_t * player;
 

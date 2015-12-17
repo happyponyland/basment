@@ -4,6 +4,8 @@
 
 char working_label[DEFLEN];
 
+int automap_view_y = 0;
+
 
 
 void now_working(const char * func)
@@ -70,18 +72,17 @@ void draw_cellmap()
 {
   int y;
   int x;
+  int sc_y;
 
   chtype attr = 0;
   chtype glyph = ' ';
 
   erase();
 
-  for (y = 0; y < MAX_FLOORS; y++)
+  for (y = automap_view_y; y < automap_view_y + 24; y++)
   {
-    if (y > 24)
-      move(y - 20, 40);
-    else
-      move(y, 0);
+    sc_y = y % 24;
+    move(sc_y, 0);
 
     for (x = 0; x < CELLS_W; x++)
     {
@@ -362,6 +363,25 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
     *glyph = '?';
     break;
   }
+
+  return;
+}
+
+
+
+/**
+   Flips the automap to display the lower half of the dungeon, but
+   only if the game is in demo or cheat mode.
+*/
+void flip_automap()
+{
+  if (!map_demo && !cheat_mode)
+    return;
+  
+  if (automap_view_y == 0)
+    automap_view_y = 24;
+  else
+    automap_view_y = 0;
 
   return;
 }
