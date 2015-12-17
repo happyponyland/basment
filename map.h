@@ -336,10 +336,12 @@ enum tile_t
   TL_TAB_C,
 
   TL_SURFACE,
-  TL_FAKESURFACE,
+  TL_FAKESURFACE, // Used for animation hack in player_fall()
+  TL_BRIDGESURFACE, // Used below bridges
   
   TL_UNDERWATER,
   TL_WATER,
+  TL_UW_BELOW_BRIDGE, // Used to block player when swimming under bridge
   TL_UWWOOD,
   TL_P_UWCHEST,
   TL_UWLOCK,
@@ -361,6 +363,8 @@ enum tile_t
   TL_DOOR_BLOCK,
   TL_DESK,
 
+  TL_BRIDGE,
+  
   TL_JOIN_WALL,
 
   TL_FLOOR,
@@ -393,8 +397,6 @@ enum tile_t
 
   TL_NO_MODIFY,
 
-  TL_BRIDGE,
-  
   TL_ROOFBOULDER,
 
   TL_DANCEFLOOR1,

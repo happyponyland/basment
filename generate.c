@@ -1148,6 +1148,7 @@ void add_bridges(void)
   int x;
   int dir;
   int cell;
+  int cell_below;
   
   int bridge_len;
   int next_dist;
@@ -1170,11 +1171,16 @@ void add_bridges(void)
   {
     while (x >= 0 && x < CELLS_W)
     {
-      cell = get_cell(y, x);
-      
+      cell       = get_cell(y,     x);
+      cell_below = get_cell(y + 1, x);
+
       if (cell != CELL_ROOM && cell != CELL_RMNDR)
 	goto move_on;
 
+      // Don't add bridges on top of solid rock
+      if (cell_below == CELL_ROCK || cell_below == CELL_RESERVED)
+	goto move_on;
+      
       if (bridge_len)
       {
 	set_cell(y, x, CELL_BRIDGE_C);
@@ -1289,6 +1295,7 @@ void convert_cellmap(void)
 	break;
 
       case CELL_BRIDGE_C:
+      case CELL_BRIDGE_W:
 	make_bridge(cy, cx);
 	break;
 	
@@ -1532,12 +1539,25 @@ void make_bridge(int cy, int cx)
   for (x = tx - w_l; x <= tx + w_r; x++)
   {
     stile(feet + 1, x, TL_BRIDGE);
-//    stile(feet, x, TL_BRIDGE_HANDRAIL_L);
-//    stile(feet - 1, x, TL_BRIDGE_HANDRAIL_U);
 
-    for (y = feet + 2; y < feet + 9; y++)
+    if (cell == CELL_BRIDGE_W)
     {
-      stile(y, x, TL_VOID);
+      stile(feet + 2, x, TL_VOID);
+      stile(feet + 3, x, TL_VOID);
+      stile(feet + 4, x, TL_BRIDGESURFACE);
+      stile(feet + 5, x, TL_UW_BELOW_BRIDGE);
+      
+      for (y = feet + 6; y < feet + 9; y++)
+      {
+	stile(y, x, TL_WATER);
+      }
+    }
+    else
+    {
+      for (y = feet + 2; y < feet + 9; y++)
+      {
+	stile(y, x, TL_VOID);
+      }
     }
   }
 

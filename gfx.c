@@ -324,11 +324,12 @@ void init_gfx_map()
   gfx_map[TL_TAB_C] = '=' | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
 
   gfx_map[TL_FAKESURFACE] =
+    gfx_map[TL_BRIDGESURFACE] =
     gfx_map[TL_SURFACE] = '~' | COLOR_PAIR(PAIR_WHITE_ON_CYAN);
   
-  gfx_map[TL_WATER]   = ' ' | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
-
   /* Underwater */
+  gfx_map[TL_UW_BELOW_BRIDGE] =
+    gfx_map[TL_WATER]       = ' ' | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
   gfx_map[TL_UWWOOD]        =
     gfx_map[TL_P_UWCHEST]   = ACS_CKBOARD  | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
   gfx_map[TL_UWLOCK]        = 'X'          | COLOR_PAIR(PAIR_BLACK_ON_CYAN) | A_REVERSE;
@@ -447,7 +448,7 @@ void draw_board_norefresh()
 
       if (game->hallucination)
       {
-	// Flip view up-side-down
+	// Flip view up-side-down if hallucinating
 	t = gtile(view_y + BOARD_H - 1 - y, view_x + x);
       }
       else
@@ -455,8 +456,10 @@ void draw_board_norefresh()
 	t = gtile(view_y + y, view_x + x);
       }
 
-      if (t == TL_SURFACE)
+      if (t == TL_SURFACE || t == TL_BRIDGESURFACE)
+      {
 	waddch(board, gfx_map[TL_SURFACE]);
+      }
       else if (t > TL_UNDERWATER && t < TL_LASTUNDERWATER)
       {
 	int in;
@@ -3559,8 +3562,8 @@ void draw_bars(void)
 	   COLOR_PAIR(PAIR_RED) | A_BOLD,
 	   COLOR_PAIR(PAIR_BROWN) | A_BOLD,
 	   COLOR_PAIR(PAIR_WHITE));
-
-  if (water_join(gtile(player->y, player->x)))
+  
+  if (player_underwater())
     breath_bar(lowwin, 2, player->breath);
   else
   {

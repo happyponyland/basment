@@ -294,6 +294,14 @@ void add_surfaces()
 	  set_cell(y - 1, x, CELL_WOPENDOWN);
 	}
       }
+      else if (there == CELL_BRIDGE_C &&
+	       (here == CELL_WCORR ||
+		here == CELL_WOPENDOWN ||
+		here == CELL_WATER))
+      {
+	set_cell(y,     x, CELL_WATER);
+	set_cell(y - 1, x, CELL_BRIDGE_W);
+      }
       else if (there == CELL_ROOM || there == CELL_RMNDR || there == CELL_DEADEND)
       {
 	if (rand() % 4 &&
@@ -524,13 +532,16 @@ void take_breath(mob_t * m)
 
 int player_underwater()
 {
-  return water_join(gtile(player->y, player->x));
+  tile_t tile;
+  tile = gtile(player->y, player->x);
+  return water_join(tile) && (tile != TL_UW_BELOW_BRIDGE);
 }
 
 
 void try_to_breathe()
 {
-  if (player_underwater())
+  if (player_underwater() &&
+      gtile(player->y, player->x) != TL_UW_BELOW_BRIDGE)
   {
     player->hp -= spend_breath(player, 1);
 

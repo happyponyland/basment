@@ -122,7 +122,9 @@ retry:
   }
   else if ((input == KEY_DOWN || input == key_down) &&
 	   !player->webbed &&
-	   (water_join(tile_below) || tile_below == TL_SURFACE))
+	   (water_join(tile_below) ||
+	    tile_below == TL_SURFACE/* ||
+				       tile_feet == TL_UW_BELOW_BRIDGE*/))
   {
     climb_ladder(+1);
   }
@@ -673,20 +675,25 @@ void climb_ladder(int dir)
       player->x--;
   }
   else if (dir == +1 &&
-	   ((tile_below == TL_SURFACE) || water_join(tile_below)))
+	   ((tile_below == TL_SURFACE) ||
+	    (tile_feet  == TL_UW_BELOW_BRIDGE) ||
+	    water_join(tile_below)))
   {
-    if (tile_below == TL_SURFACE)
+    if (tile_below == TL_SURFACE ||
+	tile_feet  == TL_UW_BELOW_BRIDGE)
     {
       take_breath(player);
       force_breath_bar(player);
-      //draw_bars();
     }
-    
-    if (!water_join(gtile(player->y + FLOOR_H, player->x)))
-      return;
 
-    if (!water_join(gtile(player->y + 3, player->x)))
-      return;
+    if (tile_feet != TL_UW_BELOW_BRIDGE)
+    {
+      if (!water_join(gtile(player->y + FLOOR_H, player->x)))
+	return;
+
+      if (!water_join(gtile(player->y + 3, player->x)))
+	return;
+    }
     
     swimming = true;
 
@@ -703,8 +710,10 @@ void climb_ladder(int dir)
   if (swimming)
   {
     dist = FLOOR_H;
-
     off = 0;
+    
+    if (tile_feet == TL_UW_BELOW_BRIDGE)
+      dist = FLOOR_H - 5;
   }
   else
   {
@@ -722,6 +731,13 @@ void climb_ladder(int dir)
   {
     if (!swimming && gtile(player->y + off + dir, player->x) != TL_LADDER_M)
       break;
+
+    if (swimming &&
+	dir == -1 &&
+	gtile(player->y, player->x) == TL_UW_BELOW_BRIDGE)
+    {
+      break;
+    }
     
     // Move player on map and viewport; player always remains centered
     view_y += dir;
@@ -744,12 +760,10 @@ void climb_ladder(int dir)
 
   if (swimming && dir == -1)
   {
-    //if (gtile(player->y, player->x) == TL_SURFACE)
-	  //if (!water_join(gtile(player->y, player->x)))
-    if (!player_underwater())
-    {
-      draw_bars();
-    }
+//    if (!player_underwater())
+//    {
+    draw_bars();
+//    }
   }
   
   // We should now be on a new floor
