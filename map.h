@@ -331,6 +331,7 @@ enum tile_t
   TL_TAB_C,
 
   TL_SURFACE,
+  TL_FAKESURFACE,
   
   TL_UNDERWATER,
   TL_WATER,

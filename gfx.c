@@ -317,7 +317,9 @@ void init_gfx_map()
   gfx_map[TL_TAB_T] = '_' | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
   gfx_map[TL_TAB_C] = '=' | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
 
-  gfx_map[TL_SURFACE] = '~' | COLOR_PAIR(PAIR_WHITE_ON_CYAN);
+  gfx_map[TL_FAKESURFACE] =
+    gfx_map[TL_SURFACE] = '~' | COLOR_PAIR(PAIR_WHITE_ON_CYAN);
+  
   gfx_map[TL_WATER]   = ' ' | COLOR_PAIR(PAIR_BLACK_ON_CYAN);
 
   /* Underwater */
@@ -353,7 +355,7 @@ void reset_trap_tiles()
 
 
 
-void draw_board()
+void draw_board_norefresh()
 {
   int y;
   int x;
@@ -504,13 +506,18 @@ void draw_board()
     }
   }
 
-  wrefresh(board);
-
   return;
 }
 
 
 
+void draw_board()
+{
+  draw_board_norefresh();
+  wrefresh(board);
+  
+  return;
+}
 
 
 

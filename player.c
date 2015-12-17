@@ -1231,11 +1231,44 @@ bool trapdoor()
 */
 void player_fall()
 {
-  int tile;
+  int tile_below;
+  int next_below;
 
-  while ((tile = gtile(player->y + 1, player->x)) < TL_BLOCKING)
+  while (true)
   {
-    if (tile == TL_SPIKE)
+    tile_below = gtile(player->y + 1, player->x);
+    next_below = gtile(player->y + 2, player->x);
+
+    if (next_below == TL_SURFACE)
+    {
+      // Fake an additional tile
+      player->y++;
+      view_y++;
+      player->flags = (player->y % 2 ? GFX_HUMAN_FALL1 : GFX_HUMAN_FALL2);
+		       
+      stile(player->y + 1, player->x, TL_FAKESURFACE);
+      draw_board();
+      lpause();
+
+      // Since we don't actually change y position, just the tile type
+      // (that offsets the drawing function) we need to fake an extra arm flail
+      player->flags = ((player->y+1) % 2 ? GFX_HUMAN_FALL1 : GFX_HUMAN_FALL2);
+      stile(player->y + 1, player->x, TL_SURFACE);
+      
+      draw_board_norefresh();
+      mvwaddch(board, player->y - 2 - view_y, player->x - 2 - view_x, '\\' | COLOR_PAIR(PAIR_CYAN));
+      mvwaddch(board, player->y - 2 - view_y, player->x + 2 - view_x, '/' | COLOR_PAIR(PAIR_CYAN));
+      mvwaddch(board, player->y - 1 - view_y, player->x - 3 - view_x, '\\' | COLOR_PAIR(PAIR_CYAN));
+      mvwaddch(board, player->y - 1 - view_y, player->x + 3 - view_x, '/' | COLOR_PAIR(PAIR_CYAN));
+      wrefresh(board);
+      opause();
+
+      break;
+    }
+    else if (tile_below >= TL_BLOCKING)
+      break;
+    
+    if (tile_below == TL_SPIKE)
     {
       stile(player->y + 1, player->x - 1, TL_REDSPIKE);
       stile(player->y + 1, player->x,     TL_REDSPIKE);
@@ -1251,11 +1284,7 @@ void player_fall()
       
     player->y += 1;
     view_y += 1;
-
-    if (player->y % 2)
-      player->flags = GFX_HUMAN_FALL1;
-    else 
-      player->flags = GFX_HUMAN_FALL2;
+    player->flags = (player->y % 2 ? GFX_HUMAN_FALL1 : GFX_HUMAN_FALL2);
 
     draw_board();
     

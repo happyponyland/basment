@@ -179,6 +179,7 @@ void reset_trap_tiles(void);
 void breath_bar(WINDOW * win, int y, int amount);
 void force_breath_bar(mob_t * m);
 void draw_board(void);
+void draw_board_norefresh(void);
 void draw_frames(void);
 void draw_stats(void);
 void draw_lowmsg(void);

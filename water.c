@@ -273,7 +273,7 @@ void add_surfaces()
 
   NOW_WORKING;
   
-  for (y = MAX_FLOORS - 2; y > 2; y--)
+  for (y = LAST_NORMAL_FLOOR - 1; y > 2; y--)
   {
     for (x = 0; x < CELLS_W; x++)
     {
