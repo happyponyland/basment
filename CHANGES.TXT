@@ -1,7 +1,9 @@
 version 0.9
-- Monsters now line up instead of overlap
+- Monsters line up instead of overlap
 - Change direction (free action) at top and bottom of ladders
-- Rogues now steal less gold and have faster run animation
+- Falling into water no longer leaves player stuck
+- Dungeon extends into HELL!
+- Rogues steal less gold and have faster run animation
 - Climbing/swimming animation sped up
 - Cave-in traps are now visible and can be triggered by enemies
 - Disco added

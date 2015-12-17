@@ -508,9 +508,9 @@ void corridor(int y, int start_x, int speed, int remainder)
     edge_clear = 0;
 
   if (speed == 0)
-    length = 3 + rand() % 35;
+    length = 3 + rand() % 25;
   else
-    length = 3 + rand() % 20;
+    length = 3 + rand() % 10;
 
   if (speed == 0)
   {
@@ -566,10 +566,15 @@ void corridor(int y, int start_x, int speed, int remainder)
 
       set_cell(y, x, CELL_BOSS);
 
-      for (i = 0; i < 3; i++)
-	make_branch();
-
-      put_lakes();
+      if (y == LAST_NORMAL_FLOOR)
+      {
+	// Only do this for the normal dungeon
+	
+	for (i = 0; i < 3; i++)
+	  make_branch();
+	
+	put_lakes();
+      }
     }
   }
   else if (!remainder)
