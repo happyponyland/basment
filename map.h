@@ -208,6 +208,11 @@ enum tile_t
   TL_WH_LL,
   TL_GR_VL,
 
+  TL_BRIDGE_HANDRAIL_L,
+  TL_BRIDGE_HANDRAIL_U,
+  TL_BRIDGE_SUPPORT_L,
+  TL_BRIDGE_SUPPORT_R,
+  
   TL_BL_VL,
   TL_BL_TTEE,
   TL_BL_UR,
@@ -388,6 +393,8 @@ enum tile_t
 
   TL_NO_MODIFY,
 
+  TL_BRIDGE,
+  
   TL_ROOFBOULDER,
 
   TL_DANCEFLOOR1,
@@ -460,6 +467,7 @@ enum decoration_t
   DEC_DOOR,
   DEC_NET,
   DEC_WEB,
+  DEC_BRIDGE,
 
   // Underwater
   DEC_UWCHEST,
@@ -512,6 +520,10 @@ enum decoration_t
 #define CELL_ORB        40
 #define CELL_IDOL       41
 #define CELL_DISCO      42
+#define CELL_BRIDGE_C   43
+#define CELL_BRIDGE_W   44
+#define CELL_BRIDGE_CM  45
+#define CELL_BRIDGE_WM  46
 
 #define CELL_WSURFACE   80
 

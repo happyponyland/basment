@@ -44,6 +44,8 @@ void generate_map()
     set_cell(hell_ent_y + 1, hell_ent_x - 0, CELL_ROOM);
     set_cell(hell_ent_y + 1, hell_ent_x + 1, CELL_ROOM);
 
+    add_bridges();
+
     add_extra_rooms();
     add_surfaces();
     add_shallow_lakes();
@@ -569,7 +571,7 @@ void corridor(int y, int start_x, int speed, int remainder)
       if (y == LAST_NORMAL_FLOOR)
       {
 	// Only do this for the normal dungeon
-	
+
 	for (i = 0; i < 3; i++)
 	  make_branch();
 	
@@ -1140,6 +1142,68 @@ void place_single_cell(int start_y, int cell)
 
 
 
+void add_bridges(void)
+{
+  int y;
+  int x;
+  int dir;
+  int cell;
+  
+  int bridge_len;
+  int next_dist;
+
+  bridge_len = 0;
+  next_dist = 20 + rand() % 50;
+
+  if (rand() % 2)
+  {
+    dir = +1;
+    x = 0;
+  }
+  else
+  {
+    dir = -1;
+    x = CELLS_W - 1;
+  }
+  
+  for (y = 0; y < LAST_NORMAL_FLOOR; y++)
+  {
+    while (x >= 0 && x < CELLS_W)
+    {
+      cell = get_cell(y, x);
+      
+      if (cell != CELL_ROOM && cell != CELL_RMNDR)
+	goto move_on;
+
+      if (bridge_len)
+      {
+	set_cell(y, x, CELL_BRIDGE_C);
+	
+	if (--bridge_len == 0)
+	{
+	  if (rand() % 3 == 0)
+	    next_dist = 1 + rand() % 10;
+	  else
+	    next_dist = 30 + rand() % 50;
+	}
+      }
+      else if (--next_dist == 0)
+      {
+	bridge_len = 1 + rand() % 5;
+      }
+
+    move_on:
+      x += dir;
+    }
+
+    dir *= -1;
+    x += dir;
+  }
+
+  return;
+}
+
+
 
 
 /*
@@ -1216,12 +1280,16 @@ void convert_cellmap(void)
 	make_water(cy, cx);
 	water_monster(feet, tx, cy, cx);
 	break;
-	
+
       case CELL_WTRAP:
       case CELL_WCORRTRAP:
 	make_water(cy, cx);
 	tx += slide;
 	stile(feet, tx, TL_T_UWNET);
+	break;
+
+      case CELL_BRIDGE_C:
+	make_bridge(cy, cx);
 	break;
 	
       case CELL_CAMP:
@@ -1419,12 +1487,79 @@ void convert_cellmap(void)
 
 
 
+/**
+   Returns if @cell is any kind of bridge cell.
+*/
+int is_bridge(int cell)
+{
+  switch (cell)
+  {
+  case CELL_BRIDGE_C:
+  case CELL_BRIDGE_W:
+  case CELL_BRIDGE_CM:
+  case CELL_BRIDGE_WM:
+    return true;
+
+  default:
+    return false;
+  }
+}
+
+
+
+void make_bridge(int cy, int cx)
+{
+  int cell_l;
+  int cell;
+  int cell_r;
+  int tx;
+  int feet;
+  int w_l;
+  int w_r;
+  int y;
+  int x;
+
+  feet = (cy * BOARD_H) + FEET_Y;
+  tx = (cx * CELL_TO_TILES) + 4;
+
+  cell_l = get_cell(cy, cx - 1);
+  cell   = get_cell(cy, cx);
+  cell_r = get_cell(cy, cx + 1);
+
+  w_l = is_bridge(cell_l) ? 4 : 2;
+  w_r = is_bridge(cell_r) ? 4 : 2;
+
+  for (x = tx - w_l; x <= tx + w_r; x++)
+  {
+    stile(feet + 1, x, TL_BRIDGE);
+//    stile(feet, x, TL_BRIDGE_HANDRAIL_L);
+//    stile(feet - 1, x, TL_BRIDGE_HANDRAIL_U);
+
+    for (y = feet + 2; y < feet + 9; y++)
+    {
+      stile(y, x, TL_VOID);
+    }
+  }
+
+  if (w_l == 2)
+  {
+    stile(feet + 2, tx - w_l, TL_BRIDGE_SUPPORT_L);
+  }
+  
+  if (w_r == 2)
+  {
+    stile(feet + 2, tx + w_r, TL_BRIDGE_SUPPORT_R);
+  }
+
+  return;
+}
+
 
 
 /*
   Builds a ladder on the tilemap, starting at (START_Y, START_X) and
   extending TILES downward; if TILES is negative the ladder will
-  instead lead up. If CHASM is true no stair will be build, only a
+  instead lead up. If CHASM is true no ladder will be built, only a
   hole will be carved.
  */
 void make_ladder(int start_y, int start_x, int tiles, bool chasm)

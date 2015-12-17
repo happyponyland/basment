@@ -417,6 +417,9 @@ int floor_loot(int cy, int cx);
 bool cell_range(int t, int l, int b, int r, int type, bool write);
 int cell_open(int c);
 void paint_branch(int t, int l, int b, int r, int branch);
+void add_bridges(void);
+void make_bridge(int cy, int cx);
+int is_bridge(int cell);
 
 /* water.c */
 void water_monster(int feet, int tx, int cy, int cx);

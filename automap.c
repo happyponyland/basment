@@ -251,8 +251,14 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
     *attr = COLOR_PAIR(PAIR_BROWN);
     break;
     
-  case CELL_CAMP:
+  case CELL_BRIDGE_C:
+  case CELL_BRIDGE_W:
     *glyph = '=';
+    *attr = COLOR_PAIR(PAIR_BROWN);
+    break;
+    
+  case CELL_CAMP:
+    *glyph = '%';
     *attr = COLOR_PAIR(PAIR_MAGENTA);
     break;
     

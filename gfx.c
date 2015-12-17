@@ -115,6 +115,12 @@ void init_gfx_map()
   gfx_map[TL_CRYPTF]     = ACS_PLUS | A_REVERSE | COLOR_PAIR(PAIR_BLUE);
   gfx_map[TL_HELL_WALL]  = ACS_CKBOARD | COLOR_PAIR(PAIR_RED);
 
+  gfx_map[TL_BRIDGE]            = 'O' | COLOR_PAIR(PAIR_BROWN);
+  gfx_map[TL_BRIDGE_HANDRAIL_L] = ACS_PLUS | COLOR_PAIR(PAIR_BROWN);
+  gfx_map[TL_BRIDGE_HANDRAIL_U] = ACS_TTEE | COLOR_PAIR(PAIR_BROWN);
+  gfx_map[TL_BRIDGE_SUPPORT_L]  = '/' | COLOR_PAIR(PAIR_BROWN);
+  gfx_map[TL_BRIDGE_SUPPORT_R]  = '\\' | COLOR_PAIR(PAIR_BROWN);
+  
   gfx_map[TL_ORG11] = 'O' | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_ORG12] = 'O' | COLOR_PAIR(PAIR_RED);
   gfx_map[TL_ORG13] = '&' | COLOR_PAIR(PAIR_RED);
