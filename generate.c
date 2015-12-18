@@ -30,22 +30,17 @@ void generate_map()
     // Recursively build dungeon
     corridor(0, start_x, 0, false);
 
-    // 
+    // Remember where the entrance to Hell is (coordinates left by corridor())
     hell_ent_y = corridor_stop_y;
     hell_ent_x = corridor_stop_x;
     set_cell(hell_ent_y, hell_ent_x, CELL_CHASM_T);
+    set_cell(hell_ent_y + 1, hell_ent_x, CELL_CHASM);
 
     // Build Hell below the regular dungeon
-    corridor(hell_ent_y + 1, hell_ent_x, 0, false);
-    paint_branch(FIRST_HELL_FLOOR, 0, LAST_HELL_FLOOR, CELLS_W - 1, BRANCH_HELL);
-
-    // Fix the entrance
-    set_cell(hell_ent_y + 1, hell_ent_x - 1, CELL_ROOM);
-    set_cell(hell_ent_y + 1, hell_ent_x - 0, CELL_ROOM);
-    set_cell(hell_ent_y + 1, hell_ent_x + 1, CELL_ROOM);
+    corridor(hell_ent_y + 2, hell_ent_x, 0, false);
+    paint_branch(FIRST_HELL_FLOOR - 1, 0, LAST_HELL_FLOOR, CELLS_W - 1, BRANCH_HELL);
 
     add_bridges();
-
     add_extra_rooms();
     add_surfaces();
     add_shallow_lakes();
@@ -56,9 +51,19 @@ void generate_map()
     flatten_rooms();
     populate_cellmap();
 	
+    // Fix the start pos
+    set_cell(0, start_x, CELL_START);
     set_cell(0, start_x - 1, CELL_ROOM);
     set_cell(0, start_x + 1, CELL_ROOM);
-    set_cell(0, start_x, CELL_START);
+
+    // Fix the hell entrance
+    set_cell(hell_ent_y + 2, hell_ent_x, CELL_HELL_ENT);
+
+    if (get_cell(hell_ent_y + 2, hell_ent_x - 1) != CELL_LADDER_T)    
+      set_cell(hell_ent_y + 2, hell_ent_x - 1, CELL_ROOM);
+
+    if (get_cell(hell_ent_y + 2, hell_ent_x + 1) != CELL_LADDER_T)    
+      set_cell(hell_ent_y + 2, hell_ent_x + 1, CELL_ROOM);
 
     if (map_demo)
     {
@@ -1142,76 +1147,6 @@ void place_single_cell(int start_y, int cell)
 
 
 
-void add_bridges(void)
-{
-  int y;
-  int x;
-  int dir;
-  int cell;
-  int cell_below;
-  
-  int bridge_len;
-  int next_dist;
-
-  bridge_len = 0;
-  next_dist = 20 + rand() % 50;
-
-  if (rand() % 2)
-  {
-    dir = +1;
-    x = 0;
-  }
-  else
-  {
-    dir = -1;
-    x = CELLS_W - 1;
-  }
-  
-  for (y = 0; y < LAST_NORMAL_FLOOR; y++)
-  {
-    while (x >= 0 && x < CELLS_W)
-    {
-      cell       = get_cell(y,     x);
-      cell_below = get_cell(y + 1, x);
-
-      if (cell != CELL_ROOM && cell != CELL_RMNDR)
-	goto move_on;
-
-      // Don't add bridges on top of solid rock
-      if (cell_below == CELL_ROCK || cell_below == CELL_RESERVED)
-	goto move_on;
-      
-      if (bridge_len)
-      {
-	set_cell(y, x, CELL_BRIDGE_C);
-	
-	if (--bridge_len == 0)
-	{
-	  if (rand() % 3 == 0)
-	    next_dist = 1 + rand() % 10;
-	  else
-	    next_dist = 30 + rand() % 50;
-	}
-      }
-      else if (--next_dist == 0)
-      {
-	bridge_len = 1 + rand() % 5;
-      }
-
-    move_on:
-      x += dir;
-    }
-
-    dir *= -1;
-    x += dir;
-  }
-
-  return;
-}
-
-
-
-
 /*
   Converts a populated cellmap to a tilemap.
 */
@@ -1222,18 +1157,22 @@ void convert_cellmap(void)
   int tx;
   int feet;
   int this_cell;
+  int cell_l;
+  int cell_r;
   int slide;
 
-  bool open;
-  bool open_l;
-  bool open_r;
+  int open;
+  int open_l;
+  int open_r;
 //  int branch;
 
   for (cy = 0; cy < MAX_FLOORS; cy++)
   {
     for (cx = 1; cx < CELLS_W - 1; cx++)
     {
-      this_cell = game->cell[cy][cx];
+      this_cell = get_cell(cy, cx);
+      cell_l = get_cell(cy, cx - 1);
+      cell_r = get_cell(cy, cx + 1);
 //      branch = game->branch[cy][cx];
 
       /*
@@ -1241,29 +1180,45 @@ void convert_cellmap(void)
 	tiles to the left or right are traversable, we will extend one
 	tile further in that direction to meet the next section.
       */
-      open   = (cell_open(this_cell)            ? true : false);
-      open_l = (cell_open(get_cell(cy, cx - 1)) ? true : false);
-      open_r = (cell_open(get_cell(cy, cx + 1)) ? true : false);
+      open   = (cell_open(this_cell) ? 1 : 0);
+      open_l = (cell_open(cell_l)    ? 1 : 0);
+      open_r = (cell_open(cell_r)    ? 1 : 0);
 
       feet = (cy * BOARD_H) + FEET_Y;
       tx = (cx * CELL_TO_TILES) + 4;
 
       slide = 0;
 
-      if (get_cell(cy, cx - 1) == CELL_ROOM)
+      /*
+	If the cells to the left and right are empty rooms we have
+	some room to spare; add a chance of nudging any decoration on
+	this cell -2 to +2 tiles to make them look less grid-like.
+      */
+      if (cell_l == CELL_ROOM)
 	slide -= rand() % 2;
 
-      if (get_cell(cy, cx + 1) == CELL_ROOM)
+      if (cell_l == CELL_ROOM)
 	slide += rand() % 2;
 
       if (this_cell == CELL_SPIKEPIT)
 	open = false;
 
+      /*
+	Trim one tile off the excavation width for bridges ending in a
+	wall to avoid creating a small ledge at the end.
+      */
+      if (is_bridge(this_cell))
+      {
+	if (cell_l == CELL_ROCK)
+	  open_l = -1;
+	
+	if (cell_r == CELL_ROCK)
+	  open_r = -1;
+      }
+
       if (open)
       {
-	excavate(feet, tx,
-		 3 + (open_l ? 1 : 0),
-		 3 + (open_r ? 1 : 0));
+	excavate(feet, tx, 3 + open_l, 3 + open_r);
       }
 
       switch (game->cell[cy][cx])
@@ -1315,6 +1270,7 @@ void convert_cellmap(void)
 
       case CELL_DISCO:
 	decorate(feet, tx, DEC_DISCO);
+	set_cell(cy, cx, CELL_LOOT);
 	break;
 	
       case CELL_LADDER_T:
@@ -1358,6 +1314,11 @@ void convert_cellmap(void)
 	tx += slide;
 	decorate(feet, tx, DEC_ORB);
 	set_cell(cy, cx, CELL_LOOT);
+	break;
+
+      case CELL_HELL_ENT:
+	stile(feet, tx, TL_P_HELL);
+	set_cell(cy, cx, CELL_ROOM);
 	break;
 
       case CELL_IDOL:
@@ -1494,85 +1455,6 @@ void convert_cellmap(void)
 
 
 
-/**
-   Returns if @cell is any kind of bridge cell.
-*/
-int is_bridge(int cell)
-{
-  switch (cell)
-  {
-  case CELL_BRIDGE_C:
-  case CELL_BRIDGE_W:
-  case CELL_BRIDGE_CM:
-  case CELL_BRIDGE_WM:
-    return true;
-
-  default:
-    return false;
-  }
-}
-
-
-
-void make_bridge(int cy, int cx)
-{
-  int cell_l;
-  int cell;
-  int cell_r;
-  int tx;
-  int feet;
-  int w_l;
-  int w_r;
-  int y;
-  int x;
-
-  feet = (cy * BOARD_H) + FEET_Y;
-  tx = (cx * CELL_TO_TILES) + 4;
-
-  cell_l = get_cell(cy, cx - 1);
-  cell   = get_cell(cy, cx);
-  cell_r = get_cell(cy, cx + 1);
-
-  w_l = is_bridge(cell_l) ? 4 : 2;
-  w_r = is_bridge(cell_r) ? 4 : 2;
-
-  for (x = tx - w_l; x <= tx + w_r; x++)
-  {
-    stile(feet + 1, x, TL_BRIDGE);
-
-    if (cell == CELL_BRIDGE_W)
-    {
-      stile(feet + 2, x, TL_VOID);
-      stile(feet + 3, x, TL_VOID);
-      stile(feet + 4, x, TL_BRIDGESURFACE);
-      stile(feet + 5, x, TL_UW_BELOW_BRIDGE);
-      
-      for (y = feet + 6; y < feet + 9; y++)
-      {
-	stile(y, x, TL_WATER);
-      }
-    }
-    else
-    {
-      for (y = feet + 2; y < feet + 9; y++)
-      {
-	stile(y, x, TL_VOID);
-      }
-    }
-  }
-
-  if (w_l == 2)
-  {
-    stile(feet + 2, tx - w_l, TL_BRIDGE_SUPPORT_L);
-  }
-  
-  if (w_r == 2)
-  {
-    stile(feet + 2, tx + w_r, TL_BRIDGE_SUPPORT_R);
-  }
-
-  return;
-}
 
 
 

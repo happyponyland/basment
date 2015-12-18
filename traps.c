@@ -468,6 +468,10 @@ int trap_sprung(int tile_feet)
     summon_gorzoth();
     return true;
   }
+  else if (tile_feet == TL_P_HELL)
+  {
+    interact();
+  }
 
   return false;
 }

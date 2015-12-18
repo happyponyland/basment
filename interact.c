@@ -236,6 +236,12 @@ int interact()
   {
     stone_tablet();
   }
+  else if (tile == TL_P_HELL)
+  {
+    stile(player->y, player->x, TL_VOID);
+    pwait("YOU ARE IN HELL");
+    draw_board();
+  }
   else if (tile == TL_P_PORTAL)
   {
     portal_travel();

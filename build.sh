@@ -25,6 +25,7 @@ FILES=(
     "conf.c"
     "doors.c"
     "water.c"
+    "bridge.c"
 )
 
 if [ $# -ne 1 ]; then

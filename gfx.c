@@ -217,6 +217,7 @@ void init_gfx_map()
     gfx_map[TL_BWALL] =
     gfx_map[TL_CHASM] =
     gfx_map[TL_IWALL] =
+    gfx_map[TL_P_HELL] =
     gfx_map[TL_P_NPC1] =
     gfx_map[TL_P_NPC2] =
     gfx_map[TL_P_NPC3] =

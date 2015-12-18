@@ -1309,8 +1309,11 @@ void player_fall()
 
   calculate_floor();
   draw_stats();
+  draw_board_norefresh();
 
   flush_input();
+
+  trap_sprung(gtile(player->y, player->x));
 
   return;
 }

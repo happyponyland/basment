@@ -88,8 +88,11 @@ void make_water(int cy, int cx)
     
     if (water_cell(get_cell(cy + 1, cx)))
     {
-      w_l = (get_cell(cy + 1, cx - 1) == CELL_WATER ? 4 : 2);
-      w_r = (get_cell(cy + 1, cx + 1) == CELL_WATER ? 4 : 2);
+      if (cell_l != CELL_BRIDGE_W && cell_l != CELL_BRIDGE_WM)
+	w_l = (get_cell(cy + 1, cx - 1) == CELL_WATER ? 4 : 2);
+
+      if (cell_r != CELL_BRIDGE_W && cell_r != CELL_BRIDGE_WM)
+	w_r = (get_cell(cy + 1, cx + 1) == CELL_WATER ? 4 : 2);
     }
 
     if (cell_l == CELL_WSURFACE)

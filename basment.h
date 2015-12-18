@@ -46,8 +46,8 @@ extern jmp_buf restart_game;
 #define MAX_FLOORS        48     // How deep we want the dungeon to be
 #define NORMAL_FLOORS     24
 #define LAST_NORMAL_FLOOR (NORMAL_FLOORS - 1)
-#define HELL_FLOORS       5
-#define FIRST_HELL_FLOOR  (NORMAL_FLOORS)
+#define HELL_FLOORS       6
+#define FIRST_HELL_FLOOR  (NORMAL_FLOORS + 1)
 #define LAST_HELL_FLOOR   (NORMAL_FLOORS + HELL_FLOORS - 1)
 
 #define MAP_W (CELL_TO_TILES * CELLS_W)   // Width of each floor
@@ -417,6 +417,8 @@ int floor_loot(int cy, int cx);
 bool cell_range(int t, int l, int b, int r, int type, bool write);
 int cell_open(int c);
 void paint_branch(int t, int l, int b, int r, int branch);
+
+/* bridge.c */
 void add_bridges(void);
 void make_bridge(int cy, int cx);
 int is_bridge(int cell);

@@ -112,6 +112,7 @@ enum tile_t
   TL_P_SWSTONE,
   TL_P_TABLET,
   TL_P_DISCO,
+  TL_P_HELL,
 
   TL_WOOD,
   TL_LOCK,
@@ -526,6 +527,7 @@ enum decoration_t
 #define CELL_BRIDGE_W   44
 #define CELL_BRIDGE_CM  45
 #define CELL_BRIDGE_WM  46
+#define CELL_HELL_ENT   47
 
 #define CELL_WSURFACE   80
 
