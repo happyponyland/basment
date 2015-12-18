@@ -75,6 +75,7 @@ void generate_map()
   convert_cellmap();
   fix_walls();
   decorate_walls();
+  decorate_hell();
 
   return;
 }
@@ -1159,6 +1160,7 @@ void convert_cellmap(void)
   int this_cell;
   int cell_l;
   int cell_r;
+  int cell_above;
   int slide;
 
   int open;
@@ -1173,6 +1175,7 @@ void convert_cellmap(void)
       this_cell = get_cell(cy, cx);
       cell_l = get_cell(cy, cx - 1);
       cell_r = get_cell(cy, cx + 1);
+      cell_above = get_cell(cy - 1, cx);
 //      branch = game->branch[cy][cx];
 
       /*
@@ -1197,17 +1200,19 @@ void convert_cellmap(void)
       if (cell_l == CELL_ROOM)
 	slide -= rand() % 2;
 
-      if (cell_l == CELL_ROOM)
+      if (cell_r == CELL_ROOM)
 	slide += rand() % 2;
 
       if (this_cell == CELL_SPIKEPIT)
 	open = false;
 
       /*
-	Trim one tile off the excavation width for bridges ending in a
-	wall to avoid creating a small ledge at the end.
+	Trim one tile off the excavation width for water surfaces and
+	bridges ending in a wall. This prevents a small useless ledge
+	from being created at the end and gives a cleaner result.
       */
-      if (is_bridge(this_cell))
+      if (this_cell == CELL_WSURFACE ||
+	  is_bridge(this_cell))
       {
 	if (cell_l == CELL_ROCK)
 	  open_l = -1;
@@ -1342,8 +1347,14 @@ void convert_cellmap(void)
 	switch (rand() % 3)
 	{
 	case 0:
-	  decorate(feet, tx, DEC_CAVEIN);
-//	  stile(feet, tx, TL_T_CAVEIN);
+	  // Only create these if there is a ceiling
+	  if (cell_above != CELL_BRIDGE_C &&
+	      cell_above != CELL_CHASM &&
+	      cell_above != CELL_CHASM_T &&
+	      cell_above != CELL_TRAPDOOR)
+	  {
+	    decorate(feet, tx, DEC_CAVEIN);
+	  }
 	  break;
 
 	case 1:

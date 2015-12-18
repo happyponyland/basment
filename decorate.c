@@ -1,6 +1,135 @@
 #include "basment.h"
 
 
+void hell_decorate(int y, int x, int up)
+{
+  int y1;
+  int y2;
+  int y3;
+  int r;
+  int type;
+  int f;
+
+  if (up)
+  {
+    y1 = y - 7;
+    y2 = y - 8;
+    y3 = y - 9;
+    f = 0;
+  }
+  else
+  {
+    y1 = y + 2;
+    y2 = y + 3;
+    y3 = y + 4;
+    f = 1;
+  }
+
+  type = rand() % 11;
+  
+  switch (type)
+  {
+  case 0:
+    stile(y1, x - 0, TL_HELL_CRACK_V);
+    break;
+    
+  case 1:
+    stile(y1, x - 1, TL_HELL_CRACK_LTEE);
+    stile(y2, x - 1, TL_HELL_CRACK_V);
+    stile(y1, x - 0, TL_HELL_CRACK_LR + f);
+    break;
+    
+  case 2:
+    stile(y1, x - 0, TL_HELL_CRACK_LTEE);
+    stile(y1, x + 1, TL_HELL_CRACK_LR + f);
+    stile(y2, x - 0, TL_HELL_CRACK_RTEE);
+    stile(y2, x - 1, TL_HELL_CRACK_LL + f);
+    stile(y3, x - 0, TL_HELL_CRACK_V);
+    break;
+
+  case 3:
+    stile(y1, x - 1, TL_HELL_CRACK_V);
+    stile(y2, x - 1, TL_HELL_CRACK_V);
+    stile(y1, x + 1, TL_HELL_CRACK_V);
+    break;
+
+  case 4:
+    stile(y1, x - 0, TL_HELL_CRACK_V);
+
+    if (rand() % 2)
+      stile(y2, x - 0, TL_HELL_CRACK_V);
+    
+    stile(y1, x + 1, TL_HELL_CRACK_V);
+    stile(y2, x + 1, TL_HELL_CRACK_V);
+
+    if (rand() % 2)
+      stile(y3, x + 1, TL_HELL_CRACK_V);
+    break;
+    
+  case 5:
+    r = rand() % 2;
+    
+    if (rand() % 2)
+    {
+      stile(y1, x - 1 + r, TL_HELL_CRACK_V);
+      stile(y2, x - 1 + r, TL_HELL_CRACK_UL - f);
+      stile(y2, x - 0 + r, TL_HELL_CRACK_LR + f);
+      stile(y3, x - 0 + r, TL_HELL_CRACK_V);
+    }
+    else
+    {
+      stile(y1, x + r - 1, TL_HELL_CRACK_UL - f);
+      stile(y1, x + r - 0, TL_HELL_CRACK_LR + f);
+      stile(y2, x + r - 0, TL_HELL_CRACK_V);
+    }
+    break;
+    
+  case 6:
+    stile(y1, x - 0, TL_HELL_CRACK_UR - f);
+    stile(y1, x - 1, TL_HELL_CRACK_LL + f);
+    stile(y2, x - 1, TL_HELL_CRACK_V);
+    stile(y1, x + 1, TL_HELL_CRACK_V);
+    stile(y2, x + 1, TL_HELL_CRACK_UR - f);
+    stile(y2, x - 0, TL_HELL_CRACK_LL + f);
+    stile(y3, x - 0, TL_HELL_CRACK_V);
+    break;
+    
+  case 7:
+    stile(y1, x - 1 + rand() % 2, TL_HELL_CRACK_V);
+    break;
+    
+  case 8:
+    stile(y1, x - 1, TL_HELL_CRACK_V);
+    stile(y2, x - 1, TL_HELL_CRACK_UL - f);
+    stile(y2, x - 0, TL_HELL_CRACK_LR + f);
+    stile(y3, x - 0, TL_HELL_CRACK_V);
+    break;
+    
+  case 9:
+    stile(y1, x + 0, TL_HELL_CRACK_RTEE);
+    stile(y2, x + 0, TL_HELL_CRACK_V);
+    stile(y1, x - 1, TL_HELL_CRACK_LL + f);
+    break;
+    
+  case 10:
+    stile(y1, x - 1, TL_HELL_CRACK_V);
+    stile(y2, x - 1, TL_HELL_CRACK_V);
+
+    if (rand() % 2)
+      stile(y3, x - 1, TL_HELL_CRACK_V);
+    
+    stile(y1, x + 1, TL_HELL_CRACK_V);
+    break;
+
+  default:
+    break;
+  }
+  
+  return;
+}
+
+
+
 void decorate(int y, int x, int type)
 {
   int i;
@@ -47,6 +176,33 @@ void decorate(int y, int x, int type)
 
     stile(y - 1, x + 3, TL_CAMP_SPIT1);
     stile(y, x + 3, TL_CAMP_SPIT2);
+    break;
+
+  case DEC_HELLSKULL:
+    decorate(y + 2, x, DEC_HELLSKULL_INTERNAL);
+    decorate(y - 9, x, DEC_HELLSKULL_INTERNAL);
+    break;
+
+  case DEC_HELLSKULL_INTERNAL:
+    stile(y + 0, x - 4, TL_HELLWALL_HL);
+    stile(y + 0, x - 3, TL_HELLWALL_H1);
+    stile(y + 0, x - 2, TL_HELLWALL11);
+    stile(y + 0, x - 1, TL_HELLWALL12);
+    stile(y + 0, x - 0, TL_HELLWALL13);
+    stile(y + 0, x + 1, TL_HELLWALL14);
+    stile(y + 0, x + 2, TL_HELLWALL15);
+    stile(y + 0, x + 3, TL_HELLWALL_H1);
+    stile(y + 0, x + 4, TL_HELLWALL_HR);
+    stile(y + 1, x - 2, TL_HELLWALL21);
+    stile(y + 1, x - 1, TL_HELLWALL22);
+    stile(y + 1, x - 0, TL_HELLWALL23);
+    stile(y + 1, x + 1, TL_HELLWALL24);
+    stile(y + 1, x + 2, TL_HELLWALL25);
+    stile(y + 2, x - 2, TL_HELLWALL31);
+    stile(y + 2, x - 1, TL_HELLWALL32);
+    stile(y + 2, x - 0, TL_HELLWALL33);
+    stile(y + 2, x + 1, TL_HELLWALL34);
+    stile(y + 2, x + 2, TL_HELLWALL35);
     break;
 
   case DEC_SPENTCAMP:

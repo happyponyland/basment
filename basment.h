@@ -232,6 +232,7 @@ int pchoose(char * msg, int start_row, int items, int options);
 /* map.c */
 void fix_walls(void);
 void decorate_walls(void);
+void decorate_hell(void);
 int gtile(int y, int x);
 int stile(int y, int x, int n);
 int branch_at_tile(int y, int x);
@@ -382,6 +383,10 @@ bool ffwd_ptr(char ** p);
 /* generate.c */
 bool map_demo;
 
+#define CELL_CENTER(a, b, c, d)	  \
+  c = (a * BOARD_H) + FEET_Y; \
+  d = (b * CELL_TO_TILES) + 4;
+
 #define AUTOMAP_BLANK   0
 #define AUTOMAP_VISITED (1<<0)
 #define AUTOMAP_KNOWN   (1<<1)
@@ -405,7 +410,6 @@ void convert_cellmap(void);
 void clear_tilemap(void);
 void excavate(int feet, int center, int w_l, int w_r);
 void make_ladder(int start_y, int start_x, int tiles, bool chasm);
-void decorate(int y, int x, int type);
 void npc_room(int y, int x, int cell_type);
 bool open_down(int cell);
 void set_cell(int y, int x, int token);
@@ -417,6 +421,10 @@ int floor_loot(int cy, int cx);
 bool cell_range(int t, int l, int b, int r, int type, bool write);
 int cell_open(int c);
 void paint_branch(int t, int l, int b, int r, int branch);
+
+/* decorate.c */
+void decorate(int y, int x, int type);
+void hell_decorate(int y, int x, int up);
 
 /* bridge.c */
 void add_bridges(void);
