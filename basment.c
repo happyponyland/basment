@@ -242,6 +242,7 @@ void init_ui()
   init_pair(PAIR_WHITE_ON_BLUE, COLOR_WHITE, COLOR_BLUE);
   init_pair(PAIR_BLACK_ON_CYAN, COLOR_BLACK, COLOR_CYAN);
   init_pair(PAIR_WHITE_ON_CYAN, COLOR_WHITE, COLOR_CYAN);
+  init_pair(PAIR_WHITE_ON_MAGENTA, COLOR_WHITE, COLOR_MAGENTA);
 
   erase();
   refresh();

@@ -90,7 +90,8 @@ extern jmp_buf restart_game;
 #define PAIR_WHITE_ON_BLUE   24
 #define PAIR_BLACK_ON_CYAN   25
 #define PAIR_WHITE_ON_CYAN   26
-#define PAIR_LAST         26
+#define PAIR_WHITE_ON_MAGENTA 27
+#define PAIR_LAST         27
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
@@ -192,6 +193,8 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags);
 void draw_human(int y, int x, int type, bool flip, uint32_t flags);
 void draw_dancer(int y, int x, int type, bool flip, uint32_t flags);
 void draw_demon(int y, int x, int type, bool flip, uint32_t flags);
+void draw_bullrog(int y, int x, int type, bool flip, uint32_t flags);
+//void draw_fiend(int y, int x, int type, bool flip, uint32_t flags);
 void draw_archdemon(int y, int x, int type, bool flip, uint32_t flags);
 void draw_spider(int y, int x, int type, bool flip, uint32_t flags);
 void draw_snake(int y, int x, int type, bool flip, uint32_t flags);
@@ -522,7 +525,7 @@ WINDOW * rwin;
 #define MOB_EVILTREE   26
 #define MOB_DEMON      27
 #define MOB_LASTRND    28
-#define MOB_SCAAL      29
+#define MOB_BULLROG    29
 #define MOB_ARCHDEMON  30
 #define MOB_KNAVE      31
 #define MOB_MIMIC      32

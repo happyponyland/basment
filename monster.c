@@ -28,14 +28,12 @@ char * mob_name[MOB_LAST] =
   [MOB_LICH] = "LICH",
   [MOB_DKNIGHT] = "DEATH KNIGHT",
   [MOB_IMP] = "IMP",
-  [MOB_SCAAL] = "SCAAL",
   [MOB_DEMON] = "DEMON",
   [MOB_BLURK] = "BLURK",
   [MOB_NOSE] = "GIANT NOSE",
   [MOB_ELEMENTAL] = "ELEMENTAL",
   [MOB_EVILTREE] = "EVIL TREE",
   [MOB_SKELETON] = "SKELETON",
-  [MOB_SAUCEROR] = "SAUCEROR",
   [MOB_ARCHDEMON] = "ARCHDEMON",
   [MOB_GORZOTH] = "GORZOTH",
   [MOB_MOTH] = "MOTH-THING",
@@ -43,7 +41,9 @@ char * mob_name[MOB_LAST] =
   [MOB_BIGSPIDER] = "ARAQNO",
   [MOB_BRICKWALL] = "BRICK WALL",
   [MOB_FISH] = "FISH",
-  [MOB_CRAB] = "CRAB"
+  [MOB_CRAB] = "CRAB",
+  [MOB_SAUCEROR] = "SAUCEROR",
+  [MOB_BULLROG] = "BULLROG"
 };
 
 
@@ -391,6 +391,17 @@ int make_monster(int y, int x, int type)
     mob->damage = 5;
     break;
 
+  case MOB_BULLROG:
+    //mob->w = 3;
+    mob->pack_w = 5;
+    mob->speed = 9;
+    mob->steps = 6;
+    mob->range = 8;
+    mob->hp = 40;
+    mob->exp = 800;
+    mob->damage = 5;
+    break;
+
   case MOB_ARCHDEMON:
     mob->w = 4;
     mob->speed = 15;
@@ -667,7 +678,11 @@ int random_monster(int floor, int branch)
 //  return MOB_GORZOTH;
 //  return MOB_BIGSPIDER;
 
-  if (branch == BRANCH_CRYPT)
+  if (branch == BRANCH_HELL)
+  {
+    return MOB_BULLROG;
+  }
+  else if (branch == BRANCH_CRYPT)
   {
     switch (rand() % 7)
     {

@@ -302,11 +302,16 @@ void init_gfx_map()
   gfx_map[TL_HELL_CRACK_V]    = ACS_VLINE    | COLOR_PAIR(PAIR_RED);
   gfx_map[TL_HELL_CRACK_H]    = ACS_HLINE    | COLOR_PAIR(PAIR_RED);
   gfx_map[TL_HELL_CRACK_LR]   = ACS_LRCORNER | COLOR_PAIR(PAIR_RED);
-  gfx_map[TL_HELL_CRACK_LL]   = ACS_LLCORNER | COLOR_PAIR(PAIR_RED);
   gfx_map[TL_HELL_CRACK_UR]   = ACS_URCORNER | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_HELL_CRACK_LL]   = ACS_LLCORNER | COLOR_PAIR(PAIR_RED);
   gfx_map[TL_HELL_CRACK_UL]   = ACS_ULCORNER | COLOR_PAIR(PAIR_RED);
   gfx_map[TL_HELL_CRACK_LTEE] = ACS_LTEE   | COLOR_PAIR(PAIR_RED);
   gfx_map[TL_HELL_CRACK_RTEE] = ACS_RTEE   | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_HELL_CRACK_TTEE] = ACS_TTEE   | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_HELL_CRACK_BTEE] = ACS_BTEE   | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_HELL_CRACK_EYE]  = 'o'        | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_HELL_CRACK_PL]   = '('        | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_HELL_CRACK_PR]   = ')'        | COLOR_PAIR(PAIR_RED);
     
   gfx_map[TL_HELLWALL_H1] = '_' | COLOR_PAIR(PAIR_RED);
   gfx_map[TL_HELLWALL_HL] = '(' | COLOR_PAIR(PAIR_RED);
@@ -729,10 +734,6 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
     draw_mimic(y, x, type, flip, flags);
     break;
 
-  case MOB_SCAAL:
-    draw_scaal(y, x, type, flip, flags);
-    break;
-
   case MOB_BLURK:
     draw_blurk(y, x, type, flip, flags);
     break;
@@ -775,6 +776,10 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
 
   case MOB_DEMON:
     draw_demon(y, x, type, flip, flags);
+    break;
+
+  case MOB_BULLROG:
+    draw_bullrog(y, x, type, flip, flags);
     break;
 
   case MOB_GHOUL:
@@ -1788,6 +1793,127 @@ void draw_demon(int y, int x, int type, bool flip, uint32_t flags)
 
 
 
+void draw_bullrog(int y, int x, int type, bool flip, uint32_t flags)
+{
+  chtype skin;
+  chtype torso;
+  chtype weapon;
+  chtype eyes;
+  int pf;
+  int attack;
+
+  attack = flags & GFX_ATTACK;
+  
+  if (flags & GFX_HURT)
+  {
+    skin = COLOR_PAIR(PAIR_WHITE);
+  }
+  else
+  {
+    skin = COLOR_PAIR(PAIR_MAGENTA);
+  }
+
+  eyes = COLOR_PAIR(PAIR_GREEN);
+  torso = COLOR_PAIR(PAIR_WHITE_ON_MAGENTA);
+  weapon = COLOR_PAIR(PAIR_WHITE);
+
+  // Horns
+  GA(-5, -4, GA_PL | skin);
+  GA(-5, -3, '_'   | skin);
+  GA(-5, -2, GA_FS | skin);
+  GA(-5, -1, GA_BS | skin);
+  GA(-5, -0, ACS_VLINE | skin);
+  GA(-5, +1, GA_FS | skin);
+  GA(-5, +2, GA_BS | skin);
+  GA(-5, +3, '_'   | skin);
+  GA(-5, +4, GA_PR | skin);
+
+  // Head
+  GA(-4, -2, GA_BS    | skin); // Left cheek
+  GA(-4, -1, '\''     | eyes); // Left eye
+  GA(-4, -0, ACS_PLUS | skin);
+  GA(-4, +1, '\''     | eyes); // Right eye
+  GA(-4, +2, GA_FS    | skin); // Right cheek
+
+  // Chin
+  GA(-3, -2, ' '            ); // Leave room by shoulder
+  GA(-3, -1, GA_LL    | skin);
+  GA(-3, -0, ACS_BTEE | skin);
+  GA(-3, +1, GA_LR    | skin);
+  GA(-3, +2, ' '            ); // Leave room by shoulder
+  
+  // Shift pitchfork two steps forward on attack
+  if (attack)
+    pf = +2;
+  else
+    pf = 0;
+  
+  // Pitchfork front: three columns
+  GA(-3, +5 + pf, GA_AR     | weapon);
+  GA(-2, +5 + pf, GA_AR     | weapon);
+  GA(-1, +5 + pf, GA_AR     | weapon);
+  GA(-3, +4 + pf, ACS_HLINE | weapon);
+  GA(-2, +4 + pf, ACS_HLINE | weapon);
+  GA(-1, +4 + pf, ACS_HLINE | weapon);
+  GA(-3, +3 + pf, GA_UL     | weapon);
+  GA(-2, +3 + pf, ACS_PLUS  | weapon);
+  GA(-1, +3 + pf, GA_LL     | weapon);
+
+  GA(-2, +2 + pf, GA_FS | skin); // Hand holding pitchfork
+  GA(-1, -2, ' '); // Clear below hand
+  
+  GA(-2, +1 + pf, ACS_HLINE | weapon);
+
+  // Pitchfork overlapping torso, these remain stationary
+  GA(-2, +0, ACS_HLINE | torso);
+  GA(-2, -1, ACS_HLINE | torso);
+  GA(-2, -2, ACS_HLINE | torso);
+
+  // When attacking shift the two end pieces in front of the torso,
+  // otherwise attach them to the rear of the handle.
+  if (attack)
+  {
+    GA(-2, +0 + pf, ACS_HLINE | weapon);
+    GA(-2, -1 + pf, ACS_HLINE | weapon);
+  }
+  else
+  {
+    GA(-2, -3, ACS_HLINE | weapon);
+    GA(-2, -4, ACS_HLINE | weapon);
+  }
+
+  // Arm
+  GA(-3, -3, ACS_HLINE | skin);
+
+  // On attack this switches position next to head while the other arm section remains in place
+  GA(-3, -4 + pf, ACS_HLINE | skin);
+
+  // Elbow and hand
+  GA(-3, -5 + pf, GA_UL     | skin);
+  GA(-2, -5 + pf, ACS_VLINE | skin);
+
+  // Legs
+  GA(-1, -4, GA_FS     | skin);
+  GA(-1, -3, ACS_HLINE | skin);
+  GA(-1, -2, GA_LR     | skin);
+  GA(-1, -1, ' '             );
+  GA(-1, -0, GA_LL     | skin);
+  GA(-1, +1, GA_UR     | skin);
+
+  // Feet
+  GA(-0, -4, GA_BS | skin);
+  GA(-0, -3, '_'   | skin);
+  GA(-0, -2, ' '         );
+  GA(-0, -1, ' '         );
+  GA(-0, -0, ' '         );
+  GA(-0, +1, GA_BS | skin);
+  GA(-0, +2, '_'   | skin);
+  
+  return;
+}
+
+
+
 void draw_nose(int y, int x, int type, bool flip, uint32_t flags)
 {
   int moustache;
@@ -2085,13 +2211,6 @@ void draw_archdemon(int y, int x, int type, bool flip, uint32_t flags)
   GA(0, +5, GA_UR | claws);
 
   return;
-}
-
-
-
-
-void draw_scaal(int y, int x, int type, bool flip, uint32_t flags)
-{
 }
 
 

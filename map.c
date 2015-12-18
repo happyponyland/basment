@@ -191,6 +191,7 @@ void decorate_hell()
 	hell_decorate(feet, tx,     true);
       }
       else if (this_cell  != CELL_LADDER_B &&
+	       this_cell  != CELL_LADDER_B &&
 	       cell_above != CELL_CHASM &&
 	       cell_above != CELL_TRAPDOOR)
       {
@@ -209,9 +210,6 @@ void decorate_hell()
 	hell_decorate(feet, tx - 3, false);
 	hell_decorate(feet, tx + 3, false);
       }
-
-//      if (dec != -1)
-//	decorate(feet, tx, dec);
     }
   }
 
