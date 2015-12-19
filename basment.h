@@ -434,6 +434,7 @@ void remove_floor(int cy, int cx, int w);
 void decorate(int y, int x, int type);
 
 /* hell.c */
+int hell_floor(int floor);
 void add_archdemon_floor(void);
 void decorate_hell(void);
 void hell_crack(int y, int x, int up);

@@ -854,7 +854,7 @@ void game_over(char * cause, bool won)
 	  strcat(morgue, line);
 	}
       }
-      else if (game->current_floor >= FIRST_HELL_FLOOR && game->current_floor <= ARCHDEMON_FLOOR)
+      else if (hell_floor(game->current_floor))
       {
 	strcat(morgue, "\nIN HELL ");
       }
@@ -993,7 +993,7 @@ void game_over(char * cause, bool won)
 //    strcat(morgue, line);
 
     clear();
-    mvaddstr(1, 1, morgue);
+    mvaddstr(1, 0, morgue);
 
     refresh();
 
@@ -1050,8 +1050,11 @@ void game_over(char * cause, bool won)
 	p += 9;
       else if (strncmp(p, "YOU ", 4) == 0)
 	p += 4;
-      
-      snprintf(line, DEFLEN, "%s ON FLOOR %d ", p, game->current_floor);
+
+      if (game->current_floor <= LAST_NORMAL_FLOOR)
+	snprintf(line, DEFLEN, "%s ON FLOOR %d ", p, game->current_floor);
+      else if (hell_floor(game->current_floor))
+	snprintf(line, DEFLEN, "%s IN HELL ", p);
     }
     else
     {
