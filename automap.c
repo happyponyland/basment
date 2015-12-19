@@ -232,7 +232,8 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
     *glyph = ACS_VLINE;
     *attr = COLOR_PAIR(PAIR_BROWN);
     break;
-	
+
+  case CELL_OPENLADDER_B:
   case CELL_LADDER_B:
     *glyph = ACS_BTEE;
     *attr = COLOR_PAIR(PAIR_BROWN);

@@ -842,14 +842,21 @@ void game_over(char * cause, bool won)
       // Replace newlines in death message with spaces
       char * p;
       for (p = t; *p != '\0'; p++) { if (*p == '\n') *p = ' '; }
-      
-      snprintf(line, DEFLEN, "\nON FLOOR %d ", game->current_floor);
-      strcat(morgue, line);
-      
-      if (game->max_floor > game->current_floor)
+
+      if (game->current_floor <= LAST_NORMAL_FLOOR)
       {
-	snprintf(line, DEFLEN, "(MAX %d) ", game->max_floor);
+	snprintf(line, DEFLEN, "\nON FLOOR %d ", game->current_floor);
 	strcat(morgue, line);
+      
+	if (game->max_floor > game->current_floor)
+	{
+	  snprintf(line, DEFLEN, "(MAX %d) ", game->max_floor);
+	  strcat(morgue, line);
+	}
+      }
+      else if (game->current_floor >= FIRST_HELL_FLOOR && game->current_floor <= ARCHDEMON_FLOOR)
+      {
+	strcat(morgue, "\nIN HELL ");
       }
     }
     else
