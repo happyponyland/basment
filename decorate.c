@@ -537,7 +537,7 @@ void decorate(int y, int x, int type)
 
     break;
     
-  case DEC_BRIDGE:
+/*  case DEC_BRIDGE:
     stile(y + 1, x - 3, TL_BRIDGE);
     stile(y + 1, x - 2, TL_BRIDGE);
     stile(y + 1, x - 1, TL_BRIDGE);
@@ -545,7 +545,7 @@ void decorate(int y, int x, int type)
     stile(y + 1, x + 1, TL_BRIDGE);
     stile(y + 1, x + 2, TL_BRIDGE);
     stile(y + 1, x + 3, TL_BRIDGE);
-    break;
+    break;*/
 
 
   case DEC_CHEST:

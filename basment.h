@@ -389,9 +389,10 @@ bool ffwd_ptr(char ** p);
 /* generate.c */
 bool map_demo;
 
-#define CELL_CENTER(a, b, c, d)	  \
-  c = (a * BOARD_H) + FEET_Y; \
-  d = (b * CELL_TO_TILES) + 4;
+// Gives the feet/center coordinates for cell cy, cx
+#define CELL_CENTER(cy, cx, feet, tx) \
+  feet = (cy * BOARD_H) + FEET_Y;	      \
+  tx   = (cx * CELL_TO_TILES) + 4;
 
 #define AUTOMAP_BLANK   0
 #define AUTOMAP_VISITED (1<<0)
@@ -427,7 +428,8 @@ int floor_loot(int cy, int cx);
 bool cell_range(int t, int l, int b, int r, int type, bool write);
 int cell_open(int c);
 void paint_branch(int t, int l, int b, int r, int branch);
-
+void remove_floor(int cy, int cx, int w);
+  
 /* decorate.c */
 void decorate(int y, int x, int type);
 

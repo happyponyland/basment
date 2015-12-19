@@ -364,6 +364,8 @@ enum tile_t
   TL_DOOR_BLOCK,
   TL_DESK,
   TL_BRIDGE,
+  TL_BRIDGE_HELL,
+  TL_BRIDGE_HELL_2,
 
   TL_HELL_CRACK_V,
   TL_HELL_CRACK_H,
@@ -502,7 +504,6 @@ enum decoration_t
   DEC_DOOR,
   DEC_NET,
   DEC_WEB,
-  DEC_BRIDGE,
   DEC_HELLSKULL,
   DEC_HELLSKULL_INTERNAL,
 
@@ -583,6 +584,7 @@ enum decoration_t
 #define CELL_HELL_ENT   47
 #define CELL_OPENDOWN   48
 #define CELL_OPENLADDER 49
+#define CELL_OPENLADDER_B 50
 
 #define CELL_WSURFACE   80
 

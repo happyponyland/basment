@@ -1283,26 +1283,33 @@ void convert_cellmap(void)
 	set_cell(cy, cx, CELL_LOOT);
 	break;
 	
+      case CELL_BRIDGE_C:
+      case CELL_BRIDGE_W:
+	make_bridge(cy, cx);
+	break;
+
+      case CELL_OPENDOWN:
+	remove_floor(cy, cx, 4);
+	break;
+
       case CELL_LADDER_T:
 	make_ladder(feet + 1, tx, 4, false);
 	break;
 	
-      case CELL_LADDER_B:
-	make_ladder(feet, tx, -(FLOOR_Y + 1), false);
-	break;
-
-      case CELL_BRIDGE_C:
-      case CELL_BRIDGE_W:
-      case CELL_OPENDOWN:
-	make_bridge(cy, cx);
-	break;
-
       case CELL_LADDER:
       case CELL_OPENLADDER:
 	if (this_cell == CELL_OPENLADDER)
-	  make_bridge(cy, cx);
+	  remove_floor(cy, cx, 4);
 	
 	make_ladder(feet - FLOOR_Y, tx, FLOOR_H, false);
+	break;
+
+      case CELL_LADDER_B:
+      case CELL_OPENLADDER_B:
+	if (this_cell == CELL_OPENLADDER_B)
+	  excavate(feet, tx, 4, 4);
+
+	make_ladder(feet, tx, -(FLOOR_Y + 1), false);
 	break;
 
       case CELL_PORTAL:
@@ -1717,4 +1724,22 @@ int cell_open(int c)
 }
 
 
+void remove_floor(int cy, int cx, int w)
+{
+  int x;
+  int y;
+  int tx;
+  int feet;
 
+  CELL_CENTER(cy, cx, feet, tx);
+
+  for (x = tx - w; x <= tx + w; x++)
+  {
+    for (y = feet + 1; y < feet + 8; y++)
+    {
+      stile(y, x, TL_VOID);
+    }
+  }
+
+  return;
+}
