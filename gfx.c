@@ -2584,54 +2584,113 @@ void draw_giant(int y, int x, int type, bool flip, uint32_t flags)
 
 void draw_ghoul(int y, int x, int type, bool flip, uint32_t flags)
 {
-  int skin;
+  chtype skin;
+  chtype head;
 
   if (flags & GFX_HURT)
     skin = COLOR_PAIR(PAIR_RED);
   else
     skin = COLOR_PAIR(PAIR_GREEN);
 
+  head = 'o';
+  
   if (flags & GFX_GHOUL_DIG1)
   {
   }
   else if (flags & GFX_GHOUL_DIG2)
   {
-    GA(0, -1, ' ' | skin);
-    GA(0, -0, '_' | skin);
-    GA(0, +1, GA_FS | skin);
-//    GA(0, +2, '"' | skin);
+    GA(0, -1, GA_BS | skin);
+    GA(0, -0, ' ' | skin);
+    GA(0, +1, '_' | skin);
   }
   else if (flags & GFX_GHOUL_DIG3)
   {
-//    GA(0, -2, '"' | skin);
-    GA(0, -1, GA_BS | skin);
-    GA(0, -0, 'o' | skin);
-    GA(0, +1, '_' | skin);
+    GA(0, -1, '_' | skin);
+    GA(0, -0, ' ' | skin);
+    GA(0, +1, GA_FS | skin);
+    GA(0, +2, GA_BS | skin);
   }
   else if (flags & GFX_GHOUL_DIG4)
   {
-    GA(-1, -0, 'o' | skin);
+    GA(0, -1, GA_FS | skin);
+    GA(0, -1, GA_BS | skin);
+    GA(0, -0, head | skin);
+    GA(0, +1, '_' | skin);
+    GA(0, +2, '_' | skin);
+  }
+  else if (flags & GFX_GHOUL_DIG5)
+  {
+    GA(-1, -1, '_'   | skin);
+    GA(-1, -0, head  | skin);
+    GA(-1, +1, '_'   | skin);
+    GA(-1, +2, GA_FS | skin);
 
-    GA(0, -1, GA_AL | skin);
+    GA(0, -2, GA_FS | skin);
+    GA(0, -1, ' ' | skin);
     GA(0, -0, ACS_CKBOARD | skin);
-    GA(0, +1, GA_BS | skin);
+  }
+  else if (flags & GFX_ATTACK2)
+  {
+    GA(-2, -1, '_' | skin);
+    GA(-2, -0, head | skin);
+    GA(-2, +1, GA_AR | skin);
+
+    GA(-3, +1, '_' | skin);
+    GA(-3, +2, '_' | skin);
+    
+    GA(-1, -2, GA_FS | skin);
+    GA(-1, -1, ' ' | skin);
+    GA(-1, -0, ACS_CKBOARD | skin);
+    GA(-1, +1, ' ' | skin);
+    
+    GA(-0, -2, GA_BS | skin);
+    GA(-0, -1, GA_AL | skin);
+    GA(-0, -0, ' ');
+    GA(-0, +1, GA_AR | skin);
+  }
+  else if (flags & GFX_ATTACK)
+  {
+    GA(-2, -1, '_' | skin);
+    GA(-2, -0, head | skin);
+//    GA(-2, +1, '_' | skin);
+//    GA(-2, +2, '_' | skin);
+
+    GA(-1, -2, GA_FS | skin);
+    GA(-1, -1, ' ' | skin);
+    GA(-1, -0, ACS_CKBOARD | skin);
+//    GA(-1, +1, ' ' | skin);
+
+    GA(-1, +1, GA_BS | skin);
+    GA(-1, +2, '_' | skin);
+    GA(-1, +3, GA_FS | skin);
+//    GA(-1, +2, GA_BS | skin);
+//    GA(-1, +3, GA_FS | skin);
+    
+    GA(-0, -2, GA_BS | skin);
+    GA(-0, -1, GA_AL | skin);
+    GA(-0, -0, ' ');
+    GA(-0, +1, GA_AR | skin);
   }
   else
   {
     // normal look
+//    GA(-2, -2, '_' | skin);
     GA(-2, -1, '_' | skin);
-    GA(-2, -0, 'o' | skin);
+    GA(-2, -0, head | skin);
     GA(-2, +1, '_' | skin);
+//    GA(-2, +2, '_' | skin);
     
-    GA(-1, -2, '"' | skin);
+    GA(-1, -2, GA_FS | skin);
     GA(-1, -1, ' ' | skin);
     GA(-1, -0, ACS_CKBOARD | skin);
     GA(-1, +1, ' ' | skin);
-    GA(-1, +2, '"' | skin);
+    GA(-1, +2, GA_BS | skin);
     
-    GA(0, -1, GA_FS | skin);
-    GA(0, -0, ' ');
-    GA(0, +1, GA_BS | skin);
+    GA(-0, -2, GA_BS | skin);
+    GA(-0, -1, GA_AL | skin);
+    GA(-0, -0, ' ');
+    GA(-0, +1, GA_AR | skin);
+    GA(-0, +2, GA_FS | skin);
   }
 
   return;

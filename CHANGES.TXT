@@ -1,14 +1,15 @@
 version 0.9
 - Monsters line up instead of overlap
-- Change direction (free action) at top and bottom of ladders
-- Falling into water no longer leaves player stuck
+- Bridges added
 - Dungeon extends into HELL!
+- Falling into water no longer leaves player stuck (+ improved animation)
+- Change direction (free action) at top and bottom of ladders
 - Rogues steal less gold and have faster run animation
 - Climbing/swimming animation sped up
 - Cave-in traps are now visible and can be triggered by enemies
 - Disco added
 - Doors can now remain open and won't close if anything is in the way
-- Door animations sped up
+- Door animation sped up
 
 
 version 0.8 (2015-12-09)

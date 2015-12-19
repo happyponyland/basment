@@ -305,6 +305,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_GHOUL:
+    mob->attack_frames = 2;
     mob->w = 1;
     mob->pack_w = 2;
     mob->speed = 5;
@@ -981,6 +982,11 @@ bool summon_minions(mob_t * mob)
 
   for (i = 0; i < new_mobs; i++)
     new_mob[i]->flags = GFX_GHOUL_DIG4;
+
+  draw_board(); lpause();
+
+  for (i = 0; i < new_mobs; i++)
+    new_mob[i]->flags = GFX_GHOUL_DIG5;
 
   draw_board(); lpause();
 

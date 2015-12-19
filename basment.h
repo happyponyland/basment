@@ -586,6 +586,7 @@ extern char * mob_name[MOB_LAST];
 #define GFX_GHOUL_DIG2 (1<<11)
 #define GFX_GHOUL_DIG3 (1<<12)
 #define GFX_GHOUL_DIG4 (1<<13)
+#define GFX_GHOUL_DIG5 (1<<14)
 
 #define GFX_MIMIC_IDLE  (1<<31)
 #define GFX_BLURK_IDLE  (1<<31)
