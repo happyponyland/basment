@@ -25,6 +25,8 @@ void new_player()
 
   player->strength = 1;
 
+  player->flags = 0;
+
   player->shd_type = SHD_NONE;
   player->armor_type = SHD_NONE;
   give_weapon(WPN_DAGGER);
@@ -1289,7 +1291,7 @@ void player_fall()
       stile(player->y + 1, player->x + 1, TL_REDSPIKE);
 
       player->type = MOB_GORE;
-
+      
       draw_board();
 
       game_over("YOU WERE IMPALED\n"

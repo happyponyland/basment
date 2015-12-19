@@ -778,6 +778,10 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
     draw_demon(y, x, type, flip, flags);
     break;
 
+  case MOB_FIEND:
+    draw_fiend(y, x, type, flip, flags);
+    break;
+
   case MOB_BULLROG:
     draw_bullrog(y, x, type, flip, flags);
     break;
@@ -1701,6 +1705,57 @@ void draw_eviltree(int y, int x, int type, bool flip, uint32_t flags)
 
 
 void draw_demon(int y, int x, int type, bool flip, uint32_t flags)
+{
+  chtype skin;
+  chtype weapon;
+
+  skin = COLOR_PAIR(PAIR_RED);
+  weapon = COLOR_PAIR(PAIR_WHITE);
+  
+  GA(-4, -1, GA_AL | skin);
+//  GA(-4, -1, '_' | skin);
+  GA(-4, -0, ' '   | skin);
+//  GA(-4, +1, '_' | skin);
+  GA(-4, +1, GA_AR | skin);
+
+//  GA(-3, -3, '_' | skin);
+//  GA(-3, -2, '_' | skin);
+  
+  GA(-3, -1, GA_PL | skin);
+  GA(-3, -0, '"'   | skin);
+  GA(-3, +1, GA_PR | skin);
+
+  GA(-2, -2, GA_UL | skin);
+  GA(-2, -1, GA_CK | skin);
+  GA(-2, -0, 'V'   | skin | A_REVERSE);
+  GA(-2, +1, GA_CK | skin);
+  GA(-2, +2, GA_HL | skin);
+//  GA(-2, +3, '_' | skin);
+     
+  GA(-1, -2, '_'   | skin);
+  GA(-1, -1, GA_AR   | skin);
+  GA(-1, -0, ' ' | skin);
+  GA(-1, +1, '_'  | skin);
+  GA(-1, +2, GA_AR   | skin);
+  
+  GA(-0, -2, GA_BS | skin);
+  GA(-0, -0, ' '         );
+  GA(-0, +1, GA_BS | skin);
+
+  GA(-0, +3, GA_VL | weapon);
+  GA(-1, +3, GA_VL | weapon);
+  GA(-2, +3, GA_VL | weapon);
+
+  GA(-3, +2, GA_LL | weapon);
+  GA(-3, +3, GA_CR | weapon);
+  GA(-3, +4, GA_LR | weapon);
+
+  return;
+}
+
+
+
+void draw_fiend(int y, int x, int type, bool flip, uint32_t flags)
 {
   int a1;
   int a2;
@@ -2652,19 +2707,14 @@ void draw_ghoul(int y, int x, int type, bool flip, uint32_t flags)
   {
     GA(-2, -1, '_' | skin);
     GA(-2, -0, head | skin);
-//    GA(-2, +1, '_' | skin);
-//    GA(-2, +2, '_' | skin);
 
     GA(-1, -2, GA_FS | skin);
     GA(-1, -1, ' ' | skin);
     GA(-1, -0, ACS_CKBOARD | skin);
-//    GA(-1, +1, ' ' | skin);
 
     GA(-1, +1, GA_BS | skin);
     GA(-1, +2, '_' | skin);
     GA(-1, +3, GA_FS | skin);
-//    GA(-1, +2, GA_BS | skin);
-//    GA(-1, +3, GA_FS | skin);
     
     GA(-0, -2, GA_BS | skin);
     GA(-0, -1, GA_AL | skin);
@@ -2673,12 +2723,10 @@ void draw_ghoul(int y, int x, int type, bool flip, uint32_t flags)
   }
   else
   {
-    // normal look
-//    GA(-2, -2, '_' | skin);
+    // Idle look
     GA(-2, -1, '_' | skin);
     GA(-2, -0, head | skin);
     GA(-2, +1, '_' | skin);
-//    GA(-2, +2, '_' | skin);
     
     GA(-1, -2, GA_FS | skin);
     GA(-1, -1, ' ' | skin);

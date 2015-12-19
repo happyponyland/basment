@@ -157,6 +157,8 @@ void flush_input(void);
 #define GA_TT  (ACS_TTEE)
 #define GA_VL  (ACS_VLINE)
 #define GA_HL  (ACS_HLINE)
+#define GA_CK  (ACS_CKBOARD)
+#define GA_CR  (ACS_PLUS)
 #define GA_FS  (!flip ? '/'  : '\\')
 #define GA_BS  (!flip ? '\\' : '/')
 #define GA_AL  (!flip ? '<' : '>')
@@ -193,6 +195,7 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags);
 void draw_human(int y, int x, int type, bool flip, uint32_t flags);
 void draw_dancer(int y, int x, int type, bool flip, uint32_t flags);
 void draw_demon(int y, int x, int type, bool flip, uint32_t flags);
+void draw_fiend(int y, int x, int type, bool flip, uint32_t flags);
 void draw_bullrog(int y, int x, int type, bool flip, uint32_t flags);
 //void draw_fiend(int y, int x, int type, bool flip, uint32_t flags);
 void draw_archdemon(int y, int x, int type, bool flip, uint32_t flags);
@@ -523,8 +526,8 @@ WINDOW * rwin;
 #define MOB_SAUCEROR   24
 #define MOB_ELEMENTAL  25
 #define MOB_EVILTREE   26
-#define MOB_DEMON      27
-#define MOB_LASTRND    28
+#define MOB_LASTRND    27
+#define MOB_DEMON      28
 #define MOB_BULLROG    29
 #define MOB_ARCHDEMON  30
 #define MOB_KNAVE      31
@@ -537,7 +540,8 @@ WINDOW * rwin;
 #define MOB_FISH       38
 #define MOB_CRAB       39
 #define MOB_DANCER     40
-#define MOB_LAST       41
+#define MOB_FIEND      41
+#define MOB_LAST       42
 
 extern char * mob_name[MOB_LAST];
 

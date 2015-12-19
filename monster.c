@@ -29,6 +29,7 @@ char * mob_name[MOB_LAST] =
   [MOB_DKNIGHT] = "DEATH KNIGHT",
   [MOB_IMP] = "IMP",
   [MOB_DEMON] = "DEMON",
+  [MOB_FIEND] = "FIEND",
   [MOB_BLURK] = "BLURK",
   [MOB_NOSE] = "GIANT NOSE",
   [MOB_ELEMENTAL] = "ELEMENTAL",
@@ -381,13 +382,24 @@ int make_monster(int y, int x, int type)
     mob->damage = 8;
     break;
 
-  case MOB_DEMON:
+  case MOB_FIEND:
     mob->w = 3;
     mob->pack_w = 3;
     mob->speed = 9;
     mob->steps = 6;
     mob->range = 5;
     mob->hp = 40;
+    mob->exp = 800;
+    mob->damage = 5;
+    break;
+
+  case MOB_DEMON:
+    mob->w = 3;
+    mob->pack_w = 3;
+    mob->speed = 9;
+    mob->steps = 3;
+    mob->range = 3;
+    mob->hp = 20;
     mob->exp = 800;
     mob->damage = 5;
     break;
@@ -681,7 +693,18 @@ int random_monster(int floor, int branch)
 
   if (branch == BRANCH_HELL)
   {
-    return MOB_BULLROG;
+    switch (rand() % 7)
+    {
+    case 0:
+      return MOB_BULLROG;
+
+    case 1:
+    case 2:
+      return MOB_FIEND;
+
+    default:
+      return MOB_DEMON;
+    }
   }
   else if (branch == BRANCH_CRYPT)
   {
