@@ -163,60 +163,6 @@ void fix_walls()
 
 
 
-void decorate_hell()
-{
-  int cy;
-  int cx;
-  int this_cell;
-  int cell_above;
-  int feet;
-  int tx;
-
-  for (cy = FIRST_HELL_FLOOR; cy <= LAST_HELL_FLOOR; cy++)
-  {
-    for (cx = 0; cx < CELLS_W; cx++)
-    {
-      this_cell = get_cell(cy, cx);
-      cell_above = get_cell(cy - 1, cx);
-
-      CELL_CENTER(cy, cx, feet, tx);
-      
-      if (this_cell == CELL_ROCK)
-      {
-	continue;
-      }
-
-      if (this_cell == CELL_SPIKEPIT)
-      {
-	hell_decorate(feet, tx,     true);
-      }
-      else if (this_cell  != CELL_LADDER_B &&
-	       this_cell  != CELL_LADDER_B &&
-	       cell_above != CELL_CHASM &&
-	       cell_above != CELL_TRAPDOOR)
-      {
-	hell_decorate(feet, tx,     true);
-	hell_decorate(feet, tx - 3, true);
-	hell_decorate(feet, tx + 3, true);
-      }
-
-      if (this_cell != CELL_LADDER_T &&
-	  this_cell != CELL_TRAPDOOR &&
-	  this_cell != CELL_SPIKEPIT &&
-	  this_cell != CELL_WSURFACE &&
-	  this_cell != CELL_CHASM_T)
-      {
-	hell_decorate(feet, tx,     false);
-	hell_decorate(feet, tx - 3, false);
-	hell_decorate(feet, tx + 3, false);
-      }
-    }
-  }
-
-  return;
-}
-
-
 
 void decorate_walls()
 {

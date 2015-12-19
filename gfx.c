@@ -1712,18 +1712,21 @@ void draw_demon(int y, int x, int type, bool flip, uint32_t flags)
   skin = COLOR_PAIR(PAIR_RED);
   weapon = COLOR_PAIR(PAIR_WHITE);
   
-  GA(-4, -1, GA_AL | skin);
+//  GA(-4, -1, GA_AL | skin);
 //  GA(-4, -1, '_' | skin);
   GA(-4, -0, ' '   | skin);
 //  GA(-4, +1, '_' | skin);
-  GA(-4, +1, GA_AR | skin);
+//  GA(-4, +1, GA_AR | skin);
 
 //  GA(-3, -3, '_' | skin);
 //  GA(-3, -2, '_' | skin);
-  
-  GA(-3, -1, GA_PL | skin);
-  GA(-3, -0, '"'   | skin);
-  GA(-3, +1, GA_PR | skin);
+
+  GA(-4, -1, GA_UL | skin);
+  GA(-4, +1, GA_UR | skin);
+    
+  GA(-3, -1, GA_LL | skin);
+  GA(-3, -0, '"'   | skin | A_REVERSE);
+  GA(-3, +1, GA_LR | skin);
 
   GA(-2, -2, GA_UL | skin);
   GA(-2, -1, GA_CK | skin);
@@ -3862,7 +3865,20 @@ void draw_stats()
   werase(stats);
 
   wmove(stats, 3, 0);
-  wprintw(stats, "FLOOR %d", game->current_floor);
+
+  /*
+    Don't display physical floor in Hell.
+    Compensate -1 to get the proper internal Y position.
+  */
+  if (game->current_floor - 1 <= LAST_NORMAL_FLOOR)
+  {
+    wprintw(stats, "FLOOR %d", game->current_floor);
+  }
+  else if (game->current_floor - 1 >= FIRST_HELL_FLOOR &&
+	   game->current_floor - 1 <= ARCHDEMON_FLOOR)
+  {
+    wprintw(stats, "HELL");
+  }
 
   wmove(stats, 1, BOARD_W - 18);
   wprintw(stats, "LEVEL %2d", game->player_level);

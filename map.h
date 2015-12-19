@@ -581,6 +581,8 @@ enum decoration_t
 #define CELL_BRIDGE_CM  45
 #define CELL_BRIDGE_WM  46
 #define CELL_HELL_ENT   47
+#define CELL_OPENDOWN   48
+#define CELL_OPENLADDER 49
 
 #define CELL_WSURFACE   80
 

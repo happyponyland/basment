@@ -49,6 +49,7 @@ extern jmp_buf restart_game;
 #define HELL_FLOORS       6
 #define FIRST_HELL_FLOOR  (NORMAL_FLOORS + 1)
 #define LAST_HELL_FLOOR   (NORMAL_FLOORS + HELL_FLOORS - 1)
+#define ARCHDEMON_FLOOR   (LAST_HELL_FLOOR + 2)
 
 #define MAP_W (CELL_TO_TILES * CELLS_W)   // Width of each floor
 #define MAP_H ((MAX_FLOORS + 1) * FLOOR_H)  // Total height needed
@@ -238,7 +239,6 @@ int pchoose(char * msg, int start_row, int items, int options);
 /* map.c */
 void fix_walls(void);
 void decorate_walls(void);
-void decorate_hell(void);
 int gtile(int y, int x);
 int stile(int y, int x, int n);
 int branch_at_tile(int y, int x);
@@ -430,7 +430,11 @@ void paint_branch(int t, int l, int b, int r, int branch);
 
 /* decorate.c */
 void decorate(int y, int x, int type);
-void hell_decorate(int y, int x, int up);
+
+/* hell.c */
+void add_archdemon_floor(void);
+void decorate_hell(void);
+void hell_crack(int y, int x, int up);
 
 /* bridge.c */
 void add_bridges(void);

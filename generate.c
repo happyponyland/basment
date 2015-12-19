@@ -38,8 +38,9 @@ void generate_map()
 
     // Build Hell below the regular dungeon
     corridor(hell_ent_y + 2, hell_ent_x, 0, false);
-    paint_branch(FIRST_HELL_FLOOR - 1, 0, LAST_HELL_FLOOR, CELLS_W - 1, BRANCH_HELL);
+    paint_branch(FIRST_HELL_FLOOR - 1, 0, ARCHDEMON_FLOOR, CELLS_W - 1, BRANCH_HELL);
 
+    add_archdemon_floor();
     add_bridges();
     add_extra_rooms();
     add_surfaces();
@@ -1073,10 +1074,10 @@ void populate_cellmap(void)
 	  break;
 	  
 	case 20:
-	  if (open_down(game->cell[y - 1][x]) == false)
+	  if (open_down(get_cell(y - 1, x)) == false)
 	  {
 	    if (y < MAX_FLOORS - 1 &&
-		game->cell[y + 1][x] == CELL_ROCK &&
+		get_cell(y + 1, x) == CELL_ROCK &&
 		y > 10 &&
 		rand() % 4 == 0)
 	    {
@@ -1221,12 +1222,21 @@ void convert_cellmap(void)
 	  open_r = -1;
       }
 
+      // Hack to make the walls align in archdemon lair
+      if (this_cell == CELL_OPENLADDER)
+      {
+	if (cell_l == CELL_ROCK)
+	  open_l += 1;
+	else if (cell_r == CELL_ROCK)
+	  open_r += 1;
+      }
+      
       if (open)
       {
 	excavate(feet, tx, 3 + open_l, 3 + open_r);
       }
 
-      switch (game->cell[cy][cx])
+      switch (this_cell)
       {
       case CELL_WSURFACE:
       case CELL_WATER:
@@ -1254,11 +1264,6 @@ void convert_cellmap(void)
 	stile(feet, tx, TL_T_UWNET);
 	break;
 
-      case CELL_BRIDGE_C:
-      case CELL_BRIDGE_W:
-	make_bridge(cy, cx);
-	break;
-	
       case CELL_CAMP:
 	tx += slide;
 	decorate(feet, tx, DEC_CAMP);
@@ -1286,7 +1291,17 @@ void convert_cellmap(void)
 	make_ladder(feet, tx, -(FLOOR_Y + 1), false);
 	break;
 
+      case CELL_BRIDGE_C:
+      case CELL_BRIDGE_W:
+      case CELL_OPENDOWN:
+	make_bridge(cy, cx);
+	break;
+
       case CELL_LADDER:
+      case CELL_OPENLADDER:
+	if (this_cell == CELL_OPENLADDER)
+	  make_bridge(cy, cx);
+	
 	make_ladder(feet - FLOOR_Y, tx, FLOOR_H, false);
 	break;
 
@@ -1431,7 +1446,7 @@ void convert_cellmap(void)
 	  make_ladder(feet - 7, tx + 3, FLOOR_H + 2, true);
 
 	break;
-
+	
       case CELL_SPIKEPIT:
 	excavate(feet, tx, 1, 1);
 	stile(feet, tx - 1, TL_SPIKE);

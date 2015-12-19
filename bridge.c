@@ -18,6 +18,11 @@ int is_bridge(int cell)
   case CELL_BRIDGE_CM:
   case CELL_BRIDGE_WM:
     return true;
+    
+    // These aren't really bridges, but they also want to their floors removed
+  case CELL_OPENDOWN:
+  case CELL_OPENLADDER:
+    return true;
 
   default:
     return false;
@@ -134,8 +139,20 @@ void make_bridge(int cy, int cx)
   w_l = is_bridge(cell_l) ? 4 : 2;
   w_r = is_bridge(cell_r) ? 4 : 2;
 
+  // Hack to make the walls align in archdemon lair
+  if (cell == CELL_OPENLADDER)
+  {
+    if (cell_l == CELL_ROCK)
+      w_l += 1;
+    else if (cell_r == CELL_ROCK)
+      w_r += 1;
+  }
+
   for (x = tx - w_l; x <= tx + w_r; x++)
   {
+    if (cell == CELL_OPENDOWN || cell == CELL_OPENLADDER)
+      goto remove_floor;
+    
     stile(feet + 1, x, TL_BRIDGE);
 
     if (cell == CELL_BRIDGE_W)
@@ -155,18 +172,23 @@ void make_bridge(int cy, int cx)
     }
     else
     {
-      // Regular bridge; open up a chasm underneath
+      // Regular bridge and "open down"; open up a chasm underneath
+    remove_floor:
       for (y = feet + 2; y < feet + 9; y++)
 	stile(y, x, TL_VOID);
     }
   }
 
-  // Add a decorative support beam at the end of the bridge
-  if (w_l == 2)
-    stile(feet + 2, tx - w_l, TL_BRIDGE_SUPPORT_L);
-  
-  if (w_r == 2)
-    stile(feet + 2, tx + w_r, TL_BRIDGE_SUPPORT_R);
+  if (cell != CELL_OPENDOWN &&
+      cell != CELL_OPENLADDER)
+  {
+    // Add a decorative support beam at the end of the bridge
+    if (w_l == 2)
+      stile(feet + 2, tx - w_l, TL_BRIDGE_SUPPORT_L);
+    
+    if (w_r == 2)
+      stile(feet + 2, tx + w_r, TL_BRIDGE_SUPPORT_R);
+  }
 
   return;
 }

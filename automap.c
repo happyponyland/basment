@@ -183,6 +183,7 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
   switch (celltype)
   {
   case CELL_ROCK:
+  case CELL_OPENDOWN:
     *glyph = ' ';
     break;
     
@@ -227,6 +228,7 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
     break;
 
   case CELL_LADDER:
+  case CELL_OPENLADDER:
     *glyph = ACS_VLINE;
     *attr = COLOR_PAIR(PAIR_BROWN);
     break;

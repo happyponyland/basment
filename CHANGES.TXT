@@ -10,6 +10,7 @@ version 0.9
 - Disco added
 - Doors can now remain open and won't close if anything is in the way
 - Door animation sped up
+- Player no longer gets stuck in falling animation when dying on spikes and restarting
 
 
 version 0.8 (2015-12-09)
