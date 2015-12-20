@@ -13,6 +13,15 @@
 
 #define BOOKS 14
 
+typedef enum
+{
+  EQ_TORCH,
+  EQ_SCUBA,
+  EQ_SHADES,
+  EQ_CLOAK,
+  EQ_LAST
+} eq_t;
+
 typedef struct game_t game_t;
 
 struct game_t
@@ -23,10 +32,11 @@ struct game_t
   int hallucination;
   bool scrying;
 
+  int blinded;
+
   int current_floor;
 
-  int has_torch;
-  int has_scuba;
+  int equipment[EQ_LAST];
 
   uint16_t tile[MAP_H][MAP_W];
 
@@ -299,6 +309,7 @@ enum tile_t
   TL_T_GORZOTH_R,
   TL_T_GORZOTH_L,
   TL_T_WEB,
+  TL_T_FLASH,
 
   TL_CAMP_FIRE,
   TL_CAMP_SPENT,
@@ -342,7 +353,7 @@ enum tile_t
   
   TL_UNDERWATER,
   TL_WATER,
-  TL_UW_BELOW_BRIDGE, // Used to block player when swimming under bridge
+  TL_UW_BELOW_BRIDGE, // Used to block player ascent under bridges
   TL_UWWOOD,
   TL_P_UWCHEST,
   TL_UWLOCK,

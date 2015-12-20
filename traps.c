@@ -10,6 +10,7 @@ bool is_trap(int tile)
       tile == TL_T_GORZOTH_L  ||
       tile == TL_T_GORZOTH_R  ||
       tile == TL_T_WEB        ||
+      tile == TL_T_FLASH      ||
       tile == TL_T_UWNET      || 0)
   {
     return true;
@@ -17,6 +18,64 @@ bool is_trap(int tile)
 
   return false;
 }
+
+
+
+
+void flash_trap()
+{
+  stile(player->y, player->x, TL_VOID);
+  
+  if (game->blinded)
+    return;
+  
+  board_flash();
+
+  if (has_eq(EQ_SHADES))
+  {
+    draw_board_norefresh();
+    pwait("YOU TRIGGER A FLASH TRAP!\n\nFORTUNATELY, YOU ARE WEARING SHADES");
+  }
+  else
+  {
+    game->blinded = 10;
+    draw_board_norefresh();
+    pwait("YOU TRIGGER A FLASH TRAP!\n\nYOU ARE BLINDED BY THE FLASH!");
+  }
+
+  draw_board();
+  
+  return;
+}
+
+
+
+void board_flash()
+{
+  int sc_y;
+  int sc_x;
+  int c;
+  int a;
+  
+  draw_board_norefresh();
+
+  for (sc_y = 0; sc_y < BOARD_H; sc_y++)
+  {
+    for (sc_x = 0; sc_x <= BOARD_W; sc_x++)
+    {
+      c = mvwinch(board, sc_y, sc_x) & (A_CHARTEXT);
+      a = mvwinch(board, sc_y, sc_x) & ((1<<22) | (1<<18));
+      waddch(board, c | a | COLOR_PAIR(PAIR_WHITE) | A_REVERSE);
+    }
+  }
+
+  wrefresh(board);
+
+  lpause();
+
+  return;
+}
+
 
 
 /*
@@ -358,7 +417,7 @@ void web_net()
     decorate(y, x, DEC_WEB);
     draw_board();
       
-    if (game->has_torch)
+    if (has_eq(EQ_TORCH))
     {
       pwait("FORTUNATELY, YOU ARE CARRYING A TORCH");
 
@@ -454,6 +513,11 @@ int trap_sprung(int tile_feet)
   else if (tile_feet == TL_T_UWNET || tile_feet == TL_T_WEB)
   {
     web_net();
+    return true;
+  }
+  else if (tile_feet == TL_T_FLASH)
+  {
+    flash_trap();
     return true;
   }
   else if (tile_feet == TL_T_POISON ||

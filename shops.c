@@ -499,7 +499,7 @@ void shop_scuba()
 
   if (sel == 0)
   {
-    if (game->has_scuba)
+    if (has_eq(EQ_SCUBA))
     {
       pwait("YOU ALREADY HAVE SCUBA GEAR");
       return;
@@ -519,7 +519,7 @@ void shop_scuba()
   }
 
   pwait("EXCELLENT! YOU NOW HAVE SCUBA GEAR");
-  game->has_scuba = true;
+  give_eq(EQ_SCUBA);
   draw_stats();
   
 //  draw_board();

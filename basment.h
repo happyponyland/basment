@@ -294,6 +294,8 @@ void change_pl_st(int change);
 void change_pl_sp(int change);
 void debug_teleport(void);
 void get_player_name(char * dest, int maxlen);
+int has_eq(int eq);
+void give_eq(int eq);
 
 /* traps.c */
 bool is_trap(int tile);
@@ -304,8 +306,14 @@ void tremor(int amount);
 void web_net(void);
 int trap_sprung(int tile_feet);
 int monster_trap(mob_t * mob);
+void flash_trap(void);
+void board_flash(void);
 
 /* interact.c */
+#define LOOT_NORMAL   0
+#define LOOT_RARE     1
+
+void give_item(char * line, int gold, int type);
 int interesting(int tile);
 int interact(void);
 void feet_instruction(int tile);
@@ -601,11 +609,6 @@ extern char * mob_name[MOB_LAST];
 
 #define GFX_MIMIC_IDLE  (1<<31)
 #define GFX_BLURK_IDLE  (1<<31)
-
-
-
-
-
 
 #endif
 

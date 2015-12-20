@@ -155,6 +155,7 @@ void new_game(void)
   reset_trap_tiles();
 
   generate_map();
+  fill_automap(AUTOMAP_BLANK);
   
   new_player();
 
@@ -171,16 +172,9 @@ void new_game(void)
   player->y = FEET_Y;
 
   stile(player->y, player->x, TL_STAIR_HL);
-
+  
   calculate_floor();
-
   recenter(false);
-
-/*
-  pwait("HELLO AND WELCOME\n"
-	"       TO\n"
-	"BASMENT DWELLERS");
-*/
 
   draw_frames();
   draw_stats();

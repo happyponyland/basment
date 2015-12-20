@@ -386,12 +386,13 @@ void init_gfx_map()
 */
 void reset_trap_tiles()
 {
-  gfx_map[TL_T_POISON]  =
-    gfx_map[TL_T_WEB]  =
-    gfx_map[TL_T_UWNET]  =
+  gfx_map[TL_T_POISON]      =
+    gfx_map[TL_T_WEB]       =
+    gfx_map[TL_T_UWNET]     =
     gfx_map[TL_T_GORZOTH_L] =
     gfx_map[TL_T_GORZOTH_R] =
-    gfx_map[TL_T_CAVEIN]  = ' ';
+    gfx_map[TL_T_CAVEIN]    =
+    gfx_map[TL_T_FLASH]     = ' ';
 
   return;
 }
@@ -406,6 +407,12 @@ void draw_board_norefresh()
   int i;
   int t;
 
+  if (game->blinded)
+  {
+    werase(board);
+    return;
+  }
+  
   wbkgdset(board, COLOR_PAIR(PAIR_RED) | A_REVERSE);
   werase(board);
   wbkgdset(board, 0);
@@ -3334,7 +3341,7 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   
   if (!title_running &&
       is_player &&
-      (game->has_scuba) &&
+      (has_eq(EQ_SCUBA)) &&
       water_join(gtile(player->y - (dive ? 0 : 2), player->x)))
   {
     snorkel = true;
@@ -3909,11 +3916,14 @@ void draw_stats()
   werase(rwin);
   wattron(rwin, COLOR_PAIR(PAIR_BLACK) | A_BOLD);
 
-  if (game->has_torch)
+  if (has_eq(EQ_TORCH))
     waddstr(rwin, "TORCH\n");
 
-  if (game->has_scuba)
+  if (has_eq(EQ_SCUBA))
     waddstr(rwin, "SCUBA\n");
+
+  if (has_eq(EQ_SHADES))
+    waddstr(rwin, "SHADS\n");
 
   wrefresh(stats);
   wrefresh(rwin);

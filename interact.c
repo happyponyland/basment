@@ -212,12 +212,8 @@ int interact()
     }
     else
     {
-      int gold;
-
-      gold = 10 + rand() % COFFIN_GOLD;
-
-      draw_board();
-      give_gold(line, gold);
+      draw_board_norefresh();
+      give_item(line, 10 + rand() % COFFIN_GOLD, LOOT_NORMAL);
     }
   }
   else if (tile == TL_P_FOUNTAIN)
@@ -305,20 +301,8 @@ int interact()
       find_random_weapon(line);
       break;
 
-    case 6:
-    case 7:
-      if (!game->has_torch /*&& rand() % 4 == 0*/)
-      {
-	game->has_torch = true;
-	draw_stats();
-	strncat(line, "YOU FIND A TORCH", DEFLEN - 1);
-	pwait(line);
-	break;
-      }
-      // else proceed
-    
     default:
-      give_gold(line, 5 + rand() % 25);
+      give_item(line, 5 + rand() % 25, LOOT_NORMAL);
       break;
     }
 
@@ -394,7 +378,7 @@ void loot_chest(int ty, int tx)
   
   draw_board();
 
-  give_gold(line, gold_amount);
+  give_item(line, gold_amount, LOOT_NORMAL);
   
   return;
 }
@@ -448,6 +432,52 @@ void portal_travel()
   return;
 }
 
+
+
+/**
+   Give the player a random item suitable for the current floor or
+   @gold if nothing useful was available.
+*/
+void give_item(char * msg, int gold, int type)
+{
+  char line[DEFLEN];
+
+  switch (rand() % 5)
+  {
+  case 0:
+    if (!has_eq(EQ_TORCH))
+    {
+      give_eq(EQ_TORCH);
+      draw_stats();
+      snprintf(line, DEFLEN, "%sYOU FIND A TORCH", msg);
+      goto print_msg;
+    }
+    break;
+
+  case 1:
+    if (!has_eq(EQ_SHADES))
+    {
+      give_eq(EQ_SHADES);
+      draw_stats();
+      snprintf(line, DEFLEN, "%sYOU FIND SOME SHADES\n\nYOU LOOK REALLY COOL NOW", msg);
+      goto print_msg;
+    }
+    break;
+
+  default:
+    break;
+  }
+
+  game->player_gold += gold;
+  game->total_gold_earned += gold;
+  draw_stats();
+  snprintf(line, DEFLEN, "%sYOU FIND %d GOLD", msg, gold);
+
+print_msg:
+  pwait(line);
+
+  return;
+}
 
 
 

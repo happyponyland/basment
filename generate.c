@@ -926,8 +926,9 @@ void populate_cellmap(void)
     place_single_cell(10, CELL_IDOL);
   }
  
-  for (i = 0; i < 100; i++)
+  for (i = 0; i < 200; i++)
   {
+    place_single_cell(10, CELL_TRAP);
   }
  
   for (y = 0; y < MAX_FLOORS; y++)
@@ -1084,7 +1085,7 @@ void populate_cellmap(void)
 	case 20:
 	  if (open_down(get_cell(y - 1, x)) == false)
 	  {
-	    if (y < MAX_FLOORS - 1 &&
+	    if (y < LAST_HELL_FLOOR - 1 && // Don't create these in archdemon lair
 		get_cell(y + 1, x) == CELL_ROCK &&
 		y > 10 &&
 		rand() % 4 == 0)
@@ -1386,11 +1387,13 @@ void convert_cellmap(void)
 
       case CELL_TRAP:
 	tx += slide;
-	switch (rand() % 3)
+	switch (rand() % 4)
 	{
 	case 0:
 	  // Only create these if there is a ceiling
 	  if (cell_above != CELL_BRIDGE_C &&
+	      cell_above != CELL_BRIDGE_CM &&
+	      cell_above != CELL_OPENDOWN &&
 	      cell_above != CELL_CHASM &&
 	      cell_above != CELL_CHASM_T &&
 	      cell_above != CELL_TRAPDOOR)
@@ -1405,6 +1408,10 @@ void convert_cellmap(void)
 
 	case 2:
 	  stile(feet, tx, TL_T_WEB);
+	  break;
+
+	case 3:
+	  stile(feet, tx, TL_T_FLASH);
 	  break;
 	}
 	break;

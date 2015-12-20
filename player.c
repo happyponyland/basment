@@ -15,6 +15,8 @@
 */
 void new_player()
 {
+  int i;
+  
   player = &game->mob[0];
   player->type = MOB_PLAYER;
   player->w = 1;
@@ -49,11 +51,13 @@ void new_player()
   game->hallucination = 0;
   game->scrying = false;
 
+  game->blinded = 0;
+
   game->skill_lockpick = false;
   game->skill_detect_traps = false;
 
-  game->has_torch = false;
-  game->has_scuba = false;
+  for (i = 0; i < EQ_LAST; i++)
+    game->equipment[i] = false;
 
   shuffle_books();
 
@@ -84,6 +88,9 @@ void player_turn()
       give_exp((rand() % 5) * 100);
     }
   }
+
+  if (game->blinded && --game->blinded == 0)
+    draw_board();
 
   /*
     If we haven't fought anything for a few turns, the enemy health
@@ -165,8 +172,8 @@ retry:
   else if (input == 'X' && cheat_mode)
   {
     learn_detect_traps();
-    game->has_torch = true;
-//    game->has_scuba = true;
+    give_eq(EQ_TORCH);
+    give_eq(EQ_SHADES);
     player->hp += 30;
     player->speed += 3;
     player->strength += 3;
@@ -924,13 +931,13 @@ void game_over(char * cause, bool won)
       anything = true;
     }
 
-    if (game->has_scuba)
+    if (has_eq(EQ_SCUBA))
     {
       strcat(morgue, "  SCUBA GEAR\n");
       anything = true;
     }
 
-    if (game->has_torch)
+    if (has_eq(EQ_TORCH))
     {
       strcat(morgue, "  A TORCH\n");
       anything = true;
@@ -1476,7 +1483,8 @@ void refill_hp(int amount)
 void learn_detect_traps()
 {
   game->skill_detect_traps = true;
-  
+
+  gfx_map[TL_T_FLASH]  = '^' | COLOR_PAIR(PAIR_RED) | A_REVERSE;
   gfx_map[TL_T_CAVEIN] = '^' | COLOR_PAIR(PAIR_RED) | A_REVERSE;
   gfx_map[TL_T_POISON] = '^' | COLOR_PAIR(PAIR_RED) | A_REVERSE;
   gfx_map[TL_T_UWNET]  = '^' | COLOR_PAIR(PAIR_RED) | A_REVERSE;
@@ -1533,5 +1541,25 @@ void change_pl_sp(int change)
 
   lpause();
   
+  return;
+}
+
+
+
+int has_eq(int eq)
+{
+  if (eq >= 0 && eq < EQ_LAST)
+    return game->equipment[eq];
+
+  return 0;
+}
+
+
+
+void give_eq(int eq)
+{
+  if (eq >= 0 && eq < EQ_LAST)
+    game->equipment[eq] = true;
+
   return;
 }

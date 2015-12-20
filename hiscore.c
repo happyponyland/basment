@@ -39,7 +39,9 @@ void make_score(score_t * score)
   temp = (game->skill_lockpick ? 1 : 0) + (game->skill_detect_traps ? 1 : 0);
   add_score(score, "SKILLS", temp, SCORE_SKILLS);
   
-  temp = (game->has_torch ? 1 : 0) + (game->has_torch ? 1 : 0);
+  temp =
+    (has_eq(EQ_TORCH) ? 1 : 0) +
+    (has_eq(EQ_SCUBA) ? 1 : 0);
   add_score(score, "TOOLS", temp, SCORE_TOOLS);
 
   if (player->hp > 0)
