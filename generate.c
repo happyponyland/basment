@@ -1027,21 +1027,29 @@ void populate_cellmap(void)
 	default: break;
 	}
       }
+      else if (original == CELL_BRIDGE_C ||
+	       original == CELL_BRIDGE_W)
+      {
+	if (rand() % 5 == 0)
+	{
+	  set_cell(y, x, (original == CELL_BRIDGE_C ? CELL_BRIDGE_CM : CELL_BRIDGE_WM));
+	}
+      }
 
       if (original != CELL_ROOM)
 	continue;
 
       if (y >= NPC_MIN_FLOOR &&
-	  game->cell[y][x - 1] < CELL_BLOCKING &&
-	  game->cell[y][x + 1] > CELL_BLOCKING &&
-	  open_down(game->cell[y - 1][x]) == false)
+	  get_cell(y, x - 1) < CELL_BLOCKING &&
+	  get_cell(y, x + 1) > CELL_BLOCKING &&
+	  open_down(get_cell(y - 1, x)) == false)
       {
 	set_cell(y, x, CELL_NPC_L);
       }
       else if (y >= NPC_MIN_FLOOR &&
-	       game->cell[y][x - 1] > CELL_BLOCKING &&
-	       game->cell[y][x + 1] < CELL_BLOCKING &&
-	       open_down(game->cell[y - 1][x]) == false)
+	       get_cell(y, x - 1) > CELL_BLOCKING &&
+	       get_cell(y, x + 1) < CELL_BLOCKING &&
+	       open_down(get_cell(y - 1, x)) == false)
       {
 	set_cell(y, x, CELL_NPC_R);
       }
@@ -1285,7 +1293,19 @@ void convert_cellmap(void)
 	
       case CELL_BRIDGE_C:
       case CELL_BRIDGE_W:
+      case CELL_BRIDGE_CM:
+      case CELL_BRIDGE_WM:
 	make_bridge(cy, cx);
+
+	if (this_cell == CELL_BRIDGE_CM || this_cell == CELL_BRIDGE_WM)
+	{
+	  m = random_monster(cy, branch_at_tile(feet, tx));
+	    
+	  if (rand() % 3 == 0)
+	    m = MOB_IMP;
+	  
+	  make_monster(feet, tx, m);
+	}
 	break;
 
       case CELL_OPENDOWN:

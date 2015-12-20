@@ -149,7 +149,7 @@ void make_bridge(int cy, int cx)
       stile(feet + 2, x, TL_BRIDGE_HELL_2);
     }
 
-    if (cell == CELL_BRIDGE_W)
+    if (cell == CELL_BRIDGE_W || cell == CELL_BRIDGE_WM)
     {
       /*
 	Bridges over water have two empty tiles below, a decorative

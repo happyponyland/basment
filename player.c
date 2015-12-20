@@ -52,6 +52,9 @@ void new_player()
   game->skill_lockpick = false;
   game->skill_detect_traps = false;
 
+  game->has_torch = false;
+  game->has_scuba = false;
+
   shuffle_books();
 
   return;
