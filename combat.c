@@ -218,6 +218,8 @@ int shoot_missile(int mi, int dir)
   int sc_y; int sc_x;
   int count;
   int m_type;
+  chtype color;
+  chtype missile;
 
   attacker = &game->mob[mi];
 
@@ -259,28 +261,40 @@ int shoot_missile(int mi, int dir)
 
     if (target == NULL)
     {
+      if (game->blinded)
+	continue;
+    
+      if (count % 2 == 0)
+	continue;
+
+      missile = '?';
+      color = COLOR_PAIR(PAIR_GREEN);
+      
       if (m_type == MIS_ARROW)
       {
-	if (count % 2 == 0)
-	{
-	  mvwaddch(board, sc_y, sc_x, '-' | COLOR_PAIR(PAIR_MAGENTA));
-	  wrefresh(board);
-	  spause();
-	}
+	missile = '-';
+	color = COLOR_PAIR(PAIR_MAGENTA);
       }
       else if (m_type == MIS_FIREBALL)
       {
-	mvwaddch(board, sc_y, sc_x, '*' | COLOR_PAIR(PAIR_RED));
-	wrefresh(board);
-	spause();
+	missile = '*';
+	color = COLOR_PAIR(PAIR_RED);
       }
       else if (m_type == MIS_DISINT)
       {
-	mvwaddch(board, sc_y, sc_x, (dir > 0 ? '>' : '<') | COLOR_PAIR(PAIR_RED));
-	wrefresh(board);
-	spause();
+	missile = (dir > 0 ? '>' : '<');
+	color = COLOR_PAIR(PAIR_RED);
       }
-      
+
+      if (water_join(gtile(m_y - 1, m_x)))
+      {
+	color = COLOR_PAIR(PAIR_BLACK_ON_CYAN);
+      }
+
+      mvwaddch(board, sc_y, sc_x, missile | color);
+      wrefresh(board);
+      spause();
+
       continue;
     }
     

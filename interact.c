@@ -442,7 +442,7 @@ void give_item(char * msg, int gold, int type)
 {
   char line[DEFLEN];
 
-  switch (rand() % 5)
+  switch (rand() % 20)
   {
   case 0:
     if (!has_eq(EQ_TORCH))

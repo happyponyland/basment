@@ -38,7 +38,7 @@ void flash_trap()
   }
   else
   {
-    game->blinded = 10;
+    game->blinded = FLASH_BLIND_TURNS;
     draw_board_norefresh();
     pwait("YOU TRIGGER A FLASH TRAP!\n\nYOU ARE BLINDED BY THE FLASH!");
   }
@@ -127,34 +127,37 @@ void cavein(mob_t * mob)
   stile(trap_y - 5, trap_x + 0, TL_VOID);
   stile(trap_y - 5, trap_x + 1, TL_VOID);
 
-  sc_y = 1;
-  sc_x = trap_x - view_x;
-
-  for (x = 0; x < 3; x++)
+  if (!game->blinded)
   {
-    for (y = 0; y < 3; y++)
+    sc_y = 1;
+    sc_x = trap_x - view_x;
+    
+    for (x = 0; x < 3; x++)
     {
-      wmove(board, sc_y + y, sc_x - 1 + x);
-      waddch(board, 'o' | COLOR_PAIR(PAIR_BROWN));
+      for (y = 0; y < 3; y++)
+      {
+	wmove(board, sc_y + y, sc_x - 1 + x);
+	waddch(board, 'o' | COLOR_PAIR(PAIR_BROWN));
+      }
+    }
+    
+    lpause();
+    
+    for (x = 0; x < 3; x++)
+    {
+      for (y = x % 2; y < 9; y += 2)
+      {
+	wmove(board, sc_y + (y % 3), sc_x - 1 + x);
+	waddch(board, ' ');
+	
+	wmove(board, sc_y + y, sc_x - 1 + x);
+	waddch(board, 'o' | COLOR_PAIR(PAIR_BROWN));
+	wrefresh(board);
+	spause();
+      }
     }
   }
-
-  lpause();
-
-  for (x = 0; x < 3; x++)
-  {
-    for (y = x % 2; y < 9; y += 2)
-    {
-      wmove(board, sc_y + (y % 3), sc_x - 1 + x);
-      waddch(board, ' ');
-
-      wmove(board, sc_y + y, sc_x - 1 + x);
-      waddch(board, 'o' | COLOR_PAIR(PAIR_BROWN));
-      wrefresh(board);
-      spause();
-    }
-  }
-
+    
   stile(trap_y, trap_x - 2, TL_BOULDER);
   stile(trap_y, trap_x - 1, TL_BOULDER);
   stile(trap_y, trap_x + 0, TL_BOULDER);
@@ -164,7 +167,7 @@ void cavein(mob_t * mob)
   stile(trap_y - 1, trap_x - 1, TL_BOULDER);
   stile(trap_y - 1, trap_x + 1, TL_BOULDER);
   
-  draw_board();
+  draw_board_norefresh();
 
   if (mob == player && rand() % player->speed > 8)
   {
@@ -186,7 +189,7 @@ void cavein(mob_t * mob)
     if (mob->hp <= 0)
     {
       player->type = MOB_GORE;
-      draw_board();
+      draw_board_norefresh();
       game_over("YOU WERE CRUSHED\n"
 		"BY FALLING ROCKS", false);
     }

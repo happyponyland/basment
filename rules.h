@@ -20,6 +20,7 @@
 #define MAGGOT_PUDDING_HEAL 5
 
 #define WEBBED_TURNS 7
+#define FLASH_BLIND_TURNS (5 + rand() % 20)
 
 #define COST_11PCS  150
 #define NIGIRI_HEAL +10

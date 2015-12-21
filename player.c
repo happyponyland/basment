@@ -173,12 +173,12 @@ retry:
   {
     learn_detect_traps();
     give_eq(EQ_TORCH);
-    give_eq(EQ_SHADES);
+//    give_eq(EQ_SHADES);
     player->hp += 30;
     player->speed += 3;
     player->strength += 3;
-    give_weapon(WPN_SWORD);
-    give_armor(SHD_MAGIC);
+    give_weapon(WPN_BOW);
+//    give_armor(SHD_MAGIC);
     give_armor(ARMOR_MAGIC);
     fill_automap(2);
     game->player_gold += 500;
