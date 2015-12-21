@@ -437,7 +437,8 @@ bool cell_range(int t, int l, int b, int r, int type, bool write);
 int cell_open(int c);
 void paint_branch(int t, int l, int b, int r, int branch);
 void remove_floor(int cy, int cx, int w);
-  
+void normalise_branches(void);
+
 /* decorate.c */
 void decorate(int y, int x, int type);
 

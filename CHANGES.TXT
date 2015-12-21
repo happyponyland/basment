@@ -3,6 +3,7 @@ version 0.9
 - Bridges added
 - Final level has been replaced by a longer HELL section
 - Doors can now remain open and won't close if anything is in the way
+- FLASH TRAP and blindness added
 - Change direction (free action) at top and bottom of ladders
 - Cave-in traps are now visible and can be triggered by enemies
 - Disco added

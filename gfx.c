@@ -4008,38 +4008,41 @@ void lightning(int y, int x)
 
 void explosion(int y, int x)
 {
+  if (game->blinded)
+    return;
+  
   wmove(board, y, x);
   waddch(board, ACS_CKBOARD | COLOR_PAIR(PAIR_BROWN_ON_RED) | A_BOLD);
   wrefresh(board);
-  lpause();
-
+  mpause();
+  
   wmove(board, y - 1, x);
-  waddch(board, '*' | COLOR_PAIR(PAIR_BROWN_ON_RED) | A_BOLD);
+  waddch(board, '*' | COLOR_PAIR(PAIR_BROWN) | A_BOLD);
   wmove(board, y + 1, x);
-  waddch(board, '*' | COLOR_PAIR(PAIR_BROWN_ON_RED) | A_BOLD);
+  waddch(board, '*' | COLOR_PAIR(PAIR_BROWN) | A_BOLD);
   wrefresh(board);
-  lpause();
+  mpause();
 
   wmove(board, y, x - 1);
-  waddch(board, '*' | COLOR_PAIR(PAIR_BROWN_ON_RED) | A_BOLD);
+  waddch(board, '*' | COLOR_PAIR(PAIR_RED) | A_BOLD);
   wmove(board, y, x + 1);
-  waddch(board, '*' | COLOR_PAIR(PAIR_BROWN_ON_RED) | A_BOLD);
+  waddch(board, '*' | COLOR_PAIR(PAIR_RED) | A_BOLD);
   wrefresh(board);
-  lpause();
+  mpause();
 
   wmove(board, y - 1, x - 1);
-  waddch(board, ACS_BULLET | COLOR_PAIR(PAIR_RED_ON_BROWN));
+  waddch(board, ACS_BULLET | COLOR_PAIR(PAIR_BROWN));
   wmove(board, y + 1, x + 1);
-  waddch(board, ACS_BULLET | COLOR_PAIR(PAIR_RED_ON_BROWN));
+  waddch(board, ACS_BULLET | COLOR_PAIR(PAIR_BROWN));
   wrefresh(board);
-  lpause();
+  mpause();
 
   wmove(board, y + 1, x - 1);
-  waddch(board, ACS_BULLET | COLOR_PAIR(PAIR_RED_ON_BROWN));
+  waddch(board, ACS_BULLET | COLOR_PAIR(PAIR_RED));
   wmove(board, y - 1, x + 1);
-  waddch(board, ACS_BULLET | COLOR_PAIR(PAIR_RED_ON_BROWN));
+  waddch(board, ACS_BULLET | COLOR_PAIR(PAIR_RED));
   wrefresh(board);
-  lpause();
+  mpause();
 
   flush_input();
 

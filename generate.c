@@ -41,17 +41,23 @@ void generate_map()
     paint_branch(FIRST_HELL_FLOOR - 1, 0, ARCHDEMON_FLOOR, CELLS_W - 1, BRANCH_HELL);
 
     add_archdemon_floor();
-    add_bridges();
+
+    //normalise_branches();
     add_extra_rooms();
-    add_surfaces();
-    add_shallow_lakes();
-    link_portals();
     replace_remainders();
+
+    add_bridges();
+    add_surfaces();
+
     add_ambushes();
+
+    add_shallow_lakes();
 
     flatten_rooms();
     populate_cellmap();
 	
+//    link_portals();
+
     // Fix the start pos
     set_cell(0, start_x, CELL_START);
     set_cell(0, start_x - 1, CELL_ROOM);
@@ -82,7 +88,52 @@ void generate_map()
 }
 
 
-void replace_remainders(void)
+void normalise_branches()
+{
+  int y;
+  int x;
+//  int sx;
+  int dir;
+  int branch;
+  int cell;
+
+  for (y = 0; y <= LAST_NORMAL_FLOOR; y++)
+  {
+    for (dir = -1; dir <= +1; dir += 2)
+    {
+      x = (dir == +1 ? 1 : CELLS_W - 2);
+      
+      branch = get_branch(y, x);
+
+      while (x > 0 && x < CELLS_W - 1)
+      {
+	cell = get_cell(y, x);
+
+/*	if (cell == CELL_ROCK)
+	{
+	  branch = get_branch(y, x + dir);
+	  x += dir;
+	  continue;
+	  }*/
+	
+	if (cell == CELL_DOOR || cell == CELL_ROCK || cell == CELL_RMNDR)
+	{
+	  branch = get_branch(y, x + dir);
+	  x += dir * 2;
+	  continue;
+	}
+
+	if (get_branch(y, x) != branch)
+	  set_branch(y, x, branch);
+
+	x += dir;
+      }
+    }
+  }
+}
+
+
+void replace_remainders()
 {
   int y;
   int x;
@@ -323,6 +374,7 @@ void add_extra_rooms(void)
   int d;
   int start_x;
   int dir;
+  int branch = BRANCH_DUNGEON;
 
   NOW_WORKING;
 
@@ -373,10 +425,15 @@ void add_extra_rooms(void)
 	  set_cell(y, x, CELL_LADDER_B);
 	  w = 4 + rand() % 8;
 	  d = 1;
+
+	  // Make it the same branch as the room above
+	  branch = get_branch(y - 1, x);
+	  set_branch(y, x, branch);
 	}
 	else
 	{
 	  set_cell(y, x, CELL_DEADEND);
+	  set_branch(y, x, branch);
 	  d++;
 	}
       }
@@ -496,17 +553,31 @@ void dig(int start_y, int x, int speed, int depth, int allow_chasms)
 
 
 
+int branch;
+int branch_dist;
+
+
 void corridor(int y, int start_x, int speed, int remainder)
 {
   int x;
   int i;
   int length;
   int dug;
-
   int edge_clear;
 
   NOW_WORKING;
 
+  if (remainder)
+  {
+    branch = get_branch(y, start_x - speed);
+//    branch = BRANCH_DUNGEON;
+  }
+  else if (y == 0)
+  {
+    branch = BRANCH_DUNGEON;
+    branch_dist = 10 + rand() % 20;
+  }
+  
   x = start_x;
 
   dug = 0;
@@ -538,8 +609,8 @@ void corridor(int y, int start_x, int speed, int remainder)
 	speed = -1;
 
       // No wait, it might be better to go the other way
-      if (game->cell[y][x + speed] != CELL_ROCK &&
-	  game->cell[y][x - speed] == CELL_ROCK)
+      if (get_cell(y, x + speed) != CELL_ROCK &&
+	  get_cell(y, x - speed) == CELL_ROCK)
       {
 	speed *= -1;
       }
@@ -547,7 +618,13 @@ void corridor(int y, int start_x, int speed, int remainder)
   }
   
   if (!remainder)
+  {
     set_cell(y, x, CELL_LADDER_B);
+    set_branch(y, x, branch);
+
+    // Try to avoid placing doors next to ladders
+    branch_dist += 1 + rand() % 3;
+  }
 
   for (i = 0; i < length; i++)
   {
@@ -556,13 +633,27 @@ void corridor(int y, int start_x, int speed, int remainder)
 
     x += speed;
 
-    if (game->cell[y][x] != CELL_ROCK)
+    if (get_cell(y, x) != CELL_ROCK)
     {
       x -= speed;
       break;
     }
 
-    set_cell(y, x, (remainder ? CELL_RMNDR : CELL_ROOM));
+    if (!remainder && branch_dist && --branch_dist == 0)
+    {
+//	if (rand
+//      branch = (branch + (rand() % BRANCH_HELL)) % BRANCH_HELL;
+      branch = rand() % BRANCH_HELL;
+      branch_dist = 5 + rand() % 15;
+      set_cell(y, x, CELL_DOOR);
+      set_branch(y, x, branch);
+    }
+    else
+    {
+      set_cell(y, x, (remainder ? CELL_RMNDR : CELL_ROOM));
+      set_branch(y, x, branch);
+    }
+    
     dug++;
   }
 
@@ -926,10 +1017,12 @@ void populate_cellmap(void)
     place_single_cell(10, CELL_IDOL);
   }
  
+/*
   for (i = 0; i < 200; i++)
   {
     place_single_cell(10, CELL_TRAP);
   }
+*/
  
   for (y = 0; y < MAX_FLOORS; y++)
   {
