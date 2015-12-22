@@ -491,16 +491,19 @@ int player_move(int dir)
 	tile_below == TL_LADDER_M   ||
 	tile_feet  == TL_STOP       ||
 	tile_feet  == TL_LADDER_M   ||
-//	tile_feet  == TL_DOOR_L     ||
-//	tile_feet  == TL_DOOR_R     ||
 	is_trap(tile_feet) ||
 	interesting(tile_feet))
     {
       break;
     }
     
-    // There isn't; slight delay to give the feeling of animation
-    spause();
+    // There's nothing here to stop at.
+
+    // Add a slight delay to give the feeling of animation. Skip this
+    // for the last step to make movement a bit tighter.
+
+    if (i < steps)
+      spause();
   }
   
   // Recenter player if needed

@@ -708,7 +708,7 @@ int random_monster(int floor, int branch)
   }
   else if (branch == BRANCH_CRYPT)
   {
-    switch (rand() % 7)
+    switch (rand() % 30)
     {
     case 0:
     case 1:
@@ -731,7 +731,7 @@ int random_monster(int floor, int branch)
   }
   else if (branch == BRANCH_ORGANIC)
   {
-    switch (rand() % 4)
+    switch (rand() % 30)
     {
     case 0:
     case 1:
@@ -749,7 +749,7 @@ int random_monster(int floor, int branch)
   }
   else if (branch == BRANCH_CAVE)
   {
-    switch (rand() % 7)
+    switch (rand() % 30)
     {
     case 0:
       choice = MOB_SNAKE;
@@ -768,10 +768,6 @@ int random_monster(int floor, int branch)
       break;
 
     case 4:
-      choice = MOB_BIGSPIDER;
-      break;
-
-    case 5:
       choice = MOB_GIANT;
       break;
 

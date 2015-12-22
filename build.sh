@@ -63,7 +63,6 @@ else
   echo "Building distribution .tar.gz for \"$1\"..."
   echo "Setting up temporary folder..."
   mkdir "$1"
-  mkdir "$1"
 
   for F in ${FILES[@]}
   do

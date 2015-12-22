@@ -3923,7 +3923,7 @@ void draw_stats()
     waddstr(rwin, "SCUBA\n");
 
   if (has_eq(EQ_SHADES))
-    waddstr(rwin, "SHADS\n");
+    waddstr(rwin, "SHADES\n");
 
   wrefresh(stats);
   wrefresh(rwin);

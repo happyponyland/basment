@@ -365,7 +365,8 @@ void link_portals(void)
 
 
 
-
+/**
+ */
 void add_extra_rooms(void)
 {
   int y;
@@ -378,7 +379,6 @@ void add_extra_rooms(void)
 
   NOW_WORKING;
 
-//  for (y = MAX_FLOORS - 2; y >= 1; y--)
   for (y = 1; y < LAST_NORMAL_FLOOR - 2; y++)
   {
     if (rand() % 2)
@@ -569,7 +569,10 @@ void corridor(int y, int start_x, int speed, int remainder)
 
   if (remainder)
   {
-    branch = get_branch(y, start_x - speed);
+    if (speed)
+      branch = get_branch(y, start_x - speed);
+    else
+      branch = get_branch(y + 1, start_x);
 //    branch = BRANCH_DUNGEON;
   }
   else if (y == 0)
