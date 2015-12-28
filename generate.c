@@ -1016,9 +1016,11 @@ void populate_cellmap(void)
   }
 
   for (i = 0; i < 5; i++)
-  {
     place_single_cell(10, CELL_IDOL);
-  }
+
+  // Only place as many of these as there are unique books
+  for (i = 0; i < BOOKS; i++)
+    place_single_cell(3, CELL_BOOKSHELF);
  
 /*
   for (i = 0; i < 200; i++)
@@ -1442,6 +1444,12 @@ void convert_cellmap(void)
 	decorate(feet, tx, floor_loot(cy, cx));
 	break;
 
+      case CELL_BOOKSHELF:
+	tx += slide;
+	decorate(feet, tx, DEC_BOOKSHELF);
+	set_cell(cy, cx, CELL_LOOT);
+	break;
+
       case CELL_COFFIN:
 	tx += slide;
 	decorate(feet, tx, DEC_COFFIN);
@@ -1516,6 +1524,7 @@ void convert_cellmap(void)
 	switch (rand() % (1 + cy / 3))
 	{
 	case 0:
+	  // Make this appear as loot on the map
 	  set_cell(cy, cx, CELL_LOOT);
 	  make_monster(feet, tx, MOB_MIMIC);
 	  break;
@@ -1819,14 +1828,17 @@ bool open_down(int cell)
 int floor_loot(int cy, int cx)
 {
   int r;
+  int branch;
+
+  branch = get_branch(cy, cx);
+
+  if (branch == BRANCH_CRYPT && rand() % 5 == 0)
+  {
+    r = DEC_COFFIN;
+  }
 
   r = DEC_FIRSTRND + rand() % (DEC_LASTRND - DEC_FIRSTRND - 1);
     
-//  r += rand() % 2;
-  
-/*  if (cy > 6)
-    r += rand() % 3;*/
-
   return r;
 }
 

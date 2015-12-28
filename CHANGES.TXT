@@ -3,6 +3,7 @@ version 0.9
 - Bridges added
 - Final level has been replaced by a longer HELL section
 - Doors can now remain open and won't close if anything is in the way
+- Experience table rebalanced
 - FLASH TRAP and blindness added
 - Change direction (free action) at top and bottom of ladders
 - Cave-in traps are now visible and can be triggered by enemies
@@ -15,6 +16,8 @@ version 0.9
 - Player no longer gets stuck in falling animation when dying on spikes and restarting
 - TORCH and SCUBA GEAR removed when starting a new game
 - Automap cleared when starting a new game
+- BRICK WALL takes fewer hits to break down
+- Maps are now cheaper to buy (100 gold)
 
 
 version 0.8 (2015-12-09)

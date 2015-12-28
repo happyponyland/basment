@@ -478,11 +478,10 @@ enum tile_t
 };
   
   
-#define DEC_FIRSTRND DEC_BOOKSHELF
+#define DEC_FIRSTRND DEC_CORPSE
 
 enum decoration_t
 {
-  DEC_BOOKSHELF,
   DEC_CORPSE,
   DEC_SKELETON,
   DEC_ALTAR,
@@ -493,6 +492,7 @@ enum decoration_t
   DEC_LASTRND,
 
   // These aren't randomly generated as loot
+  DEC_BOOKSHELF,
   DEC_ORB,
   DEC_TABLET,
   DEC_SWSTONE,
@@ -594,8 +594,9 @@ enum decoration_t
 #define CELL_BRIDGE_WM  46
 #define CELL_HELL_ENT   47
 #define CELL_OPENDOWN   48
-#define CELL_OPENLADDER 49
-#define CELL_OPENLADDER_B 50
+#define CELL_OPENLADDER 49 // Used in archdemon lair
+#define CELL_OPENLADDER_B 50 // Used in archdemon lair
+#define CELL_BOOKSHELF  51
 
 #define CELL_WSURFACE   80
 

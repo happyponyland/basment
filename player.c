@@ -10,6 +10,28 @@
 #include "map.h"
 
 
+
+#define GENERIC_LEVEL 7
+#define GENERIC_TNL   10000
+
+int exp_table[] =
+{
+  200,
+  500,
+  1000,
+  2200,
+  4000,
+  6500,
+  10000,
+  15000
+//  22000,
+//  40000,
+  /* + another 10000/level */
+};
+
+  
+
+
 /*
   Sets up a new player structure
 */
@@ -39,7 +61,7 @@ void new_player()
   game->player_gold = 0;
   game->player_level = 1;
   game->player_exp = 0;
-  game->player_tnl = 100;
+  game->player_tnl = exp_table[0];
   game->piety = 0;
   game->sacrifice = 0;
   game->has_map = false;
@@ -90,7 +112,10 @@ void player_turn()
   }
 
   if (game->blinded && --game->blinded == 0)
+  {
+    flush_input();
     draw_board();
+  }
 
   /*
     If we haven't fought anything for a few turns, the enemy health
@@ -173,7 +198,7 @@ retry:
   {
     learn_detect_traps();
     give_eq(EQ_TORCH);
-//    give_eq(EQ_SHADES);
+    give_eq(EQ_SHADES);
     player->hp += 30;
     player->speed += 3;
     player->strength += 3;
@@ -591,6 +616,7 @@ bool recenter(bool preemptive)
 }
 
 
+
 /*
   Gives the player EXP experience; levels up if TNL is reached.
 */
@@ -608,7 +634,9 @@ void give_exp(int exp)
   while (game->player_exp >= game->player_tnl)
   {
     game->player_level++;
-    game->player_tnl *= 2;
+    game->player_tnl =
+      exp_table[MIN(GENERIC_LEVEL, game->player_level - 1)] +
+      GENERIC_TNL * MAX(0, game->player_level - GENERIC_LEVEL - 1);
 
     // Show what just happened, before prompting
     draw_stats();

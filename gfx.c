@@ -1719,17 +1719,14 @@ void draw_demon(int y, int x, int type, bool flip, uint32_t flags)
   chtype skin;
   chtype weapon;
 
-  skin = COLOR_PAIR(PAIR_RED);
+  if (flags & GFX_HURT)
+    skin = COLOR_PAIR(PAIR_RED);
+  else
+    skin = COLOR_PAIR(PAIR_WHITE);
+  
   weapon = COLOR_PAIR(PAIR_WHITE);
   
-//  GA(-4, -1, GA_AL | skin);
-//  GA(-4, -1, '_' | skin);
   GA(-4, -0, ' '   | skin);
-//  GA(-4, +1, '_' | skin);
-//  GA(-4, +1, GA_AR | skin);
-
-//  GA(-3, -3, '_' | skin);
-//  GA(-3, -2, '_' | skin);
 
   GA(-4, -1, GA_UL | skin);
   GA(-4, +1, GA_UR | skin);
@@ -3032,27 +3029,23 @@ void draw_brickwall(int y, int x, int type, bool flip, uint32_t flags)
 
   for (i = 0; i < 3; i++)
   {
-    GA(ty, -4, GA_LT | c);
-    GA(ty, -3, GA_BT | c);
-    GA(ty, -2, GA_TT | c);
-    GA(ty, -1, GA_BT | c);
-    GA(ty, +0, GA_TT | c);
-    GA(ty, +1, GA_BT | c);
-    GA(ty, +2, GA_TT | c);
-    GA(ty, +3, GA_BT | c);
-    GA(ty, +4, GA_RT | c);
-
-    ty--;
-
-    GA(ty, -4, GA_LT | c);
-    GA(ty, -3, GA_TT | c);
+    GA(ty, -3, GA_LT | c);
     GA(ty, -2, GA_BT | c);
     GA(ty, -1, GA_TT | c);
     GA(ty, +0, GA_BT | c);
     GA(ty, +1, GA_TT | c);
     GA(ty, +2, GA_BT | c);
-    GA(ty, +3, GA_TT | c);
-    GA(ty, +4, GA_RT | c);
+    GA(ty, +3, GA_RT | c);
+
+    ty--;
+
+    GA(ty, -3, GA_LT | c);
+    GA(ty, -2, GA_TT | c);
+    GA(ty, -1, GA_BT | c);
+    GA(ty, +0, GA_TT | c);
+    GA(ty, +1, GA_BT | c);
+    GA(ty, +2, GA_TT | c);
+    GA(ty, +3, GA_RT | c);
 
     ty--;
   }

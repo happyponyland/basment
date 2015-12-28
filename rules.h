@@ -64,7 +64,7 @@
 
 #define TRAINING_COST 100
 
-#define MAP_COST 200
+#define MAP_COST 100
 
 // The relative difficulty of monsters spawned when the player leaves a level
 #define ANOTHER_MONSTER_ADJUSTMENT (+2)
@@ -111,6 +111,5 @@
 #define SCORE_MONSTER_PEN   -10
 #define SCORE_TRAP_PEN      -50
 #define SCORE_TURN_PEN      (-1)
-
 
 #endif

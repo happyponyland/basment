@@ -19,18 +19,16 @@ void decorate(int y, int x, int type)
     break;
 
   case DEC_BRICKS:
-    stile(y + 1, x - 4, TL_WALL_BT);
-    stile(y + 1, x - 2, TL_WALL_BT);
-    stile(y + 1, x + 0, TL_WALL_BT);
-    stile(y + 1, x + 2, TL_WALL_BT);
-    stile(y + 1, x + 4, TL_WALL_BT);
-    stile(y - 6, x - 4, TL_WALL_TT);
-    stile(y - 6, x - 2, TL_WALL_TT);
-    stile(y - 6, x + 0, TL_WALL_TT);
-    stile(y - 6, x + 2, TL_WALL_TT);
-    stile(y - 6, x + 4, TL_WALL_TT);
-    stile(y, x - 4, TL_IWALL);
-    stile(y, x + 4, TL_IWALL);
+    stile(y + 1, x - 3, TL_WALL_BT);
+    stile(y + 1, x - 1, TL_WALL_BT);
+    stile(y + 1, x + 1, TL_WALL_BT);
+    stile(y + 1, x + 3, TL_WALL_BT);
+    stile(y - 6, x - 3, TL_WALL_TT);
+    stile(y - 6, x - 1, TL_WALL_TT);
+    stile(y - 6, x + 1, TL_WALL_TT);
+    stile(y - 6, x + 3, TL_WALL_TT);
+//    stile(y, x - 3, TL_IWALL);
+//    stile(y, x + 3, TL_IWALL);
     break;
 
   case DEC_CAMP:

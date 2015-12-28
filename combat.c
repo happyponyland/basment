@@ -35,6 +35,7 @@ bool melee(mob_t * attacker, int speed)
     }
     else if (target->type == MOB_BLURK && target->attack_phase == 0)
     {
+      draw_board_norefresh();
       pwait("OH NO! AN INSIDIOUS BLURK BARS YOUR WAY!");
       target->attack_phase = 1;
       target->flags = 0;
@@ -191,14 +192,19 @@ void rogue_escape(mob_t * m)
 
   if (game->player_gold)
   {
-    stolen = 1 + rand() % ROGUE_STEAL_GOLD; //game->player_gold;
-
-    game->player_gold -= stolen;
-
-    snprintf(line, DEFLEN, "ROGUE STOLE %d GOLD\nAND RAN AWAY!", stolen);
+    if (has_eq(EQ_SHADES) && rand() % 10 == 0)
+    {
+      game->equipment[EQ_SHADES] = false;
+      snprintf(line, DEFLEN, "ROGUE STOLE YOUR SHADES AND RAN AWAY!\n\n(WHAT A JERK)");
+    }
+    else
+    {
+      stolen = 1 + rand() % ROGUE_STEAL_GOLD;
+      game->player_gold -= stolen;
+      snprintf(line, DEFLEN, "ROGUE STOLE %d GOLD AND RAN AWAY!", stolen);
+    }
 
     draw_stats();
-
     flush_input();
     pwait(line);
   }
@@ -456,12 +462,15 @@ void kill_enemy(mob_t * target)
 
   game->monsters_killed++;
 
+  /*
+// This shouldn't be needed anymore with monster packing
   if (target->type == MOB_BRICKWALL)
   {
     // Remove the hidden placeholders so creatures can move through the cleared area
-    stile(target->y, target->x - 4, TL_VOID);
-    stile(target->y, target->x + 4, TL_VOID);
+    stile(target->y, target->x - 3, TL_VOID);
+    stile(target->y, target->x + 3, TL_VOID);
   }
+  */
 
   if (boss)
   {

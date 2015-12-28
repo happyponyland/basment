@@ -108,7 +108,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 3;
     mob->range = 5;
     mob->hp = 6;
-    mob->exp = 20;
+    mob->exp = 25;
     mob->damage = 5;
     break;
 
@@ -132,7 +132,7 @@ int make_monster(int y, int x, int type)
     mob->range = 4;
     mob->hp = 15;
     mob->armor_type = ARMOR_LEATHER;
-    mob->exp = 100;
+    mob->exp = 150;
     mob->damage = 7;
     mob->attack_frames = 2;
     break;
@@ -146,16 +146,16 @@ int make_monster(int y, int x, int type)
     mob->range = 4;
     mob->hp = 8;
     mob->armor_type = ARMOR_LEATHER;
-    mob->exp = 60;
+    mob->exp = 100;
     mob->damage = 3;
     break;
 
   case MOB_BRICKWALL:
-    mob->pack_w = mob->w = 4;
+    mob->pack_w = mob->w = 3;
     mob->speed = 0;
     mob->steps = 0;
     mob->range = 0;
-    mob->hp = 20;
+    mob->hp = 10;
     mob->armor_type = ARMOR_SPIDER;
     mob->exp = 5;
     mob->damage = 0;
@@ -164,13 +164,13 @@ int make_monster(int y, int x, int type)
   case MOB_BIGSPIDER:
     mob->article = ART_AN;
     mob->w = 8;
-    mob->pack_w = 7;
+    mob->pack_w = 6;
     mob->speed = 13;
     mob->steps = 6;
-    mob->range = 10;
+    mob->range = 9;
     mob->hp = 8;
     mob->armor_type = ARMOR_SPIDER;
-    mob->exp = 400;
+    mob->exp = 800;
     mob->damage = 6;
     mob->flying = 1; // not actually flying but too large to submerge
     break;
@@ -183,7 +183,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 3;
     mob->range = 10;
     mob->hp = 40;
-    mob->exp = 1200;
+    mob->exp = 800;
     mob->attack_frames = 2;
     mob->damage = 16;
     break;
@@ -195,7 +195,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 0;
     mob->range = 0;
     mob->hp = 60;
-    mob->exp = 100;
+    mob->exp = 50;
     mob->damage = 0;
     break;
 
@@ -207,7 +207,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 6;
     mob->range = 10;
     mob->hp = 20;
-    mob->exp = 100;
+    mob->exp = 250;
     mob->damage = 6;
     mob->flags = GFX_BLURK_IDLE;
     break;
@@ -219,7 +219,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 6;
     mob->range = 8;
     mob->hp = 20;
-    mob->exp = 100;
+    mob->exp = 800;
     mob->damage = 6;
     mob->flying = 1;
     break;
@@ -230,7 +230,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 4;
     mob->range = 6;
     mob->hp = 20;
-    mob->exp = 150;
+    mob->exp = 250;
     mob->damage = 6;
     mob->attack_phase = 0;
     mob->flags = GFX_MIMIC_IDLE;
@@ -244,7 +244,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 8;
     mob->range = 5;
     mob->hp = 22;
-    mob->exp = 250;
+    mob->exp = 400;
     mob->damage = 8;
     mob->flying = 1;
     break;
@@ -256,7 +256,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 16;
     mob->range = 5;
     mob->hp = 30;
-    mob->exp = 400;
+    mob->exp = 800;
     mob->damage = 12;
     mob->flying = 1;
     break;
@@ -267,7 +267,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 3;
     mob->range = 5;
     mob->hp = 40;
-    mob->exp = 500;
+    mob->exp = 250;
     mob->damage = 8;
     break;
 
@@ -278,7 +278,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 4;
     mob->range = 8;
     mob->hp = 50;
-    mob->exp = 800;
+    mob->exp = 500;
     mob->damage = 8;
     break;
 
@@ -289,7 +289,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 2;
     mob->range = 6;
     mob->hp = 25;
-    mob->exp = 400;
+    mob->exp = 200;
     mob->damage = 3;
     mob->flying = 1;
     break;
@@ -313,7 +313,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 4;
     mob->range = 4;
     mob->hp = 8;
-    mob->exp = 40;
+    mob->exp = 50;
     mob->damage = 7;
     break;
 
@@ -325,7 +325,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 6;
     mob->range = 4;
     mob->hp = 8;
-    mob->exp = 40;
+    mob->exp = 100;
     mob->damage = 3;
     break;
 
@@ -337,7 +337,7 @@ int make_monster(int y, int x, int type)
     mob->range = 5;
     mob->hp = 35;
     mob->armor_type = ARMOR_SCALE;
-    mob->exp = 200;
+    mob->exp = 500;
     mob->damage = 6;
     mob->shd_type = SHD_MAGIC;
     break;
@@ -350,7 +350,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 4;
     mob->range = 5;
     mob->hp = 28;
-    mob->exp = 400;
+    mob->exp = 500;
     mob->damage = 6;
     mob->follow_floor = 1;
     break;
@@ -364,7 +364,7 @@ int make_monster(int y, int x, int type)
     mob->range = 8;
     mob->armor_type = ARMOR_SCALE;
     mob->hp = 30;
-    mob->exp = 600;
+    mob->exp = 1000;
     mob->damage = 10;
     break;
 
@@ -378,7 +378,7 @@ int make_monster(int y, int x, int type)
     mob->range = 6;
 //    mob->armor_type = ARMOR_SCALE;
     mob->hp = 20;
-    mob->exp = 400;
+    mob->exp = 500;
     mob->damage = 8;
     break;
 
@@ -389,7 +389,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 6;
     mob->range = 5;
     mob->hp = 40;
-    mob->exp = 800;
+    mob->exp = 1500;
     mob->damage = 5;
     break;
 
@@ -400,7 +400,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 3;
     mob->range = 3;
     mob->hp = 20;
-    mob->exp = 800;
+    mob->exp = 1000;
     mob->damage = 5;
     break;
 
@@ -411,7 +411,7 @@ int make_monster(int y, int x, int type)
     mob->steps = 6;
     mob->range = 8;
     mob->hp = 40;
-    mob->exp = 800;
+    mob->exp = 2000;
     mob->damage = 5;
     break;
 
