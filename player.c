@@ -202,7 +202,8 @@ retry:
     player->hp += 30;
     player->speed += 3;
     player->strength += 3;
-    give_weapon(WPN_BOW);
+//    give_weapon(WPN_BOW);
+    game->weapon = WPN_UNARMED;
 //    give_armor(SHD_MAGIC);
     give_armor(ARMOR_MAGIC);
     fill_automap(2);

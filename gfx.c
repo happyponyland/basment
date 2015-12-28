@@ -652,11 +652,12 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
     case WPN_AXE:        flags |= GFX_HUMAN_AXE;      break;
     case WPN_SPEAR:      flags |= GFX_HUMAN_SPEAR;    break;
     case WPN_FLAIL:      flags |= GFX_HUMAN_FLAIL;    break;
-    case WPN_DIAMOND:    flags |= GFX_HUMAN_MACE | GFX_HUMAN_MWPN;   break;
-    case WPN_GLASS:      flags |= GFX_HUMAN_SWORD | GFX_HUMAN_MWPN;  break;
-    case WPN_DRAIN:      flags |= GFX_HUMAN_DAGGER | GFX_HUMAN_MWPN; break;
-    case WPN_BOW:        flags |= GFX_HUMAN_BOW; break;
-    case WPN_RUNESWORD:  flags |= GFX_HUMAN_SWORD | GFX_HUMAN_MWPN2;  break;
+    case WPN_BONECLUB:   flags |= GFX_HUMAN_AXE    | GFX_HUMAN_MWPN;  break;
+    case WPN_DIAMOND:    flags |= GFX_HUMAN_MACE   | GFX_HUMAN_MWPN;  break;
+    case WPN_GLASS:      flags |= GFX_HUMAN_SWORD  | GFX_HUMAN_MWPN;  break;
+    case WPN_DRAIN:      flags |= GFX_HUMAN_DAGGER | GFX_HUMAN_MWPN;  break;
+    case WPN_RUNESWORD:  flags |= GFX_HUMAN_SWORD  | GFX_HUMAN_MWPN2; break;
+    case WPN_BOW:        flags |= GFX_HUMAN_BOW;                      break;
     default: break;
     }
 
@@ -3575,13 +3576,27 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
       GA(-3, +2, ACS_VLINE | wpn_c);
     }
   }
+  else if (weapon == GFX_HUMAN_AXE && (flags & GFX_HUMAN_MWPN))
+  {
+    wpn_c = COLOR_PAIR(PAIR_WHITE);
+    
+    if (attack)
+    {
+      GA(-1, +2, ACS_HLINE | wpn_c);
+      GA(-1, +3, ACS_TTEE  | wpn_c);
+    }
+    else
+    {
+      GA(-1, +2, ACS_VLINE | wpn_c);
+      GA(-2, +2, ACS_LTEE  | wpn_c);
+    }
+  }
   else if (weapon == GFX_HUMAN_AXE)
   {
     if (attack)
     {
       GA(-1, +2, ACS_HLINE | wpn_c);
       GA(-1, +3, ACS_HLINE | wpn_c);
-//      GA(-2, +4, '^'       | wpn_c);
       GA(-1, +4, 'X'       | wpn_c);
       GA(-0, +4, 'V'       | wpn_c);
     }
@@ -3589,7 +3604,6 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
     {
       GA(-1, +2, ACS_VLINE | wpn_c);
       GA(-2, +2, ACS_VLINE | wpn_c);
-//      GA(-3, +1, GA_AL     | wpn_c);
       GA(-3, +2, 'X'       | wpn_c);
       GA(-3, +3, GA_AR     | wpn_c);
     }

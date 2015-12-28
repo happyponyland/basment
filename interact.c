@@ -302,7 +302,10 @@ int interact()
       break;
 
     default:
-      give_item(line, 5 + rand() % 25, LOOT_NORMAL);
+      if (tile == TL_P_SKELETON)
+	give_item(line, 5 + rand() % 25, LOOT_BONES);
+      else
+	give_item(line, 5 + rand() % 25, LOOT_NORMAL);
       break;
     }
 
@@ -335,10 +338,11 @@ void loot_chest(int ty, int tx)
   {
     strcpy(line, "YOU PICK THE LOCK\n\n");
   }
-  else if (game->weapon == WPN_AXE ||
-	   game->weapon == WPN_MACE ||
-	   game->weapon == WPN_DIAMOND ||
-	   game->weapon == WPN_FLAIL)
+  else if (game->weapon == WPN_AXE      ||
+	   game->weapon == WPN_MACE     ||
+	   game->weapon == WPN_DIAMOND  ||
+	   game->weapon == WPN_FLAIL    ||
+    	   game->weapon == WPN_BONECLUB )
   {
     strcpy(line, "YOU SMASH THE CHEST OPEN\n\n");
   }
@@ -441,6 +445,13 @@ void portal_travel()
 void give_item(char * msg, int gold, int type)
 {
   char line[DEFLEN];
+
+  if (game->weapon == WPN_UNARMED && rand() % 3 == 0)
+  {
+    give_weapon(WPN_BONECLUB);
+    snprintf(line, DEFLEN, "%sYOU FIND A BONE CLUB", msg);
+    goto print_msg;
+  }
 
   switch (rand() % 20)
   {

@@ -16,7 +16,8 @@ version 0.9
 - Player no longer gets stuck in falling animation when dying on spikes and restarting
 - TORCH and SCUBA GEAR removed when starting a new game
 - Automap cleared when starting a new game
-- BRICK WALL takes fewer hits to break down
+- BRICK WALL made thinner and take fewer hits to break down
+- Bookshelves generated are limited to the number of unique books
 - Maps are now cheaper to buy (100 gold)
 
 

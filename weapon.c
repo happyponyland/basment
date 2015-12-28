@@ -15,7 +15,8 @@ char * weapon_name[WPN_LAST] =
   [WPN_DIAMOND]   = "DIAMOND MACE",
   [WPN_GLASS]     = "GLASS SWORD",
   [WPN_BOW]       = "BOW",
-  [WPN_RUNESWORD] = "RUNESWORD"
+  [WPN_RUNESWORD] = "RUNESWORD",
+  [WPN_BONECLUB]  = "BONE CLUB"
 };
 
 
@@ -29,19 +30,25 @@ void give_weapon(int type)
   {
   case WPN_DAGGER:
     player->range = 4;
-    player->damage = 4;
+    player->damage = 5;
     game->wpn_dur = 30 + rand() % 30;
+    break;
+
+  case WPN_BONECLUB:
+    player->range = 4;
+    player->damage = 4;
+    game->wpn_dur = 10 + rand() % 10;
     break;
 
   case WPN_DRAIN:
     player->range = 4;
-    player->damage = 5;
+    player->damage = 6;
     game->wpn_dur = 50 + rand() % 50;
     break;
 
   case WPN_MACE:
     player->range = 4;
-    player->damage = 9;
+    player->damage = 8;
     game->wpn_dur = 100 + rand() % 50;
     break;
 
@@ -53,7 +60,7 @@ void give_weapon(int type)
 
   case WPN_SWORD:
     player->range = 5;
-    player->damage = 6;
+    player->damage = 7;
     game->wpn_dur = 50 + rand() % 100;
     break;
 
@@ -65,20 +72,20 @@ void give_weapon(int type)
 
   case WPN_SPEAR:
     player->range = 6;
-    player->damage = 5;
+    player->damage = 6;
     game->wpn_dur = 60 + rand() % 60;
     break;
 
   case WPN_AXE:
     player->range = 5;
-    player->damage = 8;
+    player->damage = 9;
     game->wpn_dur = 80 + rand() % 20;
     break;
 
   case WPN_FLAIL:
     player->attack_frames = 2;
     player->range = 7;
-    player->damage = 9;
+    player->damage = 11;
     game->wpn_dur = 50 + rand() % 50;
     break;
 

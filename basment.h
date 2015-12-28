@@ -312,6 +312,7 @@ void board_flash(void);
 /* interact.c */
 #define LOOT_NORMAL   0
 #define LOOT_RARE     1
+#define LOOT_BONES    2
 
 void give_item(char * line, int gold, int type);
 int interesting(int tile);
@@ -351,7 +352,8 @@ void shop_scuba(void);
 #define WPN_GLASS     9
 #define WPN_BOW       10
 #define WPN_RUNESWORD 11
-#define WPN_LAST      12
+#define WPN_BONECLUB  12
+#define WPN_LAST      13
 
 extern char * weapon_name[WPN_LAST];
 
