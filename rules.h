@@ -7,7 +7,7 @@
 
 #define FOUNTAIN_HEAL 10
 #define CAMP_HEAL 12
-#define LEVEL_UP_HP_BOOST 10
+#define LEVEL_UP_HP_BOOST 25
 #define HEALING_POTION       18
 #define HEALING_POTION_COST  100
 

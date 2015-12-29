@@ -107,7 +107,7 @@ int make_monster(int y, int x, int type)
     mob->speed = 5;
     mob->steps = 3;
     mob->range = 5;
-    mob->hp = 6;
+    mob->hp = 5;
     mob->exp = 25;
     mob->damage = 5;
     break;
@@ -130,7 +130,7 @@ int make_monster(int y, int x, int type)
     mob->speed = 6;
     mob->steps = 6;
     mob->range = 4;
-    mob->hp = 15;
+    mob->hp = 10;
     mob->armor_type = ARMOR_LEATHER;
     mob->exp = 150;
     mob->damage = 7;
@@ -243,7 +243,7 @@ int make_monster(int y, int x, int type)
     mob->speed = 9;
     mob->steps = 8;
     mob->range = 5;
-    mob->hp = 22;
+    mob->hp = 15;
     mob->exp = 400;
     mob->damage = 8;
     mob->flying = 1;
@@ -255,7 +255,7 @@ int make_monster(int y, int x, int type)
     mob->speed = 12;
     mob->steps = 16;
     mob->range = 5;
-    mob->hp = 30;
+    mob->hp = 20;
     mob->exp = 800;
     mob->damage = 12;
     mob->flying = 1;
