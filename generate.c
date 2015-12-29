@@ -195,8 +195,10 @@ void add_ambushes(void)
 
       if (cell_range(y, x, y + 1, x + dir * 4, CELL_ROOM, false))
       {
+	// Reserve 5 cells on 2 floors; these must be reserved as rooms
 	cell_range(y, x, y + 1, x + dir * 4, CELL_KEEPROOM, true);
 
+	// Add the Gorzoth ambush on the left or right end
 	if (dir > 0)
 	  set_cell(y, x, CELL_GORZOTH_R);
 	else
