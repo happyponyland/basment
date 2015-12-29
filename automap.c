@@ -192,7 +192,7 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
     *attr = COLOR_PAIR(PAIR_RED);
     break;
 	
-/*
+
   case CELL_KEEPROOM:
     *glyph = 'K';
     *attr = COLOR_PAIR(PAIR_RED);
@@ -207,11 +207,11 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
     *glyph = '>';
     *attr = COLOR_PAIR(PAIR_RED);
     break;
-*/
 
-  case CELL_KEEPROOM:
-  case CELL_GORZOTH_L:
-  case CELL_GORZOTH_R:
+
+//  case CELL_KEEPROOM:
+//  case CELL_GORZOTH_L:
+//  case CELL_GORZOTH_R:
   case CELL_ROOM:
     *glyph = ACS_HLINE;
     *attr = COLOR_PAIR(PAIR_GREEN);

@@ -78,6 +78,7 @@ void add_archdemon_floor()
 }
 
 
+
 int hell_floor(int floor)
 {
   return (floor >= FIRST_HELL_FLOOR && floor <= ARCHDEMON_FLOOR);
@@ -115,13 +116,14 @@ void decorate_hell()
 
       if (this_cell == CELL_SPIKEPIT)
       {
-	hell_crack(feet, tx,     true);
+	//hell_crack(feet, tx, false);
       }
       else if (this_cell  != CELL_LADDER &&
 	       this_cell  != CELL_LADDER_B &&
 	       this_cell  != CELL_OPENLADDER &&
 	       this_cell  != CELL_OPENLADDER_B &&
 	       this_cell  != CELL_CHASM &&
+//	       this_cell  != CELL_SPIKEPIT &&
 	       cell_above != CELL_BRIDGE_C &&
 	       cell_above != CELL_BRIDGE_CM &&
 	       cell_above != CELL_CHASM &&
@@ -138,7 +140,7 @@ void decorate_hell()
 	  this_cell != CELL_OPENLADDER &&
 	  this_cell != CELL_OPENDOWN &&
 	  this_cell != CELL_TRAPDOOR &&
-	  this_cell != CELL_SPIKEPIT &&
+//	  this_cell != CELL_SPIKEPIT &&
 	  this_cell != CELL_WSURFACE &&
 	  this_cell != CELL_CHASM &&
 	  this_cell != CELL_BRIDGE_C &&

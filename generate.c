@@ -1018,7 +1018,7 @@ void populate_cellmap(void)
   for (i = 0; i < 5; i++)
     place_single_cell(10, CELL_IDOL);
 
-  // Only place as many of these as there are unique books
+  // Only place as many of these as there are books
   for (i = 0; i < BOOKS; i++)
     place_single_cell(3, CELL_BOOKSHELF);
  
@@ -1832,9 +1832,12 @@ int floor_loot(int cy, int cx)
 
   branch = get_branch(cy, cx);
 
-  if (branch == BRANCH_CRYPT && rand() % 5 == 0)
+  if (branch == BRANCH_CRYPT)
   {
-    r = DEC_COFFIN;
+    if (rand() % 5 == 0)
+      return DEC_COFFIN;
+    else if (rand() % 3 == 0)
+      return DEC_SKELETON;
   }
 
   r = DEC_FIRSTRND + rand() % (DEC_LASTRND - DEC_FIRSTRND - 1);

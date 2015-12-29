@@ -325,11 +325,31 @@ void summon_gorzoth(void)
   stile(player->y, x, TL_STOP);
   x += dir;
 
+  for (y = player->y + 1; y <= player->y + 8; y++)
+  {
+    if (y == player->y + 1)
+      stile(y, x, (dir == +1 ? TL_CORNER_UR : TL_CORNER_UL));
+    else if (y == player->y + 8)
+      stile(y, x, (dir == +1 ? TL_CORNER_LR : TL_CORNER_LL));
+    else
+      stile(y, x, TL_WALL);
+  }
+  
   for (i = 0; i <= 17; i++)
   {
     x += dir;
 
     tremor(1);
+
+    for (y = player->y + 1; y <= player->y + 8; y++)
+    {
+    if (y == player->y + 1)
+      stile(y, x + dir, (dir == +1 ? TL_CORNER_UL : TL_CORNER_UR));
+    else if (y == player->y + 8)
+      stile(y, x + dir, (dir == +1 ? TL_CORNER_LL : TL_CORNER_LR));
+    else
+      stile(y, x + dir, TL_WALL);
+    }
 
     for (y = player->y + 1; y <= player->y + 8; y++)
     {
@@ -343,7 +363,6 @@ void summon_gorzoth(void)
   x += dir * 2;
   stile(player->y, x, TL_STOP);
 
-//  pwait("GORZOTH");
   draw_board();
 
 
@@ -364,7 +383,7 @@ void summon_gorzoth(void)
   }
 
   draw_board();
-
+  opause(); opause();
   flush_input();
 
   return;

@@ -504,6 +504,11 @@ void shop_scuba()
       pwait("YOU ALREADY HAVE SCUBA GEAR");
       return;
     }
+    else if (hell_floor(game->current_floor))
+    {
+      pwait("WHY WOULD YOU NEED SCUBA GEAR IN HELL???");
+      return;
+    }
   }
   else
   {

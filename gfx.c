@@ -1713,9 +1713,9 @@ void draw_demon(int y, int x, int type, bool flip, uint32_t flags)
   chtype weapon;
 
   if (flags & GFX_HURT)
-    skin = COLOR_PAIR(PAIR_RED);
-  else
     skin = COLOR_PAIR(PAIR_WHITE);
+  else
+    skin = COLOR_PAIR(PAIR_RED);
   
   weapon = COLOR_PAIR(PAIR_WHITE);
   
@@ -1728,30 +1728,58 @@ void draw_demon(int y, int x, int type, bool flip, uint32_t flags)
   GA(-3, -0, '"'   | skin | A_REVERSE);
   GA(-3, +1, GA_LR | skin);
 
-  GA(-2, -2, GA_UL | skin);
+//  GA(-3, -2, '_'  | skin);
+  GA(-2, -2, GA_FS | skin);
+//  GA(-2, -2, '^' | skin);
   GA(-2, -1, GA_CK | skin);
   GA(-2, -0, 'V'   | skin | A_REVERSE);
   GA(-2, +1, GA_CK | skin);
-  GA(-2, +2, GA_HL | skin);
-//  GA(-2, +3, '_' | skin);
      
   GA(-1, -2, '_'   | skin);
-  GA(-1, -1, GA_AR   | skin);
-  GA(-1, -0, ' ' | skin);
-  GA(-1, +1, '_'  | skin);
-  GA(-1, +2, GA_AR   | skin);
+  GA(-1, -1, GA_AR | skin);
+  GA(-1, -0, ' '   | skin);
+  GA(-1, +1, '_'   | skin);
+  GA(-1, +2, GA_AR | skin);
   
   GA(-0, -2, GA_BS | skin);
   GA(-0, -0, ' '         );
   GA(-0, +1, GA_BS | skin);
 
-  GA(-0, +3, GA_VL | weapon);
-  GA(-1, +3, GA_VL | weapon);
-  GA(-2, +3, GA_VL | weapon);
+/*    GA(-3, +2, '_' | skin);
 
-  GA(-3, +2, GA_LL | weapon);
-  GA(-3, +3, GA_CR | weapon);
-  GA(-3, +4, GA_LR | weapon);
+    GA(-4, +2, GA_BS | weapon);
+    GA(-3, +3, GA_BS | weapon);
+    GA(-2, +4, GA_BS | weapon);
+    GA(-1, +5, GA_BS | weapon);*/
+
+  if (flags & GFX_ATTACK)
+  {
+    GA(-3, +2, GA_FS | skin);
+    
+    GA(-1, +3, GA_VL | weapon);
+    GA(-2, +3, GA_VL | weapon);
+    GA(-3, +3, GA_VL | weapon);
+    
+    GA(-4, +2, GA_LL | weapon);
+    GA(-4, +3, GA_CR | weapon);
+    GA(-4, +4, GA_LR | weapon);
+    
+    GA(-5, +3, GA_VL | weapon);
+  }
+  else
+  {
+    GA(-2, +2, GA_HL | skin);
+    
+    GA(-0, +3, GA_VL | weapon);
+    GA(-1, +3, GA_VL | weapon);
+    GA(-2, +3, GA_VL | weapon);
+    
+    GA(-3, +2, GA_LL | weapon);
+    GA(-3, +3, GA_CR | weapon);
+    GA(-3, +4, GA_LR | weapon);
+    
+    GA(-4, +3, GA_VL | weapon);
+  }
 
   return;
 }

@@ -174,6 +174,12 @@ retry:
   }
   else if (input == 'm' || input == 'M')
   {
+    if (hell_floor(game->current_floor))
+    {
+      pwait("YOU ARE IN HELL");
+      goto retry;
+    }
+    
   redraw_cellmap:
     draw_cellmap();
 

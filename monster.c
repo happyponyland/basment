@@ -398,7 +398,7 @@ int make_monster(int y, int x, int type)
     mob->pack_w = 3;
     mob->speed = 9;
     mob->steps = 3;
-    mob->range = 3;
+    mob->range = 5;
     mob->hp = 20;
     mob->exp = 1000;
     mob->damage = 5;
