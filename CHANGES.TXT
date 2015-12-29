@@ -1,10 +1,10 @@
-version 0.9
+version 0.9 (2015-12-29)
 - Monsters line up instead of overlap
 - Bridges added
 - Dungeon branches are now scattered all over the map
 - Final level has been replaced by a longer HELL section
 - Doors can now remain open and won't close if anything is in the way
-- Experience table rebalanced
+- Experience table and monster experience rebalanced
 - FLASH TRAP and blindness added
 - Change direction (free action) at top and bottom of ladders
 - Cave-in traps are now visible and can be triggered by enemies

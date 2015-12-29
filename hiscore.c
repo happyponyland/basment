@@ -143,51 +143,6 @@ int calc_score(score_t * score)
 
 
 /*
-  Calculates player score for the current game. See SCORE_* in rules.h
- for weighting.
-*/
-int calculate_score()
-{
-/*  int sum = 0;
-
-  sum += game->player_exp;
-  sum += (game->player_level - 1) * SCORE_PER_LEVEL;
-  sum += game->total_gold_earned * SCORE_GOLD_MULT;
-
-  if (game->skill_lockpick)
-    sum += SCORE_PER_SKILL;
-
-  if (game->skill_detect_traps)
-    sum += SCORE_PER_SKILL;
-
-  if (game->weapon > WPN_DAGGER)
-    sum += SCORE_WEAPON;
-
-  sum += player->armor_type * SCORE_ARMOR_MULT;
-
-  sum += (player->strength - 1) * SCORE_ATTR_MULT;
-  sum += MAX(0, player->speed - 10) * SCORE_ATTR_MULT;
-
-  sum += (game->max_floor - 1) * SCORE_FLOOR_BONUS;
-
-  if (game->won)
-    sum += SCORE_WIN_BONUS;
-
-  // Penalties
-  sum += game->monsters_killed * SCORE_MONSTER_PEN;
-  sum += game->traps_triggered * SCORE_TRAP_PEN;
-
-  sum += game->turns * SCORE_TURN_PEN;
-
-  if (sum < 0)*/
-    return 0;
-
-//  return sum;
-}
-
-
-
-/*
   Adds SCORE to highscore table, with character NAME and CAUSE of
   death. Returns the place the new entry ended up in, or 0 if it
   wasn't added to the table at all.
@@ -323,7 +278,7 @@ void show_highscore(int top_entries, int highlight, bool fancy)
 
     addch(ACS_URCORNER);
 
-    for (i = 2; i < 22; i++)
+    for (i = 2; i < LINES - 2; i++)
     {
       mvaddch(i, 1, ACS_VLINE);
       mvaddch(i, COLS - 2, ACS_VLINE);

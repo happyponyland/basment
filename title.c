@@ -55,7 +55,7 @@ redraw_title:
     addstr("  TO START GAME");
     
     t++;
-    mvaddstr(t++, l_edge, "    \"H\" FOR HELP   \"S\" TO VIEW HIGH SCORES   \"Q\" TO QUIT ");
+    mvaddstr(t++, l_edge, " <H> FOR INSTRUXIONZ  <S> TO VIEW HIGH SCORES   <Q> TO QUIT ");
   }
   else if (mode == 1)
   {
@@ -64,23 +64,28 @@ redraw_title:
     t = 1;
 
     move(t++, l_edge);
-    addstr("\" ");
+    addstr("                    \"");
     attrset(COLOR_PAIR(PAIR_GREEN));
     addstr("BASMENT DWELLERS");
     attrset(0);
-    addstr(" \" IS A GAME ABOUT COLLECTING TREASURE");
+    addstr("\"");
 
-    mvaddstr(t++, l_edge, "                    AND SLAYING MONSTERS");
+    //addstr(t++, l_edge, "012345678901234567890123456789012345678901234567890123456789");
+    //addstr(t++, l_edge, "      "BASMENT DWELLERS"  ");
+    mvaddstr(t++, l_edge, "                -- AN EPIC NEXT-GEN RPG -- ");
+    mvaddstr(t++, l_edge, "                  ABOUT KILLING MONSTERS   ");
+    mvaddstr(t++, l_edge, "                 AND TAKING THEIR TREASURE ");
     t++;
-    mvaddstr(t++, l_edge, "CONTROL YOUR CHARACTER WITH THE DIRECTIONAL KEYS");
-    mvaddstr(t++, l_edge, "\" UP \", \" DOWN \", \" LEFT \", \" RIGHT \"");
+//    mvaddstr(t++, l_edge, "CONTROL YOUR CHARACTER WITH THE DIRECTIONAL KEYS");
+    mvaddstr(t++, l_edge, "PRESS <LEFT> / <RIGHT> TO MOVE LEFT AND RIGHT");
+    mvaddstr(t++, l_edge, "PRESS <UP> / <DOWN> TO CLIMB LADDERS");
+      t++;
+    mvaddstr(t++, l_edge, "PRESS <UP> TO INTERACT WITH ENVIRONMENT");
     t++;
-    mvaddstr(t++, l_edge, "PRESS \" UP \" TO INTERACT WITH ENVIRONMENT");
+    mvaddstr(t++, l_edge, "PRESS <SPACE> TO WAIT A TURN, SHOOT YOUR BOW");
+    mvaddstr(t++, l_edge, "              OR BLOCK (IF U HAVE A SHIELD)");
     t++;
-    mvaddstr(t++, l_edge, "PRESS \" SPACE \" TO WAIT A TURN, SHOOT YOUR BOW");
-    mvaddstr(t++, l_edge, "                   OR BLOCK (IF U HAVE A SHIELD)");
-    t++;
-    mvaddstr(t++, l_edge, "\" M \" TO VIEW MAP");
+    mvaddstr(t++, l_edge, "PRESS <M> TO VIEW MAP");
 
   }
     

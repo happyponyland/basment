@@ -251,13 +251,13 @@ retry:
     try_to_breathe();
     player_move(-1);
   }
-  else if (input == 's' && cheat_mode)
+/*  else if (input == 's' && cheat_mode)
   {
     char line[200];
     sprintf(line, "YOU'RE SCORE: %d", calculate_score());
     pwait(line);
     draw_board();
-  }
+    }*/
   else if (input == '?' || input == KEY_F(1) || input == KEY_HELP)
   {
     mob_text(player, "HELP!");

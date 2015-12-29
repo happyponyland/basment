@@ -494,7 +494,6 @@ void make_score(score_t * score);
 void list_score(score_t * score);
 int calc_score(score_t * score);
 void add_score(score_t * score, char * new_label, int new_amount, int new_multi);
-int calculate_score(void);
 int add_highscore(long score, char * name, char * reason);
 void show_highscore(int top_entries, int highlight, bool fancy);
 char * read_file(char * filename);
