@@ -1280,27 +1280,21 @@ void draw_bigspider(int y, int x, int type, bool flip, uint32_t flags)
   GA(-3, +3, GA_AR | body);
   GA(-4, -2, GA_FS | body);
   GA(-4, +2, GA_BS | body);
- 
-  if ((flags & GFX_BIGSPIDER_HURT1) == 0)
-    GA(-4, -0, 'o' | eyes);
 
-  if ((flags & GFX_BIGSPIDER_HURT2) == 0)
-    GA(-2, -1, 'o' | eyes);
-
-  if ((flags & GFX_BIGSPIDER_HURT3) == 0)
-    GA(-3, +2, 'o' | eyes);
-  
-  if ((flags & GFX_BIGSPIDER_HURT4) == 0)
-    GA(-4, -1, 'o' | eyes);
-  
-  if ((flags & GFX_BIGSPIDER_HURT5) == 0)
-    GA(-2, +1, 'o' | eyes);
-  
-  if ((flags & GFX_BIGSPIDER_HURT6) == 0)
-    GA(-4, +1, 'o' | eyes);
-
-  if ((flags & GFX_BIGSPIDER_HURT7) == 0)
-    GA(-3, -2, 'o' | eyes);
+  // Fill out body
+  GA(-2, -0, ' ');
+  GA(-2, -2, ' ');
+  GA(-2, +2, ' ');
+  GA(-3, -1, ' ');
+  GA(-3, +1, ' ');
+     
+  GA(-4, -0, (flags & GFX_BIGSPIDER_HURT1) == 0 ? ('o' | eyes) : ' ');
+  GA(-2, -1, (flags & GFX_BIGSPIDER_HURT2) == 0 ? ('o' | eyes) : ' ');
+  GA(-3, +2, (flags & GFX_BIGSPIDER_HURT3) == 0 ? ('o' | eyes) : ' ');
+  GA(-4, -1, (flags & GFX_BIGSPIDER_HURT4) == 0 ? ('o' | eyes) : ' ');
+  GA(-2, +1, (flags & GFX_BIGSPIDER_HURT5) == 0 ? ('o' | eyes) : ' ');
+  GA(-4, +1, (flags & GFX_BIGSPIDER_HURT6) == 0 ? ('o' | eyes) : ' ');
+  GA(-3, -2, (flags & GFX_BIGSPIDER_HURT7) == 0 ? ('o' | eyes) : ' ');
   
   if (flags & GFX_BIGSPIDER_HURT7)
     GA(-3, -0, 'o' | eyes | A_BLINK);
@@ -1310,7 +1304,6 @@ void draw_bigspider(int y, int x, int type, bool flip, uint32_t flags)
   GA(-1, -2, GA_PL | eyes);
   GA(-1, +2, GA_PR | eyes);
 
-//  GA(-0, -6, GA_BS | legs1);
   GA(-0, -7, GA_BS | legs1);
   GA(-1, -7, GA_FS | legs2);
   GA(-2, -6, GA_FS | legs1);
@@ -1327,7 +1320,6 @@ void draw_bigspider(int y, int x, int type, bool flip, uint32_t flags)
   GA(-5, -4, '_' | legs2);
   GA(-4, -3, GA_BS | legs1);
 
-//  GA(-0, +6, GA_FS | legs1);
   GA(-0, +7, GA_FS | legs1);
   GA(-1, +7, GA_BS | legs2);
   GA(-2, +6, GA_BS | legs1);

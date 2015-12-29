@@ -1,6 +1,7 @@
 version 0.9
 - Monsters line up instead of overlap
 - Bridges added
+- Dungeon branches are now scattered all over the map
 - Final level has been replaced by a longer HELL section
 - Doors can now remain open and won't close if anything is in the way
 - Experience table rebalanced
@@ -9,8 +10,9 @@ version 0.9
 - Cave-in traps are now visible and can be triggered by enemies
 - Disco added
 - BULLROG added; DEMON renamed FIEND and new DEMON added
-- GHOUL redesigned
+- Searching skeletons sometimes gives a BONE CLUB if you are unarmed
 - Rogues steal less gold and have faster run animation
+- GHOUL redesigned
 - Falling into water no longer leaves player stuck (+ improved animation)
 - Climbing/swimming and door animations sped up
 - Player no longer gets stuck in falling animation when dying on spikes and restarting
