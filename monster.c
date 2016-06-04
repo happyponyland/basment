@@ -49,6 +49,16 @@ char * mob_name[MOB_LAST] =
 
 
 
+char * mob_killverb[KILLVERBS] =
+{
+  [KILLVERB_SLAIN] = "SLAIN",
+  [KILLVERB_EATEN] = "EATEN",
+  [KILLVERB_OBLIT] = "OBLITERATED"
+};
+
+
+
+
 int make_monster(int y, int x, int type)
 {
   int i;
@@ -93,6 +103,8 @@ int make_monster(int y, int x, int type)
 
   mob->w = mob->pack_w = 5;
   mob->front_w = 0;
+
+  mob->killverb = mob_killverb[KILLVERB_SLAIN];
 
   if (rand() % 2 == 0)
     mob->flip = true;
@@ -269,6 +281,7 @@ int make_monster(int y, int x, int type)
     mob->hp = 40;
     mob->exp = 250;
     mob->damage = 8;
+    mob->killverb = mob_killverb[KILLVERB_EATEN];
     break;
 
   case MOB_CRAB:
@@ -292,6 +305,7 @@ int make_monster(int y, int x, int type)
     mob->exp = 200;
     mob->damage = 3;
     mob->flying = 1;
+    mob->killverb = mob_killverb[KILLVERB_EATEN];
     break;
 
   case MOB_EYE:
@@ -445,6 +459,7 @@ int make_monster(int y, int x, int type)
 
   return i;
 }
+
 
 
 

@@ -174,11 +174,22 @@ void make_bridge(int cy, int cx)
   }
 
   // Add a decorative support beam at the end of the bridge
-  if (w_l == 2)
-    stile(feet + 2, tx - w_l, TL_BRIDGE_SUPPORT_L);
-  
-  if (w_r == 2)
-    stile(feet + 2, tx + w_r, TL_BRIDGE_SUPPORT_R);
+  if (in_hell)
+  {
+    if (w_l == 2)
+      stile(feet + 2, tx - w_l, TL_BRIDGE_GSUPPORT_L);
+    
+    if (w_r == 2)
+      stile(feet + 2, tx + w_r, TL_BRIDGE_GSUPPORT_R);
+  }
+  else
+  {
+    if (w_l == 2)
+      stile(feet + 2, tx - w_l, TL_BRIDGE_SUPPORT_L);
+    
+    if (w_r == 2)
+      stile(feet + 2, tx + w_r, TL_BRIDGE_SUPPORT_R);
+  }
 
   return;
 }

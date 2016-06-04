@@ -27,8 +27,6 @@ void decorate(int y, int x, int type)
     stile(y - 6, x - 1, TL_WALL_TT);
     stile(y - 6, x + 1, TL_WALL_TT);
     stile(y - 6, x + 3, TL_WALL_TT);
-//    stile(y, x - 3, TL_IWALL);
-//    stile(y, x + 3, TL_IWALL);
     break;
 
   case DEC_CAMP:
@@ -86,17 +84,14 @@ void decorate(int y, int x, int type)
     break;
 
   case DEC_ORB:
-//    stile(y, x - 2, TL_ORB_L);
     stile(y, x - 2, TL_ORB_CU);
     stile(y, x - 1, TL_ORB_L);
     stile(y, x + 0, TL_P_ORB);
     stile(y, x + 1, TL_ORB_R);
     stile(y, x + 2, TL_ORB_CU);
-//    stile(y, x + 2, TL_ORB_R);
 
     stile(y - 1, x - 2, TL_ORB_LU);
     stile(y - 1, x - 1, TL_ORB_LU);
-//    stile(y - 1, x + 0, TL_ORB_CU);
     stile(y - 1, x + 1, TL_ORB_RU);
     stile(y - 1, x + 2, TL_ORB_RU);
 
@@ -135,10 +130,8 @@ void decorate(int y, int x, int type)
   case DEC_TABLET:
     stile(y,     x,     TL_P_TABLET);
 
-//    stile(y,     x - 2, TL_TAB_R);
     stile(y,     x - 1, TL_TAB_LEG);
     stile(y,     x + 1, TL_TAB_LEG);
-//    stile(y,     x + 2, TL_TAB_L);
 
     stile(y - 1, x - 2, TL_TAB_L);
     stile(y - 1, x - 1, TL_TAB_T);
@@ -157,12 +150,6 @@ void decorate(int y, int x, int type)
   case DEC_DISCO:
     stile(y, x, TL_P_DISCO);
 
-/*    stile(y - 5, x - 2, TL_L_D);
-    stile(y - 5, x - 1, TL_L_I);
-    stile(y - 5, x - 0, TL_L_S);
-    stile(y - 5, x + 1, TL_L_C);
-    stile(y - 5, x + 2, TL_L_O);
-*/  
     stile(y + 1, x - 4, TL_DANCEFLOOR1);
     stile(y + 1, x - 3, TL_DANCEFLOOR2);
     stile(y + 1, x - 2, TL_DANCEFLOOR1);
@@ -206,12 +193,10 @@ void decorate(int y, int x, int type)
   case DEC_ALTAR:
     stile(y, x,     TL_P_ALTAR);
 
-    //stile(y, x - 4, TL_GR_VL);
     stile(y, x - 3, TL_GR_VL);
     stile(y, x - 1, TL_GR_UL);
     stile(y, x + 1, TL_GR_UR);
     stile(y, x + 3, TL_GR_VL);
-//    stile(y, x + 4, TL_GR_UR);
 
     stile(y - 1, x - 3, TL_GR_LTEE);
     stile(y - 1, x - 2, TL_GR_HL);
@@ -224,24 +209,33 @@ void decorate(int y, int x, int type)
     stile(y - 2, x - 3, TL_YDOT);
     stile(y - 2, x + 3, TL_YDOT);
 
-//    stile(y - 3, x, TL_WH_VL);
     stile(y - 2, x, TL_WH_VL);
     stile(y - 2, x + 1, TL_WH_LR);
     stile(y - 2, x - 1, TL_WH_LL);
     break;
 
   case DEC_FOUNTAIN:
-    stile(y, x,     TL_P_FOUNTAIN);
     stile(y, x - 2, TL_FOUNT_BASE);
     stile(y, x - 1, TL_FOUNT_BASE);
     stile(y, x + 1, TL_FOUNT_BASE);
     stile(y, x + 2, TL_FOUNT_BASE);
 
-    stile(y - 1, x,     TL_BL_VL);
-
-    stile(y - 2, x - 1, TL_BL_UL);
-    stile(y - 2, x,     TL_BL_TTEE);
-    stile(y - 2, x + 1, TL_BL_UR);
+    if (y >= FIRST_HELL_FLOOR * FLOOR_H)
+    {
+      stile(y,     x,     TL_P_BLOOD_FOUNTAIN);
+      stile(y - 1, x,     TL_BLOOD_VL);
+      stile(y - 2, x - 1, TL_BLOOD_UL);
+      stile(y - 2, x,     TL_BLOOD_TTEE);
+      stile(y - 2, x + 1, TL_BLOOD_UR);
+    }
+    else
+    {
+      stile(y,     x,     TL_P_FOUNTAIN);
+      stile(y - 1, x,     TL_BL_VL);
+      stile(y - 2, x - 1, TL_BL_UL);
+      stile(y - 2, x,     TL_BL_TTEE);
+      stile(y - 2, x + 1, TL_BL_UR);
+    }
     break;
 
   case DEC_PORTAL:
@@ -467,7 +461,7 @@ void decorate(int y, int x, int type)
     stile(y - 1, x - 3, TL_WEB_UR);
     stile(y - 1, x - 2, TL_WEB_RTEE);
     stile(y - 1, x - 1, TL_WEB_UR);
-//    stile(y - 1, x - 0, TL_WEB_TTEE);
+
     stile(y - 1, x + 1, TL_WEB_UL);
     stile(y - 1, x + 2, TL_WEB_LTEE);
     stile(y - 1, x + 3, TL_WEB_UL);
@@ -493,59 +487,11 @@ void decorate(int y, int x, int type)
 	t = gtile(y + j, x + i);
       
 	if (t == TL_WATER || t == TL_T_UWNET)
-	{
 	  stile(y + j, x + i, TL_UWNET_CROSS);
-	}
-		  
-/*	if ((j + i) % 2)
-	  stile(y + j, x + i, TL_UWNET_FLOAT);
-	else
-	stile(y + j, x + i, TL_UWNET_SLASH);*/
       }
     }
-	
-/*    stile(y - 4, x - 3, TL_UWNET_FLOAT);
-    stile(y - 4, x - 0, TL_UWNET_FLOAT);
-    stile(y - 4, x + 3, TL_UWNET_FLOAT);
-    
-    stile(y - 3, x - 3, TL_UWNET_UL);
-    stile(y - 3, x + 3, TL_UWNET_UR);
-    
-    for (i = -2; i <= +2; i++)
-      stile(y - 3, x + i, TL_UWNET_TTEE);
-    
-    for (j = -2; j <= 0; j++)
-    {
-      stile(y + j, x - 3, TL_UWNET_LTEE);
-      stile(y + j, x + 3, TL_UWNET_RTEE);
-      
-      for (i = -2; i <= +2; i++)
-	stile(y + j, x + i, TL_UWNET_CROSS);
-    }
-
-    stile(y + 1, x - 3, TL_UWNET_LL);
-    stile(y + 1, x + 3, TL_UWNET_LR);
-    
-    for (i = -2; i <= +2; i++)
-      stile(y + 1, x + i, TL_UWNET_BTEE);
-    
-    stile(y + 2, x - 3, TL_UWNET_WEIGHT);
-    stile(y + 2, x - 0, TL_UWNET_WEIGHT);
-    stile(y + 2, x + 3, TL_UWNET_WEIGHT);*/
-
     break;
     
-/*  case DEC_BRIDGE:
-    stile(y + 1, x - 3, TL_BRIDGE);
-    stile(y + 1, x - 2, TL_BRIDGE);
-    stile(y + 1, x - 1, TL_BRIDGE);
-    stile(y + 1, x - 0, TL_BRIDGE);
-    stile(y + 1, x + 1, TL_BRIDGE);
-    stile(y + 1, x + 2, TL_BRIDGE);
-    stile(y + 1, x + 3, TL_BRIDGE);
-    break;*/
-
-
   case DEC_CHEST:
   default:
     stile(y, x,     TL_P_CHEST);

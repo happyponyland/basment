@@ -55,6 +55,8 @@ struct mob_t
   uint32_t flags;
 
   int gp;
+
+  char * killverb;
 };
 
 #endif

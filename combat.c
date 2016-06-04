@@ -121,8 +121,9 @@ bool melee(mob_t * attacker, int speed)
       if (target == player)
       {
 	snprintf(line, DEFLEN,
-		 "YOU WERE SLAIN\n"
+		 "YOU WERE %s\n"
 		 "BY %s%s",
+		 attacker->killverb,
 		 article[attacker->article],
 		 mob_name[attacker->type]);
 

@@ -14,6 +14,7 @@ int interesting(int tile)
   case TL_P_SKELETON:
   case TL_P_ALTAR:
   case TL_P_FOUNTAIN:
+  case TL_P_BLOOD_FOUNTAIN:
   case TL_P_IDOL:
   case TL_P_NPC1:
   case TL_P_NPC2:
@@ -49,59 +50,63 @@ void feet_instruction(int tile)
   {
   case TL_P_CHEST:
   case TL_P_UWCHEST:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO LOOT CHEST");
+    setlowmsg("PRESS <UP> TO LOOT CHEST");
     break;
 
   case TL_P_SKELETON:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO LOOT SKELETON");
+    setlowmsg("PRESS <UP> TO LOOT SKELETON");
     break;
 
   case TL_P_CORPSE:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO LOOT CORPSE");
+    setlowmsg("PRESS <UP> TO LOOT CORPSE");
     break;
 
   case TL_P_ALTAR:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO APPROACH ALTAR");
+    setlowmsg("PRESS <UP> TO APPROACH ALTAR");
     break;
 
   case TL_P_IDOL:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO APPROACH IDOL");
+    setlowmsg("PRESS <UP> TO APPROACH IDOL");
     break;
 
   case TL_P_FOUNTAIN:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO DRINK FROM FOUNTAIN");
+    setlowmsg("PRESS <UP> TO DRINK FROM FOUNTAIN");
+    break;
+
+  case TL_P_BLOOD_FOUNTAIN:
+    setlowmsg("PRESS <UP> TO DRINK FROM BLOOD FOUNTAIN");
     break;
 
   case TL_P_COFFIN:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO LOOT COFFIN");
+    setlowmsg("PRESS <UP> TO LOOT COFFIN");
     break;
 
   case TL_P_PORTAL:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO ENTER PORTAL");
+    setlowmsg("PRESS <UP> TO ENTER PORTAL");
     break;
 
   case TL_P_BOOKSHELF:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO SEARCH BOOKSHELF");
+    setlowmsg("PRESS <UP> TO SEARCH BOOKSHELF");
     break;
 
   case TL_P_ORB:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO GAZE INTO ORB");
+    setlowmsg("PRESS <UP> TO GAZE INTO ORB");
     break;
 
   case TL_P_TABLET:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO STUDY TABLET");
+    setlowmsg("PRESS <UP> TO STUDY TABLET");
     break;
 
   case TL_P_CAMP:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO REST");
+    setlowmsg("PRESS <UP> TO REST");
     break;
 
   case TL_P_DISCO:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO DANCE");
+    setlowmsg("PRESS <UP> TO DANCE");
     break;
 
   case TL_P_SWSTONE:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO DRAW SWORD");
+    setlowmsg("PRESS <UP> TO DRAW SWORD");
     break;
 
   case TL_P_NPC1:
@@ -110,11 +115,11 @@ void feet_instruction(int tile)
   case TL_P_NPC4:
   case TL_P_NPC5:
   case TL_P_NPC_SCUBA:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO TALK TO SHOPKEEP");
+    setlowmsg("PRESS <UP> TO TALK TO SHOPKEEP");
     break;
 
   case TL_P_NPC_SUSHI:
-    snprintf(lowmsg, DEFLEN, "PRESS <UP> TO TALK TO ITAMAE");
+    setlowmsg("PRESS <UP> TO TALK TO ITAMAE");
     break;
   }
 
@@ -216,7 +221,7 @@ int interact()
       give_item(line, 10 + rand() % COFFIN_GOLD, LOOT_NORMAL);
     }
   }
-  else if (tile == TL_P_FOUNTAIN)
+  else if (tile == TL_P_FOUNTAIN || tile == TL_P_BLOOD_FOUNTAIN)
   {
     fountain();
   }
@@ -635,8 +640,15 @@ void altar()
 void fountain()
 {
   char line[DEFLEN];
-  char * p;
+  char liquid[DEFLEN];
+  char * insert;
   int temp;
+  int blood;
+  int rlen;
+
+  blood = (gtile(player->y, player->x) == TL_P_BLOOD_FOUNTAIN);
+
+  snprintf(liquid, DEFLEN, "%s", blood ? "BLOOD" : "WATER");
 
   stile(player->y, player->x, TL_FOUNT_BASE);
   stile(player->y - 1, player->x, TL_VOID);
@@ -644,16 +656,18 @@ void fountain()
   stile(player->y - 2, player->x - 1, TL_VOID);
   stile(player->y - 2, player->x + 1, TL_VOID);
 
-  strcpy(line, "YOU DRINK FROM THE FOUNTAIN\n\n");
+  snprintf(line, DEFLEN, "YOU DRINK FROM THE %sFOUNTAIN\n\n", (blood ? "BLOOD " : ""));
 
-  for (p = line; *p != '\0'; p++) { }
+  rlen = strlen(line);
+  insert = &line[rlen];
+  rlen = DEFLEN - rlen;
 
   draw_board();
 
   switch (rand() % 10)
   {
   case 0:
-    strcat(line, "THE WATER TASTES FOUL!!");
+    snprintf(insert, rlen, "THE %s TASTES FOUL!!", liquid);
 
     pwait(line);
 
@@ -667,13 +681,14 @@ void fountain()
     if (player->hp <= 0)
     {
       draw_board();
+
       game_over("YOU DIED FROM A\n"
 		"POISONED FOUNTAIN", false);
     }
     break;
 
   case 1:
-    strcat(line, "THE WATER TASTES BITTER!\n\nYOU FEEL SLOWER!");
+    snprintf(insert, rlen, "THE %s TASTES BITTER!\n\nYOU FEEL SLOWER!", liquid);
 
     pwait(line);
 
@@ -687,7 +702,7 @@ void fountain()
     temp = 100 + (rand() % 5) * 100;
     temp += MAX(0, game->current_floor - 7) * 100;
 
-    snprintf(p, DEFLEN,
+    snprintf(insert, rlen,
 	     "THIS IS A FOUNTAIN OF WISDOM!\n\n"
 	     "YOU GET %d EXP",
 	     temp);
@@ -701,7 +716,7 @@ void fountain()
 
   case 4:
   case 5:
-    strcat(line, "THE WATER IS INVIGORATING!\n\nYOU FEEL STRONGER!");
+    snprintf(insert, rlen, "THE %s IS INVIGORATING!\n\nYOU FEEL STRONGER!", liquid);
     pwait(line);
 
     change_pl_st(+1);
@@ -710,7 +725,7 @@ void fountain()
     break;
 
   default:
-    strcat(line, "THE WATER IS REFRESHING!");
+    snprintf(insert, rlen, "THE %s IS REFRESHING!", liquid);
     pwait(line);
 
     refill_hp(FOUNTAIN_HEAL);
@@ -725,7 +740,7 @@ void fountain()
 void idol()
 {
   stile(player->y, player->x, TL_IDOL_BASE);
-  
+   
   if (psel("YOU FIND THE BLOOD-STAINED IDOL\n"
 	   "OF A DARK AND NAMELESS GOD\n"
 	   "\n"
@@ -1064,7 +1079,7 @@ void gaze_orb(void)
   pwait("AS YOU GAZE INTO THE ORB, YOUR\n"
 	"MIND DRIFTS INTO THE ASTRAL REALM");
   
-  snprintf(lowmsg, DEFLEN, "PRESS DIRECTION TO MOVE VISION");
+  setlowmsg("PRESS DIRECTION TO MOVE VISION");
   draw_lowmsg();
 
   game->scrying = true;
@@ -1332,7 +1347,7 @@ void stone_tablet()
       inp_seq[i] = 3;
     else
     {
-      strcpy(lowmsg, "INVALID INPUT");
+      snprintf(lowmsg, DEFLEN, "INVALID INPUT");
       draw_lowmsg();
       continue;
     }

@@ -176,11 +176,11 @@ extern int enemy_bar_time;
 
 void init_gfx_map(void);
 void draw_bars(void);
-void make_bar(WINDOW * win, int y,
+void make_bar(int y,
 	      char * title, int amount,
 	      int c1, int c2, int c3, int c4);
 void reset_trap_tiles(void);
-void breath_bar(WINDOW * win, int y, int amount);
+void breath_bar(int y, int amount);
 void force_breath_bar(mob_t * m);
 void draw_board(void);
 void draw_board_norefresh(void);
@@ -251,6 +251,11 @@ int branch_at_tile(int y, int x);
 
 extern char * article[];
 
+#define KILLVERB_SLAIN 0
+#define KILLVERB_EATEN 1
+#define KILLVERB_OBLIT 2
+#define KILLVERBS      3
+
 int make_monster(int y, int x, int type);
 int free_mob(void);
 int on_board(mob_t * mob);
@@ -273,7 +278,8 @@ void play(void);
 void enemy_turn(int mi);
 
 /* player.c */
-char lowmsg[200];
+void setlowmsg(char * s);
+char lowmsg[DEFLEN];
 void new_player(void);
 void player_turn(void);
 void game_over(char * cause, bool won);

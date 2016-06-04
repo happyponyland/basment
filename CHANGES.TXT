@@ -1,3 +1,11 @@
+version 0.10
+- Blood fountains
+- Some monsters now use a custom verb when they kill you ("EATEN BY A FISH" etc)
+- HEALTH no longer gets stuck in red when BREATH runs out
+- Hell bridges now have matching support beams
+- Fixed a bunch of unsafe string operations
+
+
 version 0.9 (2015-12-29)
 - Monsters line up instead of overlap
 - Bridges added

@@ -136,7 +136,7 @@ retry:
   input = getch();
   
   /* lowmsg should only remain for one turn */
-  lowmsg[0] = '\0';
+  setlowmsg("");
   draw_lowmsg();
  
   /* What is below the player? */
@@ -208,9 +208,9 @@ retry:
     player->hp += 30;
     player->speed += 3;
     player->strength += 3;
-//    give_weapon(WPN_BOW);
-    game->weapon = WPN_UNARMED;
-//    give_armor(SHD_MAGIC);
+    give_weapon(WPN_SWORD);
+//    game->weapon = WPN_UNARMED;
+    give_armor(SHD_MAGIC);
     give_armor(ARMOR_MAGIC);
     fill_automap(2);
     game->player_gold += 500;
@@ -283,7 +283,7 @@ retry:
 	game->player_gold--;
 	draw_stats();
 
-	snprintf(lowmsg, DEFLEN, "YOU SHOOT");
+	setlowmsg("YOU SHOOT");
 	draw_lowmsg();
 	
 	shoot_missile(0, (player->flip ? -1 : +1));
@@ -291,12 +291,12 @@ retry:
     }
     else if (player->shd_type)
     {
-      snprintf(lowmsg, DEFLEN, "YOU DEFEND");
+      setlowmsg("YOU DEFEND");
       player->shd_up = 5;
       draw_board();
     }
     else
-      snprintf(lowmsg, DEFLEN, "YOU WAIT");
+      setlowmsg("YOU WAIT");
 
     draw_lowmsg();
   }
@@ -306,6 +306,19 @@ retry:
     goto retry;
   }
 
+  return;
+}
+
+
+
+/**
+   Sets the message displayed at the bottom of the board.
+
+   Note: doesn't update, see draw_lowmsg()
+*/
+void setlowmsg(char * s)
+{
+  snprintf(lowmsg, DEFLEN, "%s", s);
   return;
 }
 

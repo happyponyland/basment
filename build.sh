@@ -36,7 +36,7 @@ if [ $# -ne 1 ]; then
       -Wmissing-prototypes -Wmissing-declarations \
       -Wnested-externs \
       -std=c99 -ggdb \
-      -lcursesw \
+      -lncurses \
       -DFORCENAME \
       ${FILES[*]} \
       -o basment

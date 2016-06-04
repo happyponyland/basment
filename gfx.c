@@ -35,12 +35,21 @@ void init_gfx_map()
   gfx_map[TL_BR_UR]       = ACS_URCORNER | COLOR_PAIR(PAIR_BROWN);
   gfx_map[TL_BR_VL]       = ACS_VLINE | COLOR_PAIR(PAIR_BROWN);
   gfx_map[TL_BR_HL]       = ACS_HLINE | COLOR_PAIR(PAIR_BROWN);
-  gfx_map[TL_BL_TTEE]     = ACS_TTEE | COLOR_PAIR(PAIR_BLUE);
+  
+  gfx_map[TL_BL_TTEE]     = ACS_TTEE     | COLOR_PAIR(PAIR_BLUE);
   gfx_map[TL_BL_UR]       = ACS_URCORNER | COLOR_PAIR(PAIR_BLUE);
   gfx_map[TL_BL_UL]       = ACS_ULCORNER | COLOR_PAIR(PAIR_BLUE);
-  gfx_map[TL_BL_VL]       = ACS_VLINE | COLOR_PAIR(PAIR_BLUE);
+  gfx_map[TL_BL_VL]       = ACS_VLINE    | COLOR_PAIR(PAIR_BLUE);
+  
+  gfx_map[TL_BLOOD_TTEE]  = ACS_TTEE     | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_BLOOD_UR]    = ACS_URCORNER | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_BLOOD_UL]    = ACS_ULCORNER | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_BLOOD_VL]    = ACS_VLINE    | COLOR_PAIR(PAIR_RED);
+  
   gfx_map[TL_FOUNT_BASE]  =
+    gfx_map[TL_P_BLOOD_FOUNTAIN]   =
     gfx_map[TL_P_FOUNTAIN]   = ACS_CKBOARD | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  
   gfx_map[TL_GR_HL]       =
     gfx_map[TL_P_ALTAR]      = ACS_HLINE | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_GR_VL]       = ACS_VLINE | COLOR_PAIR(PAIR_GREEN);
@@ -123,6 +132,8 @@ void init_gfx_map()
   gfx_map[TL_BRIDGE_HANDRAIL_U] = ACS_TTEE | COLOR_PAIR(PAIR_BROWN);
   gfx_map[TL_BRIDGE_SUPPORT_L]  = '/' | COLOR_PAIR(PAIR_BROWN);
   gfx_map[TL_BRIDGE_SUPPORT_R]  = '\\' | COLOR_PAIR(PAIR_BROWN);
+  gfx_map[TL_BRIDGE_GSUPPORT_L]  = '/' | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  gfx_map[TL_BRIDGE_GSUPPORT_R]  = '\\' | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
   
   gfx_map[TL_ORG11] = 'O' | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_ORG12] = 'O' | COLOR_PAIR(PAIR_RED);
@@ -3728,7 +3739,7 @@ void draw_lowmsg(void)
 
 
 
-void make_bar(WINDOW * win, int y,
+void make_bar(int y,
 	      char * title, int amount,
 	      int c1, int c2, int c3, int c4)
 {
@@ -3739,19 +3750,12 @@ void make_bar(WINDOW * win, int y,
   int bg;
   int fg;
 
-  wmove(win, y, 0);
-
+  wmove(lowwin, y, 0);
+//  wattrset(lowwin, COLOR_PAIR(PAIR_CYAN));
   wprintw(lowwin, "%12s  ", title);
 
   w = 40;
   v = amount / w;
-
-/*  if (amount > 100)
-    overflow = w * 2;
-  else if (amount > 60)
-    overflow = amount % 60;
-    else
-    overflow = (amount % w) * 2;*/
 
   if (amount >= w * 4)
     overflow = w;
@@ -3795,7 +3799,7 @@ void make_bar(WINDOW * win, int y,
 
   if (amount >= w * 4)
   {
-    wmove(win, y, 55);
+    wmove(lowwin, y, 55);
     waddch(lowwin, '+');
   }
 
@@ -3803,21 +3807,22 @@ void make_bar(WINDOW * win, int y,
 }
 
 
-void breath_bar(WINDOW * win, int y, int amount)
+void breath_bar(int y, int amount)
 {
   int i;
 
-  wmove(win, y, 0);
+  wmove(lowwin, y, 0);
 
   if (amount <= 0)
   {
-    wattron(lowwin, COLOR_PAIR(PAIR_RED) | A_BLINK);
+    wattrset(lowwin, COLOR_PAIR(PAIR_RED) | A_BLINK);
     wprintw(lowwin, "%12s  ", "BREATH");
     wattrset(lowwin, 0);
     wclrtoeol(lowwin);
   }
   else
   {
+    wattrset(lowwin, 0);
     wprintw(lowwin, "%12s  ", "BREATH");
 
     for (i = 0; i < MIN(40, amount); i++)
@@ -3842,7 +3847,7 @@ void breath_bar(WINDOW * win, int y, int amount)
 
 void force_breath_bar(mob_t * m)
 {
-  breath_bar(lowwin, 2, m->breath);
+  breath_bar(2, m->breath);
   wrefresh(lowwin);
   return;
 }
@@ -3851,7 +3856,7 @@ void force_breath_bar(mob_t * m)
 
 void draw_bars(void)
 {
-  make_bar(lowwin, 1,
+  make_bar(1,
 	   "HEALTH", player->hp,
 	   COLOR_PAIR(PAIR_RED),
 	   COLOR_PAIR(PAIR_RED) | A_BOLD,
@@ -3859,7 +3864,7 @@ void draw_bars(void)
 	   COLOR_PAIR(PAIR_WHITE));
   
   if (player_underwater())
-    breath_bar(lowwin, 2, player->breath);
+    breath_bar(2, player->breath);
   else
   {
     wmove(lowwin, 2, 0);
@@ -3874,7 +3879,7 @@ void draw_bars(void)
 
     if (enemy > MOB_NONE)
     {
-      make_bar(lowwin, 3,
+      make_bar(3,
 	       (game->hallucination ? "???" : mob_name[enemy]),
 	       game->mob[enemy_bar].hp,
 	       COLOR_PAIR(PAIR_CYAN),
