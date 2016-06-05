@@ -6,6 +6,7 @@ FILES=(
     "gfx.c"
     "map.c"
     "player.c"
+    "drinking.c"
     "popup.c"
     "pause.c"
     "monster.c"

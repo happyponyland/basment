@@ -32,6 +32,10 @@
 #define COST_BENTO  100
 #define BENTO_HEAL  +20
 
+#define COST_BEER       50
+#define COST_WHINE      30
+#define COST_MOONSHINE  350
+
 #define CHEST_GOLD   55
 #define UWCHEST_GOLD 95
 #define COFFIN_GOLD  45

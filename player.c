@@ -41,7 +41,8 @@ void new_player()
   
   player = &game->mob[0];
   player->type = MOB_PLAYER;
-  player->w = 1;
+//  player->w = 1;
+  player->pack_w = 1;
   player->counter = 0;
   player->speed = 10;
   player->hp = 40;
@@ -69,7 +70,8 @@ void new_player()
   game->max_floor = 1;
   game->game_started = time(NULL);
   game->turns = 0;
-  
+
+  game->beer = game->whine = game->moonshine = 0;
   game->hallucination = 0;
   game->scrying = false;
 
@@ -110,6 +112,21 @@ void player_turn()
       give_exp((rand() % 5) * 100);
     }
   }
+
+  if (game->beer && --game->beer == 0)
+  {
+    pwait("YOU FEEL A BIT STEADIER NOW");
+  }
+
+  if (game->whine && rand() % 30 == 0)
+  {
+    game->whine--;
+
+    whine_now();
+  }
+
+  if (game->moonshine && --game->moonshine == 0)
+    draw_board();
 
   if (game->blinded && --game->blinded == 0)
   {
@@ -182,7 +199,7 @@ retry:
     
   redraw_cellmap:
     draw_cellmap();
-
+    
     input = getch();
     
     if (cheat_mode &&
@@ -238,7 +255,7 @@ retry:
     if (ladder_flip(+1))
       goto retry;
 
-    player->flip = false;
+//    player->flip = false;
     try_to_breathe();
     player_move(1);
   }
@@ -247,7 +264,7 @@ retry:
     if (ladder_flip(-1))
       goto retry;
     
-    player->flip = true;
+//    player->flip = true;
     try_to_breathe();
     player_move(-1);
   }
@@ -442,6 +459,17 @@ int player_move(int dir)
   else
     speed = -1;
 
+  if (game->beer)
+  {
+    if (rand() % 30 > 0)
+      speed *= -1;
+  }
+
+  if (speed == +1)
+    player->flip = false;
+  else
+    player->flip = true;
+
   old_speed = speed;
   
   x_off = speed * 2;
@@ -450,8 +478,14 @@ int player_move(int dir)
     One step at a time. We stop if the player runs into an obstacle
     (blocking wall) or passes a point of interest (loot, etc).
   */
-
-  steps = player->steps;
+  if (game->moonshine)
+  {
+    steps = 1 + rand() % 40;
+  }
+  else
+  {
+    steps = player->steps;
+  }
 
 //  if (gtile(player->y, player->x) == TL_WATER)
   if (player_underwater())
@@ -585,6 +619,7 @@ int player_move(int dir)
       tile_feet == TL_P_NPC3 ||
       tile_feet == TL_P_NPC4 ||
       tile_feet == TL_P_NPC5 ||
+      tile_feet == TL_P_NPC_BAR ||
       tile_feet == TL_P_NPC_SCUBA ||
       tile_feet == TL_P_NPC_SUSHI)
   {

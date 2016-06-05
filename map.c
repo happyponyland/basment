@@ -345,6 +345,43 @@ void decorate_walls()
 	stile(y, x, n);
       skip: ;
       }
+      else if (branch == BRANCH_ICECAVE)
+      {
+	if (get_cell(cy, cx) == CELL_ROCK)
+	  continue;
+
+	switch (t)
+	{
+	case TL_FLOOR: n = TL_ICE_HFLAT; break;
+	case TL_WALL:  n = TL_ICE_VFLAT; break;
+	case TL_CORNER_UR: n = TL_ICE_CORNER_UR; break;
+	case TL_CORNER_UL: n = TL_ICE_CORNER_UL; break;
+	case TL_CORNER_LR: n = TL_ICE_CORNER_LR; break;
+	case TL_CORNER_LL: n = TL_ICE_CORNER_LL; break;
+	default: goto skip_ice;
+	}
+
+	stile(y, x, n);
+	
+      skip_ice: ;
+	
+	if (y % FLOOR_H == 4)
+	{
+	  // Make sure we don't overwrite the walls or
+	  // draw icicles under a chasm
+	  if (gtile(y, x) != TL_VOID ||
+	      gtile(y - 1, x) == TL_VOID)
+	    continue;
+	  
+	  int t;
+	  t = rand() % 10;
+	  
+	  if (t < 3)
+	    stile(y, x, TL_ICE_ICICLE1);
+	  else if (t < 6)
+	    stile(y, x, TL_ICE_ICICLE2);
+	}
+      }
       else if (branch == BRANCH_CRYPT)
       {
 	switch (t)

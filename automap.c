@@ -326,7 +326,12 @@ void automap_glyph(int celltype, chtype * glyph, chtype * attr)
     break;
 
   case CELL_DOOR:
-    *glyph = '/';
+    *glyph = '|';
+    *attr = COLOR_PAIR(PAIR_BROWN);
+    break;
+
+  case CELL_BRICKWALL:
+    *glyph = ' ';
     *attr = COLOR_PAIR(PAIR_WHITE);
     break;
 

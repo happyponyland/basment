@@ -234,7 +234,7 @@ int shoot_missile(int mi, int dir)
   sc_y = m_y - view_y - 1;
 
   m_x = attacker->x +
-    (attacker->flip ? -attacker->w + 2 : attacker->w - 2) +
+    (attacker->flip ? -attacker->pack_w + 2 : attacker->pack_w - 2) +
     dir * 2;
 
   if (attacker->type == MOB_EYE)
@@ -419,6 +419,11 @@ int damage(mob_t * attacker, mob_t * target)
   int amount;
 
   amount = attacker->strength + rand() % (1 + attacker->damage);
+
+  if (attacker == player && game->beer)
+  {
+    amount *= 4;
+  }
 
   if ((target->type == MOB_EVILTREE || target->type == MOB_SHRUBBERY) &&
       attacker == player &&

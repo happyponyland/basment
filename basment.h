@@ -92,7 +92,8 @@ extern jmp_buf restart_game;
 #define PAIR_BLACK_ON_CYAN   25
 #define PAIR_WHITE_ON_CYAN   26
 #define PAIR_WHITE_ON_MAGENTA 27
-#define PAIR_LAST         27
+#define PAIR_ICE 28
+#define PAIR_LAST         28
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
@@ -617,6 +618,11 @@ extern char * mob_name[MOB_LAST];
 
 #define GFX_MIMIC_IDLE  (1<<31)
 #define GFX_BLURK_IDLE  (1<<31)
+
+
+/* drinking.c */
+void ye_olde_bar(void);
+void whine_now(void);
 
 #endif
 

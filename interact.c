@@ -21,6 +21,7 @@ int interesting(int tile)
   case TL_P_NPC3:
   case TL_P_NPC4:
   case TL_P_NPC5:
+  case TL_P_NPC_BAR:
   case TL_P_NPC_SCUBA:
   case TL_P_NPC_SUSHI:
   case TL_P_CAMP:
@@ -118,6 +119,10 @@ void feet_instruction(int tile)
     setlowmsg("PRESS <UP> TO TALK TO SHOPKEEP");
     break;
 
+  case TL_P_NPC_BAR:
+    setlowmsg("PRESS <UP> TO TALK TO BARTENDER");
+    break;
+
   case TL_P_NPC_SUSHI:
     setlowmsg("PRESS <UP> TO TALK TO ITAMAE");
     break;
@@ -169,6 +174,10 @@ int interact()
   else if (tile == TL_P_NPC_SCUBA)
   {
     shop_scuba();
+  }
+  else if (tile == TL_P_NPC_BAR)
+  {
+    ye_olde_bar();
   }
   else if (tile == TL_P_NPC_SUSHI)
   {

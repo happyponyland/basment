@@ -101,7 +101,7 @@ int make_monster(int y, int x, int type)
   mob->follow_floor = 0;
   mob->flying = 0;
 
-  mob->w = mob->pack_w = 5;
+  /*  mob->w =*/ mob->pack_w = 5;
   mob->front_w = 0;
 
   mob->killverb = mob_killverb[KILLVERB_SLAIN];
@@ -114,7 +114,7 @@ int make_monster(int y, int x, int type)
   switch (type)
   {
   case MOB_SPIDER:
-    mob->w = 3;
+//    mob->w = 3;
     mob->pack_w = 3;
     mob->speed = 5;
     mob->steps = 3;
@@ -125,7 +125,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_SNAKE:
-    mob->w = 3;
+//    mob->w = 3;
     mob->pack_w = 3;
     mob->speed = 4;
     mob->steps = 7;
@@ -136,7 +136,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_GIANT:
-    mob->w = 1;
+//    mob->w = 1;
     mob->pack_w = 1;
     mob->front_w = +1;
     mob->speed = 6;
@@ -150,7 +150,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_ROGUE:
-    mob->w = 2;
+//    mob->w = 2;
     mob->pack_w = 1;
     mob->front_w = +1;
     mob->speed = 13;
@@ -163,7 +163,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_BRICKWALL:
-    mob->pack_w = mob->w = 3;
+    mob->pack_w = /*mob->w =*/ 3;
     mob->speed = 0;
     mob->steps = 0;
     mob->range = 0;
@@ -175,7 +175,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_BIGSPIDER:
     mob->article = ART_AN;
-    mob->w = 8;
+//    mob->w = 8;
     mob->pack_w = 6;
     mob->speed = 13;
     mob->steps = 6;
@@ -189,7 +189,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_EVILTREE:
     mob->article = ART_AN;
-    mob->w = 5;
+//    mob->w = 5;
     mob->pack_w = 7;
     mob->speed = 6;
     mob->steps = 3;
@@ -201,7 +201,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_SHRUBBERY:
-    mob->w = 2;
+//    mob->w = 2;
     mob->pack_w = 2;
     mob->speed = 0;
     mob->steps = 0;
@@ -213,7 +213,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_BLURK:
     mob->attack_frames = 2;
-    mob->w = 4;
+//    mob->w = 4;
     mob->pack_w = 5;
     mob->speed = 12;
     mob->steps = 6;
@@ -226,7 +226,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_ELEMENTAL:
     mob->article = ART_AN;
-    mob->w = 4;
+//    mob->w = 4;
     mob->speed = 12;
     mob->steps = 6;
     mob->range = 8;
@@ -237,7 +237,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_MIMIC:
-    mob->w = 3;
+//   mob->w = 3;
     mob->speed = 8;
     mob->steps = 4;
     mob->range = 6;
@@ -250,7 +250,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_IMP:
     mob->article = ART_AN;
-    mob->w = 3;
+//    mob->w = 3;
     mob->pack_w = 3;
     mob->speed = 9;
     mob->steps = 8;
@@ -262,7 +262,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_MOTH:
-    mob->w = 3;
+//    mob->w = 3;
     mob->pack_w = 4;
     mob->speed = 12;
     mob->steps = 16;
@@ -274,7 +274,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_FISH:
-    mob->w = 3;
+//    mob->w = 3;
     mob->speed = 7;
     mob->steps = 3;
     mob->range = 5;
@@ -286,7 +286,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_CRAB:
     mob->follow_floor = 1;
-    mob->w = 4;
+//    mob->w = 4;
     mob->speed = 6;
     mob->steps = 4;
     mob->range = 8;
@@ -296,7 +296,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_NOSE:
-    mob->w = 4;
+//    mob->w = 4;
     mob->pack_w = 4;
     mob->speed = 22;
     mob->steps = 2;
@@ -309,7 +309,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_EYE:
-    mob->w = 4;
+//    mob->w = 4;
     mob->speed = 5;
     mob->steps = 1;
     mob->range = 5;
@@ -321,7 +321,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_GHOUL:
     mob->attack_frames = 2;
-    mob->w = 1;
+//    mob->w = 1;
     mob->pack_w = 2;
     mob->speed = 5;
     mob->steps = 4;
@@ -332,7 +332,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_GNOBLIN:
-    mob->w = 1;
+//    mob->w = 1;
     mob->pack_w = 1;
     mob->front_w = +1;
     mob->speed = 3;
@@ -344,7 +344,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_KNAVE:
-    mob->w = 2;
+//    mob->w = 2;
     mob->pack_w = 2;
     mob->speed = 10;
     mob->steps = 4;
@@ -357,7 +357,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_LICH:
-    mob->w = 3;
+//    mob->w = 3;
     mob->pack_w = 2;
     mob->front_w = +1;
     mob->speed = 8;
@@ -371,7 +371,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_DKNIGHT:
     mob->attack_frames = 2;
-    mob->w = 3;
+//    mob->w = 3;
     mob->pack_w = 3;
     mob->speed = 12;
     mob->steps = 6;
@@ -384,7 +384,7 @@ int make_monster(int y, int x, int type)
 
   case MOB_SKELETON:
     mob->attack_frames = 2;
-    mob->w = 2;
+//    mob->w = 2;
     mob->pack_w = 3;
     mob->front_w = -1;
     mob->speed = 12;
@@ -397,7 +397,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_FIEND:
-    mob->w = 3;
+//    mob->w = 3;
     mob->pack_w = 3;
     mob->speed = 9;
     mob->steps = 6;
@@ -408,7 +408,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_DEMON:
-    mob->w = 3;
+//    mob->w = 3;
     mob->pack_w = 3;
     mob->speed = 9;
     mob->steps = 3;
@@ -430,7 +430,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_ARCHDEMON:
-    mob->w = 4;
+//    mob->w = 4;
     mob->speed = 15;
     mob->steps = 8;
     mob->range = 6;
@@ -441,7 +441,7 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_GORZOTH:
-    mob->w = 4;
+//    mob->w = 4;
     mob->speed = 18;
     mob->steps = 8;
     mob->range = 6;
@@ -507,7 +507,7 @@ int on_board(mob_t * mob)
   int sc_x;
   int sc_y;
 
-  sc_w = mob->w + 1;
+  sc_w = mob->pack_w + 1;
   sc_y = mob->y - view_y;
   sc_x = mob->x - view_x;
   
@@ -563,13 +563,13 @@ void mob_walk(int mi, int dist)
     }
 
     if (mob->follow_floor &&
-	gtile(mob->y + 1, mob->x + (mob->w) * speed) < TL_BLOCKING)
+	gtile(mob->y + 1, mob->x + (mob->pack_w) * speed) < TL_BLOCKING)
     {
       frustration(mob);
       return;
     }
     
-    if (gtile(mob->y, mob->x + (mob->w + 1) * speed) > TL_BLOCKING)
+    if (gtile(mob->y, mob->x + (mob->pack_w + 1) * speed) > TL_BLOCKING)
       return;
 
     if (anyone_there(mob->y, mob->x + (speed == +1 ? mob_packwr(mob) + 1 : -mob_packwl(mob) - 1)) >= 0)
@@ -678,7 +678,7 @@ mob_t * find_enemy(mob_t * mob, int y, int x)
     if (y != t->y)
       continue;
 
-    if (x <= t->x - t->w || x >= t->x + t->w + 1)
+    if (x <= t->x - t->pack_w || x >= t->x + t->pack_w + 1)
       continue;
 
     return t;

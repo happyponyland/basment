@@ -8,8 +8,9 @@
 #define BRANCH_CAVE     2
 #define BRANCH_ORGANIC  3
 #define BRANCH_WETCAVE  4
-#define BRANCH_HELL     5
-#define BRANCHES 5
+#define BRANCH_ICECAVE  5
+#define BRANCHES 6
+#define BRANCH_HELL     6
 
 #define BOOKS 14
 
@@ -29,6 +30,9 @@ struct game_t
   bool won;
   int win_streak;
 
+  int moonshine;
+  int beer;
+  int whine;
   int hallucination;
   bool scrying;
 
@@ -104,6 +108,7 @@ enum tile_t
   TL_P_NPC3,
   TL_P_NPC4,
   TL_P_NPC5,
+  TL_P_NPC_BAR,
   TL_P_NPC_SCUBA,
   TL_P_NPC_SUSHI,
   TL_P_ENTRANCE,
@@ -275,6 +280,10 @@ enum tile_t
   TL_L_X,
   TL_L_Y,
   TL_L_Z,
+
+  TL_L_BAR_B,
+  TL_L_BAR_A,
+  TL_L_BAR_R,
 
   TL_STALACTITE1,
   TL_STALACTITE2,
@@ -475,6 +484,19 @@ enum tile_t
   TL_W_TOP,
   TL_W_VFLAT,
   TL_W_HFLAT,
+
+  TL_ICE_CORNER_UR,
+  TL_ICE_CORNER_UL,
+  TL_ICE_CORNER_LR,
+  TL_ICE_CORNER_LL,
+  TL_ICE_LEFT,
+  TL_ICE_RIGHT,
+  TL_ICE_BOTTOM,
+  TL_ICE_TOP,
+  TL_ICE_VFLAT,
+  TL_ICE_HFLAT,
+  TL_ICE_ICICLE1,
+  TL_ICE_ICICLE2,
 
   TL_WALL_BT,
   TL_WALL_TT,

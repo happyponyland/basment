@@ -206,6 +206,19 @@ void init_gfx_map()
   gfx_map[TL_W_TOP]         = ACS_BTEE     | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_W_VFLAT]       = ACS_VLINE    | COLOR_PAIR(PAIR_GREEN);
   gfx_map[TL_W_HFLAT]       = ACS_HLINE    | COLOR_PAIR(PAIR_GREEN);
+
+  gfx_map[TL_ICE_CORNER_UR]   = ACS_URCORNER | COLOR_PAIR(PAIR_ICE);
+  gfx_map[TL_ICE_CORNER_UL]   = ACS_ULCORNER | COLOR_PAIR(PAIR_ICE);
+  gfx_map[TL_ICE_CORNER_LR]   = ACS_LRCORNER | COLOR_PAIR(PAIR_ICE);
+  gfx_map[TL_ICE_CORNER_LL]   = ACS_LLCORNER | COLOR_PAIR(PAIR_ICE);
+  gfx_map[TL_ICE_LEFT]        = ACS_LTEE     | COLOR_PAIR(PAIR_ICE);
+  gfx_map[TL_ICE_RIGHT]       = ACS_RTEE     | COLOR_PAIR(PAIR_ICE);
+  gfx_map[TL_ICE_BOTTOM]      = ACS_TTEE     | COLOR_PAIR(PAIR_ICE);
+  gfx_map[TL_ICE_TOP]         = ACS_BTEE     | COLOR_PAIR(PAIR_ICE);
+  gfx_map[TL_ICE_VFLAT]       = ACS_VLINE    | COLOR_PAIR(PAIR_ICE);
+  gfx_map[TL_ICE_HFLAT]       = ACS_HLINE    | COLOR_PAIR(PAIR_ICE);
+  gfx_map[TL_ICE_ICICLE1]     = 'V'          | COLOR_PAIR(PAIR_CYAN);
+  gfx_map[TL_ICE_ICICLE2]     = '\''         | COLOR_PAIR(PAIR_CYAN);
  
   gfx_map[TL_WEB_UL]      = ACS_ULCORNER  | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
   gfx_map[TL_WEB_UR]      = ACS_URCORNER  | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
@@ -237,6 +250,7 @@ void init_gfx_map()
     gfx_map[TL_P_NPC3] =
     gfx_map[TL_P_NPC4] =
     gfx_map[TL_P_NPC5] =
+    gfx_map[TL_P_NPC_BAR] =
     gfx_map[TL_P_NPC_SCUBA] =
     gfx_map[TL_P_NPC_SUSHI] = ' ';
 
@@ -266,6 +280,10 @@ void init_gfx_map()
   gfx_map[TL_L_X] = 'X';
   gfx_map[TL_L_Y] = 'Y';
   gfx_map[TL_L_Z] = 'Z';
+
+  gfx_map[TL_L_BAR_B] = 'B' | COLOR_PAIR(PAIR_MAGENTA) | A_BOLD;
+  gfx_map[TL_L_BAR_A] = 'A' | COLOR_PAIR(PAIR_BROWN)   | A_BOLD;
+  gfx_map[TL_L_BAR_R] = 'R' | COLOR_PAIR(PAIR_GREEN)   | A_BOLD;
 
   gfx_map[TL_IDOL_LARM] = ACS_LLCORNER | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
   gfx_map[TL_IDOL_RARM] = ACS_LRCORNER | COLOR_PAIR(PAIR_BLACK) | A_BOLD;
@@ -566,6 +584,49 @@ void draw_board_norefresh()
 	c = mvwinch(board, sc_y, sc_x) & (A_CHARTEXT);
 	a = mvwinch(board, sc_y, sc_x) & ((1<<22) | (1<<18));
 	waddch(board, c | a | COLOR_PAIR(PAIR_WHITE) | A_BOLD);
+      }
+    }
+  }
+
+  if (game->beer)
+  {
+    int c;
+    int a;
+    int shift;
+    
+    for (sc_y = 0; sc_y < BOARD_H; sc_y++)
+    {
+      for (sc_x = 0; sc_x <= BOARD_W; sc_x++)
+      {
+	c = mvwinch(board, sc_y, sc_x) & (A_CHARTEXT);
+	a = mvwinch(board, sc_y, sc_x) & ((1<<22) | (1<<18));
+	waddch(board, c | a | COLOR_PAIR(PAIR_BROWN));
+      }
+    }
+
+    for (sc_x = 0; sc_x <= BOARD_W; sc_x++)
+    {
+      shift = (sc_x + player->x) % 24;
+      
+      if (shift < 6)
+      {
+	for (sc_y = 0; sc_y < BOARD_H - 1; sc_y++)
+	{
+	  c = mvwinch(board, sc_y + 1, sc_x);
+	  mvwaddch(board, sc_y, sc_x, c);
+	}
+
+	mvwaddch(board, BOARD_H - 1, sc_x, ' ');
+      }
+      else if (shift >= 12 && shift < 18)
+      {
+	for (sc_y = BOARD_H - 1; sc_y > 0; sc_y--)
+	{
+	  c = mvwinch(board, sc_y - 1, sc_x);
+	  mvwaddch(board, sc_y, sc_x, c);
+	}
+
+	mvwaddch(board, 0, sc_x, ' ');
       }
     }
   }

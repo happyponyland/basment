@@ -1383,7 +1383,9 @@ void convert_cellmap(void)
 	break;
 
       case CELL_BRICKWALL:
-	decorate(feet, tx, DEC_BRICKS);
+	if (get_branch(cy, cx) == BRANCH_DUNGEON)
+	  decorate(feet, tx, DEC_BRICKS);
+	
 	make_monster(feet, tx, MOB_BRICKWALL);
 	break;
 
@@ -1727,11 +1729,13 @@ void npc_room(int y, int x, int cell_type)
   }
   else
   {
-    npc_type = TL_P_NPC1 + rand() % 4;
+    npc_type = TL_P_NPC1 + rand() % 6;
 
     if (rand() % 10 == 0)
       npc_type = TL_P_NPC_SCUBA;
   }
+
+  npc_type = TL_P_NPC_BAR;
 
   if (cell_type == CELL_NPC_R || cell_type == CELL_SUSHI_R)
   {
@@ -1750,10 +1754,10 @@ void npc_room(int y, int x, int cell_type)
 
   if (npc_type == TL_P_NPC1)
   {
-    stile(y - 5, x + x_off + 0, TL_L_F);
-    stile(y - 5, x + x_off + 1, TL_L_O);
-    stile(y - 5, x + x_off + 2, TL_L_O);
-    stile(y - 5, x + x_off + 3, TL_L_D);
+    stile(y - 4, x + x_off + 0, TL_L_F);
+    stile(y - 4, x + x_off + 1, TL_L_O);
+    stile(y - 4, x + x_off + 2, TL_L_O);
+    stile(y - 4, x + x_off + 3, TL_L_D);
   }
   else if (npc_type == TL_P_NPC2)
   {
@@ -1772,12 +1776,12 @@ void npc_room(int y, int x, int cell_type)
     }
     else
     {
-      stile(y - 5, x + x_off - 1, TL_L_S);
-      stile(y - 5, x + x_off + 0, TL_L_M);
-      stile(y - 5, x + x_off + 1, TL_L_I);
-      stile(y - 5, x + x_off + 2, TL_L_T);
-      stile(y - 5, x + x_off + 3, TL_L_H);
-      stile(y - 5, x + x_off + 4, TL_L_Y);
+      stile(y - 4, x + x_off - 1, TL_L_S);
+      stile(y - 4, x + x_off + 0, TL_L_M);
+      stile(y - 4, x + x_off + 1, TL_L_I);
+      stile(y - 4, x + x_off + 2, TL_L_T);
+      stile(y - 4, x + x_off + 3, TL_L_H);
+      stile(y - 4, x + x_off + 4, TL_L_Y);
     }
   }
   else if (npc_type == TL_P_NPC3)
@@ -1791,10 +1795,10 @@ void npc_room(int y, int x, int cell_type)
   }
   else if (npc_type == TL_P_NPC4)
   {
-    stile(y - 5, x + x_off + 0, TL_L_M);
-    stile(y - 5, x + x_off + 1, TL_L_A);
-    stile(y - 5, x + x_off + 2, TL_L_P);
-    stile(y - 5, x + x_off + 3, TL_L_S);
+    stile(y - 4, x + x_off + 0, TL_L_M);
+    stile(y - 4, x + x_off + 1, TL_L_A);
+    stile(y - 4, x + x_off + 2, TL_L_P);
+    stile(y - 4, x + x_off + 3, TL_L_S);
   }
   else if (npc_type == TL_P_NPC_SCUBA)
   {
@@ -1807,6 +1811,12 @@ void npc_room(int y, int x, int cell_type)
     stile(y - 4, x + x_off + 1, TL_L_E);
     stile(y - 4, x + x_off + 2, TL_L_A);
     stile(y - 4, x + x_off + 3, TL_L_R);
+  }
+  else if (npc_type == TL_P_NPC_BAR)
+  {
+    stile(y - 4, x - 1, TL_L_BAR_B);
+    stile(y - 4, x - 0, TL_L_BAR_A);
+    stile(y - 4, x + 1, TL_L_BAR_R);
   }
 
   return;
