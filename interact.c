@@ -20,7 +20,10 @@ int interesting(int tile)
   case TL_P_NPC2:
   case TL_P_NPC3:
   case TL_P_NPC4:
-  case TL_P_NPC5:
+  case TL_P_NPC_ARMOR:
+  case TL_P_NPC_WEAPONS:
+  case TL_P_NPC_RANGED:
+  case TL_P_NPC_CLOSED:
   case TL_P_NPC_BAR:
   case TL_P_NPC_SCUBA:
   case TL_P_NPC_SUSHI:
@@ -114,7 +117,10 @@ void feet_instruction(int tile)
   case TL_P_NPC2:
   case TL_P_NPC3:
   case TL_P_NPC4:
-  case TL_P_NPC5:
+  case TL_P_NPC_ARMOR:
+  case TL_P_NPC_WEAPONS:
+  case TL_P_NPC_RANGED:
+  case TL_P_NPC_CLOSED:
   case TL_P_NPC_SCUBA:
     setlowmsg("PRESS <UP> TO TALK TO SHOPKEEP");
     break;
@@ -167,7 +173,15 @@ int interact()
   {
     shop_map();
   }
-  else if (tile == TL_P_NPC5)
+  else if (tile == TL_P_NPC_ARMOR)
+  {
+    shop_armor();
+  }
+  else if (tile == TL_P_NPC_RANGED)
+  {
+    shop_ranged();
+  }
+  else if (tile == TL_P_NPC_CLOSED)
   {
     pwait("SORRY WE ARE CLOSED FOR RENOVATION");
   }

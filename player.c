@@ -118,10 +118,9 @@ void player_turn()
     pwait("YOU FEEL A BIT STEADIER NOW");
   }
 
-  if (game->whine && rand() % 30 == 0)
+  if (game->whine && rand() % 20 == 0)
   {
     game->whine--;
-
     whine_now();
   }
 
@@ -618,7 +617,10 @@ int player_move(int dir)
       tile_feet == TL_P_NPC2 ||
       tile_feet == TL_P_NPC3 ||
       tile_feet == TL_P_NPC4 ||
-      tile_feet == TL_P_NPC5 ||
+      tile_feet == TL_P_NPC_ARMOR ||
+      tile_feet == TL_P_NPC_WEAPONS ||
+      tile_feet == TL_P_NPC_RANGED ||
+      tile_feet == TL_P_NPC_CLOSED ||
       tile_feet == TL_P_NPC_BAR ||
       tile_feet == TL_P_NPC_SCUBA ||
       tile_feet == TL_P_NPC_SUSHI)

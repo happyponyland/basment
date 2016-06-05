@@ -177,7 +177,7 @@ void find_random_armor(char * msg)
   if (new_type >= ARMOR_LAST)
     new_type = 1;
 
-  if (new_type <= SHD_SHIELDS && game->weapon == WPN_BOW)
+  if (new_type <= SHD_SHIELDS && has_ranged_weapon())
   {
     draw_board();
 

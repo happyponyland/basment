@@ -249,7 +249,10 @@ void init_gfx_map()
     gfx_map[TL_P_NPC2] =
     gfx_map[TL_P_NPC3] =
     gfx_map[TL_P_NPC4] =
-    gfx_map[TL_P_NPC5] =
+    gfx_map[TL_P_NPC_ARMOR] =
+    gfx_map[TL_P_NPC_WEAPONS] =
+    gfx_map[TL_P_NPC_RANGED] =
+    gfx_map[TL_P_NPC_CLOSED] =
     gfx_map[TL_P_NPC_BAR] =
     gfx_map[TL_P_NPC_SCUBA] =
     gfx_map[TL_P_NPC_SUSHI] = ' ';
@@ -716,7 +719,7 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
   switch (type)
   {
   case MOB_PLAYER:
-    switch(game->weapon)
+/*    switch(game->weapon)
     {
     case WPN_DAGGER:     flags |= GFX_HUMAN_DAGGER;   break;
     case WPN_SWORD:      flags |= GFX_HUMAN_SWORD;    break;
@@ -749,14 +752,16 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
     else if (player->armor_type == ARMOR_SCALE)
       flags |= GFX_HUMAN_ARMOR2;
     else if (player->armor_type == ARMOR_LEATHER)
-      flags |= GFX_HUMAN_ARMOR1;
+    flags |= GFX_HUMAN_ARMOR1;
+
+*/
 
     if (player->shd_up)
       flags |= GFX_HUMAN_SHIELD_UP;
     
     flags |= GFX_HUMAN_PLAYER;
 
-    draw_human(y, x, type, flip, flags);
+    draw_human(mob, y, x, type, flip, flags);
     break;
 
   case MOB_DANCER:
@@ -764,18 +769,18 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
     break;
 
   case MOB_GNOBLIN:
-    draw_human(y, x, type, flip,
-	       flags | GFX_HUMAN_GNOBLIN | GFX_HUMAN_BOW | GFX_HUMAN_ARMOR2);
+    draw_human(mob, y, x, type, flip,
+	       flags /*| GFX_HUMAN_GNOBLIN | GFX_HUMAN_BOW | GFX_HUMAN_ARMOR2*/);
     break;
 
   case MOB_ROGUE:
-    draw_human(y, x, type, flip,
-	       flags | GFX_HUMAN_DAGGER | GFX_HUMAN_ARMOR1);
+    draw_human(mob, y, x, type, flip,
+	       flags /*| GFX_HUMAN_DAGGER | GFX_HUMAN_ARMOR1*/);
     break;
 
   case MOB_KNAVE:
-    draw_human(y, x, type, flip,
-	       flags | GFX_HUMAN_SWORD | GFX_HUMAN_ARMOR2 | GFX_HUMAN_SHIELD2);
+    draw_human(mob, y, x, type, flip,
+	       flags /*| GFX_HUMAN_SWORD | GFX_HUMAN_ARMOR2 | GFX_HUMAN_SHIELD2*/);
     break;
 
   case MOB_GORE:
@@ -871,6 +876,10 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
 
   case MOB_GHOUL:
     draw_ghoul(y, x, type, flip, flags);
+    break;
+
+  case MOB_WALRUS:
+    draw_walrus(y, x, type, flip, flags);
     break;
 
   case MOB_LICH:
@@ -1853,6 +1862,90 @@ void draw_demon(int y, int x, int type, bool flip, uint32_t flags)
     GA(-4, +3, GA_VL | weapon);
   }
 
+  return;
+}
+
+
+
+void draw_walrus(int y, int x, int type, bool flip, uint32_t flags)
+{
+  chtype fur;
+  chtype tusks;
+  chtype eyes;
+  chtype whiskers;
+
+  int offset;
+
+  if (flags & GFX_HURT)
+  {
+    fur = COLOR_PAIR(PAIR_WHITE);
+    eyes = 'x' | COLOR_PAIR(PAIR_RED) | A_BOLD;
+    tusks = COLOR_PAIR(PAIR_RED);
+    whiskers = COLOR_PAIR(PAIR_RED);
+  }
+  else
+  {
+    fur = COLOR_PAIR(PAIR_RED);
+    eyes = 'o' | COLOR_PAIR(PAIR_GREEN) | A_BOLD;
+    tusks = COLOR_PAIR(PAIR_WHITE);
+    whiskers = COLOR_PAIR(PAIR_WHITE);//COLOR_PAIR(PAIR_BLACK) | A_BOLD;
+  }
+
+  if (flags & GFX_ATTACK)
+  {
+    offset = +1;
+  }
+  else
+    offset = 0;
+
+  GA(0, offset + -4, GA_BS | fur);
+  GA(0, offset + -3, '_'   | fur);
+  GA(0, offset + -2, GA_FS | fur);
+  GA(0, offset + -1, ' '   | fur);
+  GA(0, offset + -0, '_'   | fur);
+  GA(0, offset + +1, ' '   | fur);
+  GA(0, offset + +2, GA_BS | fur);
+  GA(0, offset + +3, '_'   | fur);
+  GA(0, offset + +4, GA_FS | fur);
+
+  GA(-1, offset + -4, GA_FS | fur);
+  GA(-1, offset + -3, ' '   | fur);
+  GA(-1, offset + -2, ' '   | fur);
+  GA(-1, offset + -1, 'V'   | tusks);
+  GA(-1, offset + -0, ' '   | fur);
+  GA(-1, offset + +1, 'V'   | tusks);
+  GA(-1, offset + +2, ' '   | fur);
+  GA(-1, offset + +3, ' '   | fur);
+  GA(-1, offset + +4, GA_BS | fur);
+
+  GA(-2, offset + -4, GA_BS | fur);
+  GA(-2, offset + -3, '='   | whiskers);
+  GA(-2, offset + -2, GA_PL | fur);
+  GA(-2, offset + -1, '.'   | fur);
+  GA(-2, offset + -0, '_'   | fur);
+  GA(-2, offset + +1, '.'   | fur);
+  GA(-2, offset + +2, GA_PR | fur);
+  GA(-2, offset + +3, '='   | whiskers);
+  GA(-2, offset + +4, GA_FS | fur);
+ 
+  GA(-3, offset + -4, GA_FS | fur);
+  GA(-3, offset + -3, GA_BS | fur);
+  GA(-3, offset + -2, eyes);
+  GA(-3, offset + -1, '_'   | fur);
+  GA(-3, offset + -0, '_'   | fur);
+  GA(-3, offset + +1, '_'   | fur);
+  GA(-3, offset + +2, eyes);
+  GA(-3, offset + +3, GA_FS | fur);
+  GA(-3, offset + +4, GA_BS | fur);
+ 
+  GA(-4, offset + -3, '_'   | fur);
+  GA(-4, offset + -2, '_'   | fur);
+  GA(-4, offset + -1, '_'   | fur);
+  GA(-4, offset + -0, '_'   | fur);
+  GA(-4, offset + +1, '_'   | fur);
+  GA(-4, offset + +2, '_'   | fur);
+  GA(-4, offset + +3, '_'   | fur);
+ 
   return;
 }
 
@@ -3393,12 +3486,11 @@ void draw_dancer(int y, int x, int type, bool flip, uint32_t flags)
 
 
 
-void draw_human(int y, int x, int type, bool flip, uint32_t flags)
+void draw_human(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
 {
   bool lbicp = false;
   bool rbicp = false;
   int shd_type;
-  int armor_type;
   bool shd_up = false;
   int weapon = 0;
   bool swap;
@@ -3412,27 +3504,92 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   int head_y = -2;
   int is_player;
   chtype torso;
+  int wpn_c;
+  
+//  shd_type = flags & (GFX_HUMAN_SHIELD1 | GFX_HUMAN_SHIELD2);
+//  armor_type = flags & (GFX_HUMAN_ARMOR1 |
+//			GFX_HUMAN_ARMOR2 |
+//			GFX_HUMAN_ARMOR3);
+//  weapon = flags & GFX_HUMAN_WEAPONS;
+//  bow = flags & GFX_HUMAN_BOW;
 
   dive = flags & GFX_HUMAN_DIVE;
-
-  shd_type = flags & (GFX_HUMAN_SHIELD1 | GFX_HUMAN_SHIELD2);
-  shd_up = flags & GFX_HUMAN_SHIELD_UP;
-  armor_type = flags & (GFX_HUMAN_ARMOR1 |
-			GFX_HUMAN_ARMOR2 |
-			GFX_HUMAN_ARMOR3);
-  is_player = flags & GFX_HUMAN_PLAYER;
-  weapon = flags & GFX_HUMAN_WEAPONS;
+//  shd_up = flags & GFX_HUMAN_SHIELD_UP;
+  is_player = (mob == player);
   attack = flags & GFX_ATTACK;
-  bow = flags & GFX_HUMAN_BOW;
-  
-  if (!title_running &&
-      is_player &&
-      (has_eq(EQ_SCUBA)) &&
-      water_join(gtile(player->y - (dive ? 0 : 2), player->x)))
+
+  shd_up = (mob ? mob->shd_up : 0);
+  shd_type = (mob ? mob->shd_type : 0);
+  skin = COLOR_PAIR(PAIR_WHITE);
+
+  if (!title_running)
   {
-    snorkel = true;
+    if (is_player)
+    {
+      if (has_eq(EQ_SCUBA) &&
+	  water_join(gtile(player->y - (dive ? 0 : 2), player->x)))
+      {
+	snorkel = true;
+      }
+    }
   }
 
+  if (is_player && !title_running)
+  {
+    torso = player_armor();
+    wpn_c = COLOR_PAIR(PAIR_RED);
+    weapon = game->weapon;
+
+    switch (weapon)
+    {      
+    case WPN_BONECLUB:
+      wpn_c = COLOR_PAIR(PAIR_WHITE);
+      break;
+
+    case WPN_DRAIN:
+    case WPN_DIAMOND:
+    case WPN_GLASS:
+      wpn_c = COLOR_PAIR(PAIR_MAGENTA);
+      break;
+
+    case WPN_RUNESWORD:
+      wpn_c = COLOR_PAIR(PAIR_GREEN) | A_BOLD;
+      break;
+    }
+
+/*    if (flags & GFX_HUMAN_MWPN2)
+      wpn_c = COLOR_PAIR(PAIR_GREEN | A_BOLD);
+    else if (flags & GFX_HUMAN_MWPN)
+      wpn_c = COLOR_PAIR(PAIR_MAGENTA);
+    else if (flags & GFX_HUMAN_PLAYER)
+
+    else
+    wpn_c = COLOR_PAIR(PAIR_CYAN);*/
+
+  }
+  else if (mob)
+  {
+    wpn_c = COLOR_PAIR(PAIR_CYAN);
+      
+    if (mob->type == MOB_KNAVE)
+    {
+      torso = ACS_CKBOARD | COLOR_PAIR(PAIR_WHITE);
+      weapon = WPN_SWORD;
+      shd_type = SHD_METAL;
+    }
+    else if (mob->type == MOB_GNOBLIN)
+    {
+      skin = COLOR_PAIR(PAIR_GREEN);
+      torso = ACS_CKBOARD | COLOR_PAIR(PAIR_WHITE);
+      weapon = WPN_BOW;
+    }
+    else if (mob->type == MOB_ROGUE)
+    {
+      torso = ACS_CKBOARD | COLOR_PAIR(PAIR_BROWN);
+      weapon = WPN_DAGGER;
+    }
+  }
+    
   rbicp = attack || (weapon ? true : false) || shd_up;
   lbicp = shd_type;
 
@@ -3446,20 +3603,12 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
     lbicp = swap;
   }
 
-  if (flags & GFX_HURT)
-    skin = COLOR_PAIR(PAIR_RED);
-  else if (flags & GFX_HUMAN_GNOBLIN)
-    skin = COLOR_PAIR(PAIR_GREEN);
-  else
-    skin = COLOR_PAIR(PAIR_WHITE);
-
   // Torso
 
-  if (is_player && !title_running)
-  {
-    torso = player_armor();
-  }
-  else
+  if (flags & GFX_HURT)
+    skin = COLOR_PAIR(PAIR_RED);
+  
+/*  else
   {
     if (armor_type == (GFX_HUMAN_ARMOR3 | GFX_HUMAN_ARMOR1))
       torso = ACS_CKBOARD | COLOR_PAIR(PAIR_MAGENTA);
@@ -3472,8 +3621,8 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
     else if (armor_type == GFX_HUMAN_ARMOR1)
       torso = ACS_CKBOARD | COLOR_PAIR(PAIR_BROWN);
     else
-      torso = 'T' | skin;
-  }
+    torso = 'T' | skin;
+    }*/
 
   GA(-1, 0, torso);
 
@@ -3548,7 +3697,7 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
       GA(-1, +1, ACS_HLINE | skin);
     }
   }
-  else if (weapon == GFX_HUMAN_FLAIL && (flags & GFX_ATTACK2))
+  else if (weapon == WPN_FLAIL && (flags & GFX_ATTACK2))
   {
     GA(-2, +1, GA_AR | skin);
   }
@@ -3579,9 +3728,9 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
   {
     int shd_c;
 
-    if (shd_type == (GFX_HUMAN_SHIELD1 | GFX_HUMAN_SHIELD2))
+    if (shd_type == SHD_MAGIC)
       shd_c = COLOR_PAIR(PAIR_RED);
-    else if (shd_type == GFX_HUMAN_SHIELD2)
+    else if (shd_type == SHD_METAL)
       shd_c = COLOR_PAIR(PAIR_WHITE);
     else
       shd_c = COLOR_PAIR(PAIR_BROWN);
@@ -3599,19 +3748,8 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
       return;
     }
   }
-      
-  int wpn_c;
-  
-  if (flags & GFX_HUMAN_MWPN2)
-    wpn_c = COLOR_PAIR(PAIR_GREEN | A_BOLD);
-  else if (flags & GFX_HUMAN_MWPN)
-    wpn_c = COLOR_PAIR(PAIR_MAGENTA);
-  else if (flags & GFX_HUMAN_PLAYER)
-    wpn_c = COLOR_PAIR(PAIR_RED);
-  else
-    wpn_c = COLOR_PAIR(PAIR_CYAN);
 
-  if (weapon == GFX_HUMAN_SWORD || weapon == GFX_HUMAN_DAGGER)
+  if (weapon == WPN_SWORD || weapon == WPN_GLASS || weapon == WPN_DAGGER || weapon == WPN_RUNESWORD)
   {
     // Add an extra tip for the sword
 
@@ -3632,7 +3770,7 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
 	GA(-3, +2, ACS_VLINE | wpn_c);
     }
   }
-  else if (weapon == GFX_HUMAN_MACE)
+  else if (weapon == WPN_MACE || weapon == WPN_GLASS)
   {
     if (attack)
     {
@@ -3645,13 +3783,13 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
       GA(-2, +2, ACS_DIAMOND | wpn_c);
     }
   }
-  else if (bow && !attack)
+  else if (weapon == WPN_BOW && !attack)
   {
     GA(-2, +2, GA_PR | wpn_c);
     GA(-1, +2, GA_AR | wpn_c);
     GA(-0, +2, GA_PR | wpn_c);
   }
-  else if (weapon == GFX_HUMAN_SPEAR)
+  else if (weapon == WPN_SPEAR)
   {
     if (attack)
     {
@@ -3668,7 +3806,7 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
       GA(-3, +2, ACS_VLINE | wpn_c);
     }
   }
-  else if (weapon == GFX_HUMAN_AXE && (flags & GFX_HUMAN_MWPN))
+  else if (weapon == WPN_BONECLUB)
   {
     wpn_c = COLOR_PAIR(PAIR_WHITE);
     
@@ -3683,7 +3821,7 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
       GA(-2, +2, ACS_LTEE  | wpn_c);
     }
   }
-  else if (weapon == GFX_HUMAN_AXE)
+  else if (weapon == WPN_AXE)
   {
     if (attack)
     {
@@ -3700,7 +3838,7 @@ void draw_human(int y, int x, int type, bool flip, uint32_t flags)
       GA(-3, +3, GA_AR     | wpn_c);
     }
   }
-  else if (weapon == GFX_HUMAN_FLAIL)
+  else if (weapon == WPN_FLAIL)
   {
     if (flags & GFX_ATTACK2)
     {

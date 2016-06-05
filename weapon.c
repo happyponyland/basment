@@ -4,19 +4,21 @@
 
 char * weapon_name[WPN_LAST] =
 {
-  [WPN_UNARMED]   = "(BUG)",
-  [WPN_DAGGER]    = "DAGGER",
-  [WPN_SWORD]     = "SWORD",
-  [WPN_MACE]      = "MACE",
-  [WPN_AXE]       = "AXE",
-  [WPN_FLAIL]     = "FLAIL",
-  [WPN_SPEAR]     = "SPEAR",
-  [WPN_DRAIN]     = "DRAINING DAGGER",
-  [WPN_DIAMOND]   = "DIAMOND MACE",
-  [WPN_GLASS]     = "GLASS SWORD",
-  [WPN_BOW]       = "BOW",
-  [WPN_RUNESWORD] = "RUNESWORD",
-  [WPN_BONECLUB]  = "BONE CLUB"
+  [WPN_UNARMED]    = "(BUG)",
+  [WPN_DAGGER]     = "DAGGER",
+  [WPN_SWORD]      = "SWORD",
+  [WPN_MACE]       = "MACE",
+  [WPN_AXE]        = "AXE",
+  [WPN_FLAIL]      = "FLAIL",
+  [WPN_SPEAR]      = "SPEAR",
+  [WPN_DRAIN]      = "DRAINING DAGGER",
+  [WPN_DIAMOND]    = "DIAMOND MACE",
+  [WPN_GLASS]      = "GLASS SWORD",
+  [WPN_BOW]        = "BOW",
+  [WPN_BLASTER]    = "BLASTER",
+  [WPN_FREEZE_RAY] = "FREEZE RAY",
+  [WPN_RUNESWORD]  = "RUNESWORD",
+  [WPN_BONECLUB]   = "BONE CLUB"
 };
 
 
@@ -91,7 +93,19 @@ void give_weapon(int type)
 
   case WPN_BOW:
     player->range = 3;
-    //player->damage = 3;
+    player->damage = 3;
+    game->wpn_dur = 50 + rand() % 50;
+    break;
+
+  case WPN_BLASTER:
+    player->range = 3;
+    player->damage = 3;
+    game->wpn_dur = 50 + rand() % 50;
+    break;
+
+  case WPN_FREEZE_RAY:
+    player->range = 3;
+    player->damage = 3;
     game->wpn_dur = 50 + rand() % 50;
     break;
 
@@ -112,6 +126,21 @@ void give_weapon(int type)
 
 
 
+int has_ranged_weapon()
+{
+  return is_ranged_weapon(game->weapon);
+}
+
+
+int is_ranged_weapon(int wpn)
+{
+  if (wpn == WPN_BOW)
+    return true;
+
+  return false;
+}
+
+
 /*
  */
 void find_random_weapon(char * msg)
@@ -123,7 +152,7 @@ void find_random_weapon(char * msg)
   if (msg == NULL)
     msg = none;
 
-  if (game->weapon != WPN_BOW && rand() % 3 == 0)
+  if (!has_ranged_weapon() && rand() % 3 == 0)
   {
     new_type = WPN_BOW;
   }
@@ -158,10 +187,10 @@ void find_random_weapon(char * msg)
     
     if (psel(line) == 1)
     {
-      if (new_type == WPN_BOW && player->shd_type != SHD_NONE)
+      if (is_ranged_weapon(new_type) && player->shd_type != SHD_NONE)
       {
 	draw_board();
-
+	
 	snprintf(line, DEFLEN,
 		 "DISCARD YOUR %s?\n"
 		 "\n"
@@ -180,6 +209,24 @@ void find_random_weapon(char * msg)
       }
     }
   }
+  else if (is_ranged_weapon(new_type) && player->shd_type != SHD_NONE)
+  {
+    snprintf(line, DEFLEN,
+	     "%s"
+	     "YOU FIND A %s\n"
+	     "DISCARD YOUR %s?\n"
+	     "\n"
+	     "<- NO#YES ->",
+	     msg,
+	     weapon_name[new_type],
+	     armor_name[player->shd_type]);
+    
+    if (psel(line) == 1)
+    {
+      player->shd_type = SHD_NONE;
+      give_weapon(new_type);
+    }
+  }
   else
   {
     snprintf(line, DEFLEN,
@@ -187,11 +234,11 @@ void find_random_weapon(char * msg)
 	     "YOU FIND A %s",
 	     msg,
 	     weapon_name[new_type]);
-    
+
     pwait(line);
     give_weapon(new_type);
   }
-  
+
   return;
 }
 

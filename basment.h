@@ -194,9 +194,10 @@ chtype player_armor(void);
 void g_uadd(int y, int x, char * s, chtype a);
 void draw_imp(int y, int x, int type, bool flip, uint32_t flags);
 void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags);
-void draw_human(int y, int x, int type, bool flip, uint32_t flags);
+void draw_human(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags);
 void draw_dancer(int y, int x, int type, bool flip, uint32_t flags);
 void draw_demon(int y, int x, int type, bool flip, uint32_t flags);
+void draw_walrus(int y, int x, int type, bool flip, uint32_t flags);
 void draw_fiend(int y, int x, int type, bool flip, uint32_t flags);
 void draw_bullrog(int y, int x, int type, bool flip, uint32_t flags);
 //void draw_fiend(int y, int x, int type, bool flip, uint32_t flags);
@@ -345,29 +346,35 @@ void shop_map(void);
 void shop_blacksmith(void);
 void shop_sushi(void);
 void shop_scuba(void);
+void shop_armor(void);
+void shop_ranged(void);
 
 /* weapon.c */
-#define WPN_UNARMED   0
-#define WPN_DAGGER    1
-#define WPN_SWORD     2
-#define WPN_MACE      3
-#define WPN_SPEAR     4
-#define WPN_AXE       5
-#define WPN_FLAIL     6
-#define WPN_DRAIN     7
-#define WPN_DIAMOND   8
-#define WPN_GLASS     9
-#define WPN_BOW       10
-#define WPN_RUNESWORD 11
-#define WPN_BONECLUB  12
-#define WPN_LAST      13
+#define WPN_UNARMED    0
+#define WPN_DAGGER     1
+#define WPN_SWORD      2
+#define WPN_MACE       3
+#define WPN_SPEAR      4
+#define WPN_AXE        5
+#define WPN_FLAIL      6
+#define WPN_DRAIN      7
+#define WPN_DIAMOND    8
+#define WPN_GLASS      9
+#define WPN_BOW        10
+#define WPN_BLASTER    11
+#define WPN_FREEZE_RAY 12
+#define WPN_RUNESWORD  13
+#define WPN_BONECLUB   14
+#define WPN_LAST       15
 
 extern char * weapon_name[WPN_LAST];
 
 void find_random_weapon(char * msg);
 void give_weapon(int type);
 bool damage_weapon(int amount);
-
+int has_ranged_weapon(void);
+int is_ranged_weapon(int wpn);
+  
 /* armor.c */
 #define SHD_NONE    0
 #define SHD_WOODEN  1
@@ -565,7 +572,8 @@ WINDOW * rwin;
 #define MOB_CRAB       39
 #define MOB_DANCER     40
 #define MOB_FIEND      41
-#define MOB_LAST       42
+#define MOB_WALRUS     42
+#define MOB_LAST       43
 
 extern char * mob_name[MOB_LAST];
 

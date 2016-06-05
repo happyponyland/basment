@@ -78,6 +78,210 @@ void shop_chef()
 
 
 
+void shop_armor()
+{
+  int sel;
+  char line[DEFLEN];
+  char shop_name[DEFLEN];
+
+  int cost;
+  int leave;
+  int armor;
+
+  if (gtile(player->y - 1, player->x - 3) == TL_DESK)
+    leave = POPUP_LEAVE_LEFT;
+  else
+    leave = POPUP_LEAVE_RIGHT;
+
+  snprintf(shop_name, DEFLEN, "ROLF");
+  
+  snprintf(line, DEFLEN,
+	   "WELCOME TO %s'S PREMIUM ARMOR\n"
+	   "BUY SOMETHING WILL YA!!\n\n"
+	   "  %-16s(%d)  \n"
+	   "  %-16s(%d)  \n"
+	   "  %-16s(%d)  \n"
+	   "  %-16s(%d)  ",
+	   shop_name,
+	   armor_name[ARMOR_SCALE], 100,
+	   armor_name[ARMOR_PLATE], 150,
+	   armor_name[ARMOR_MAGIC], 200,
+	   armor_name[SHD_METAL],   50);
+  
+  sel = pchoose(line, 3, 4, leave);
+  
+  draw_board();
+  
+  if (sel < 0)
+    return;
+
+  if (sel == 0)
+  {
+    armor = ARMOR_SCALE;
+    cost = 100;
+  }
+  else if (sel == 1)
+  {
+    armor = ARMOR_PLATE;
+    cost = 150;
+  }
+  else if (sel == 2)
+  {
+    armor = ARMOR_MAGIC;
+    cost = 200;
+  }
+  else if (sel == 3) cost = 200;
+  
+  if ((sel == 3 && player->shd_type == SHD_METAL) ||
+      (player->armor_type == armor))
+  {
+    pwait("YOU ALREADY HAVE THAT!");
+    draw_board();
+    return;
+  }
+
+  if (spend_gold(cost) == false)
+  {
+    snprintf(line, DEFLEN, "%s:\nSORRY, I DON'T GIVE CREDIT!!!", shop_name);
+    pwait(line);
+    return;
+  }
+
+  if (sel == 3)
+  {
+    if (has_ranged_weapon())
+    {
+      snprintf(line, DEFLEN,
+	       "DISCARD YOUR %s?\n"
+	       "\n"
+	       "<- NO#YES ->",
+	       weapon_name[game->weapon]);
+
+      if (psel(line) != 1)
+	return;
+
+      give_weapon(WPN_UNARMED);
+    }
+
+    give_armor(SHD_METAL);
+    
+    snprintf(line, DEFLEN,
+	     "YOU NOW HAVE A %s",
+	     armor_name[SHD_METAL]);
+  }
+  else
+  {
+    give_armor(armor);
+    snprintf(line, DEFLEN, "YOU NOW HAVE %s", armor_name[armor]);
+  }
+  
+  // Update gold
+  draw_stats();
+  
+  draw_board();
+  pwait(line);
+  
+  return;
+}
+
+
+
+void shop_ranged()
+{
+  int sel;
+  char line[DEFLEN];
+  char shop_name[DEFLEN];
+
+  int cost;
+  int leave;
+  int wpn;
+
+  if (gtile(player->y - 1, player->x - 3) == TL_DESK)
+    leave = POPUP_LEAVE_LEFT;
+  else
+    leave = POPUP_LEAVE_RIGHT;
+
+  snprintf(shop_name, DEFLEN, "ROLF");
+  
+  snprintf(line, DEFLEN,
+	   "WELCOME TO %s'S MISSILE*MART\n"
+	   "BUY SOMETHING WILL YA!!\n\n"
+	   "  %-16s(%d)  \n"
+	   "  %-16s(%d)  \n"
+	   "  %-16s(%d)  \n",
+	   shop_name,
+	   weapon_name[WPN_BOW], 100,
+	   weapon_name[WPN_BLASTER], 200,
+	   weapon_name[WPN_FREEZE_RAY], 400);
+  
+  sel = pchoose(line, 3, 3, leave);
+  
+  draw_board();
+  
+  if (sel < 0)
+    return;
+
+  if (sel == 0)
+  {
+    wpn = WPN_BOW;
+    cost = 100;
+  }
+  else if (sel == 1)
+  {
+    wpn = WPN_BLASTER;
+    cost = 200;
+  }
+  else if (sel == 2)
+  {
+    wpn = WPN_FREEZE_RAY;
+    cost = 400;
+  }
+  
+  if (game->weapon == wpn)
+  {
+    pwait("YOU ALREADY HAVE THAT!");
+    draw_board();
+    return;
+  }
+
+  if (spend_gold(cost) == false)
+  {
+    snprintf(line, DEFLEN, "%s:\nSORRY, I DON'T GIVE CREDIT!!!", shop_name);
+    pwait(line);
+    return;
+  }
+
+  if (player->shd_type != SHD_NONE)
+  {
+//    draw_board_norefresh();
+    
+    snprintf(line, DEFLEN,
+	     "DISCARD YOUR %s?\n"
+	     "\n"
+	     "<- NO#YES ->",
+	     armor_name[player->shd_type]);
+
+    if (psel(line) != 1)
+      return;
+
+    player->shd_type = SHD_NONE;
+  }
+  
+  give_weapon(wpn);
+  
+  // Update gold
+  draw_stats();
+  
+  draw_board();
+
+  snprintf(line, DEFLEN, "YOU NOW HAVE A %s", weapon_name[wpn]);
+  pwait(line);
+  
+  return;
+}
+
+
+
 void shop_blacksmith()
 {
   int sel;

@@ -464,7 +464,7 @@ void title_anim()
     mvwaddch(board, title_hole_pos, title_e_x + 2, ' ');
   }
 
-  draw_human(5, title_p_x, MOB_PLAYER, title_p_flip, title_p_flags);
+  draw_human(NULL, 5, title_p_x, MOB_PLAYER, title_p_flip, title_p_flags);
   draw_thing(NULL, title_e_y, title_e_x, title_e_type, title_e_flip, title_e_flags);
 
   wrefresh(board);

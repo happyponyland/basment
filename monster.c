@@ -44,6 +44,7 @@ char * mob_name[MOB_LAST] =
   [MOB_FISH] = "FISH",
   [MOB_CRAB] = "CRAB",
   [MOB_SAUCEROR] = "SAUCEROR",
+  [MOB_WALRUS] = "DEATH WALRUS",
   [MOB_BULLROG] = "BULLROG"
 };
 
@@ -132,6 +133,16 @@ int make_monster(int y, int x, int type)
     mob->range = 5;
     mob->hp = 3;
     mob->exp = 15;
+    mob->damage = 3;
+    break;
+
+  case MOB_WALRUS:
+    mob->pack_w = 5;
+    mob->speed = 6;
+    mob->steps = 3;
+    mob->range = 6;
+    mob->hp = 30;
+    mob->exp = 500;
     mob->damage = 3;
     break;
 
@@ -761,6 +772,13 @@ int random_monster(int floor, int branch)
     default:
       goto regular;
     }
+  }
+  else if (branch == BRANCH_ICECAVE)
+  {
+    if (rand() % 5 == 0)
+      return MOB_WALRUS;
+
+    goto regular;
   }
   else if (branch == BRANCH_CAVE)
   {

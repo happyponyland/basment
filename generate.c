@@ -575,7 +575,8 @@ void corridor(int y, int start_x, int speed, int remainder)
       branch = get_branch(y, start_x - speed);
     else
       branch = get_branch(y + 1, start_x);
-//    branch = BRANCH_DUNGEON;
+
+//    branch = BRANCH_ICECAVE;
   }
   else if (y == 0)
   {
@@ -761,8 +762,8 @@ bool make_branch()
 
   NOW_WORKING;
 
-//  branch = BRANCH_ORGANIC;
   branch = 1 + rand() % (BRANCHES - 1);
+//  branch = BRANCH_ICECAVE;
 
   start_y = 1 + rand() % (LAST_NORMAL_FLOOR - 4);
 
@@ -1733,9 +1734,12 @@ void npc_room(int y, int x, int cell_type)
 
     if (rand() % 10 == 0)
       npc_type = TL_P_NPC_SCUBA;
+
+    if (rand() % 20 == 0)
+      npc_type = TL_P_NPC_CLOSED;
   }
 
-  npc_type = TL_P_NPC_BAR;
+  npc_type = TL_P_NPC_RANGED;
 
   if (cell_type == CELL_NPC_R || cell_type == CELL_SUSHI_R)
   {
@@ -1815,8 +1819,24 @@ void npc_room(int y, int x, int cell_type)
   else if (npc_type == TL_P_NPC_BAR)
   {
     stile(y - 4, x - 1, TL_L_BAR_B);
-    stile(y - 4, x - 0, TL_L_BAR_A);
+    stile(y - 4, x + 0, TL_L_BAR_A);
     stile(y - 4, x + 1, TL_L_BAR_R);
+  }
+  else if (npc_type == TL_P_NPC_ARMOR)
+  {
+    stile(y - 4, x + x_off - 1, TL_L_A);
+    stile(y - 4, x + x_off - 0, TL_L_R);
+    stile(y - 4, x + x_off + 1, TL_L_M);
+    stile(y - 4, x + x_off + 2, TL_L_O);
+    stile(y - 4, x + x_off + 3, TL_L_R);
+  }
+  else if (npc_type == TL_P_NPC_RANGED)
+  {
+    stile(y - 4, x + x_off - 1, TL_L_M);
+    stile(y - 4, x + x_off - 0, TL_L_R);
+    stile(y - 4, x + x_off + 1, TL_L_M);
+    stile(y - 4, x + x_off + 2, TL_L_O);
+    stile(y - 4, x + x_off + 3, TL_L_R);
   }
 
   return;
