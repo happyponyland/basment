@@ -74,7 +74,7 @@ redraw_title:
     //addstr(t++, l_edge, "      "BASMENT DWELLERS"  ");
     mvaddstr(t++, l_edge, "                -- AN EPIC NEXT-GEN RPG -- ");
     mvaddstr(t++, l_edge, "                  ABOUT KILLING MONSTERS   ");
-    mvaddstr(t++, l_edge, "                 AND TAKING THEIR TREASURE ");
+    mvaddstr(t++, l_edge, "                AND STEALING THEIR TREASURE ");
     t++;
 //    mvaddstr(t++, l_edge, "CONTROL YOUR CHARACTER WITH THE DIRECTIONAL KEYS");
     mvaddstr(t++, l_edge, "PRESS <LEFT> / <RIGHT> TO MOVE LEFT AND RIGHT");

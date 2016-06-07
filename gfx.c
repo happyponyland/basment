@@ -3547,6 +3547,13 @@ void draw_human(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
   shd_type = (mob ? mob->shd_type : 0);
   skin = COLOR_PAIR(PAIR_WHITE);
 
+  if (title_running)
+  {
+    torso = ACS_CKBOARD | COLOR_PAIR(PAIR_BROWN);
+    weapon = WPN_DAGGER;
+    wpn_c = COLOR_PAIR(PAIR_RED);
+  }
+
   if (!title_running)
   {
     if (is_player)
