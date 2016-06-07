@@ -1015,7 +1015,7 @@ void game_over(char * cause, bool won)
 
     if (game->has_map)
     {
-      strcat(morgue, "  A MAP OF THE DUNGEON\n");
+      strcat(morgue, "  A MAP OF THE BASMENT\n");
       anything = true;
     }
 

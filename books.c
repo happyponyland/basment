@@ -76,7 +76,7 @@ void bookshelf()
 
   case 3:
     strcpy(bookname,
-	   "\"DUNGEON SURVIVAL 101:\n"
+	   "\"BASMENT SURVIVAL 101:\n"
 	   " HOW TO DETECT TRAPS\"");
 
     learn_detect_traps();
@@ -144,8 +144,7 @@ void bookshelf()
 
   case 12:
     strcpy(bookname,
-	   "\"BASMENT DWELLERS: DUNGEON\n"
-	   " MASTERS HANDBOOK (5TH ED.)\"");
+	   "\"BASMENT MASTERS HANDBOOK (5TH ED.)\"");
     exp = 1000;
     break;
 

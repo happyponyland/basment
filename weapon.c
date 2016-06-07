@@ -94,7 +94,7 @@ void give_weapon(int type)
 
   case WPN_BOW:
     player->range = 3;
-    player->damage = 3;
+    player->damage = 4;
     game->wpn_dur = 50 + rand() % 50;
     break;
 
@@ -162,9 +162,18 @@ void find_random_weapon(char * msg)
   if (msg == NULL)
     msg = none;
 
-  if (!has_ranged_weapon() && rand() % 3 == 0)
+  if (!has_ranged_weapon() &&
+      (player->y / FLOOR_H) > 10 &&
+      rand() % 5 > 1)
   {
-    new_type = WPN_BOW;
+    new_type = WPN_BLASTER;
+  }
+  else if (!has_ranged_weapon() && rand() % 3 == 0)
+  {
+    if (rand() % 4 == 0)
+      new_type = WPN_3XBOW;
+    else
+      new_type = WPN_BOW;
   }
   else
   {

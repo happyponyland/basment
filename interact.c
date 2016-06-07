@@ -1436,7 +1436,7 @@ void mushrooms()
 {
   stile(player->y, player->x, TL_MUSH_CLEARED);
   
-  switch (rand() % 5)
+  switch (rand() % 3)
   {
   case 0:
     game->beer = 20;
@@ -1452,7 +1452,7 @@ void mushrooms()
 
     // TODO: Teleport to subquest
     
-  case 2:
+  default:
     pwait("WOW!!!\n\nYOU FEEL MUCH STRONGER!");
     change_pl_st(+4);
     break;

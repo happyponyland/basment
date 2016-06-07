@@ -1012,10 +1012,10 @@ void populate_cellmap(void)
   place_single_cell(12, CELL_SWSTONE);
   place_single_cell(8, CELL_DISCO);
 
-  /*  for (i = 0; i < 600; i++)
+  for (i = 0; i < 3; i++)
   {
     place_single_cell(1, CELL_MUSHROOMS);
-    }*/
+  }
 
   for (i = 0; i < 3; i++)
   {

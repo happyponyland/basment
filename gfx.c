@@ -3782,7 +3782,7 @@ void draw_human(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
     }
   }
 
-  if (weapon == WPN_SWORD || weapon == WPN_GLASS || weapon == WPN_DAGGER || weapon == WPN_RUNESWORD)
+  if (weapon == WPN_SWORD || weapon == WPN_GLASS || weapon == WPN_DAGGER || weapon == WPN_RUNESWORD || weapon == WPN_GLASS)
   {
     // Add an extra tip for the sword
 
@@ -3803,7 +3803,7 @@ void draw_human(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
 	GA(-3, +2, ACS_VLINE | wpn_c);
     }
   }
-  else if (weapon == WPN_MACE || weapon == WPN_GLASS)
+  else if (weapon == WPN_MACE || weapon == WPN_DIAMOND)
   {
     if (attack)
     {

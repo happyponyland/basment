@@ -346,11 +346,9 @@ char * random_seller_name(void);
 void shop_chef(void);
 void shop_train(void);
 void shop_map(void);
-void shop_blacksmith(void);
 void shop_sushi(void);
 void shop_scuba(void);
 void shop_armor(void);
-//void shop_ranged(void);
 void shop_weapons(int selection);
 
 /* weapon.c */

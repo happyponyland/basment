@@ -137,11 +137,11 @@ int make_monster(int y, int x, int type)
     break;
 
   case MOB_WALRUS:
-    mob->pack_w = 5;
-    mob->speed = 6;
+    mob->pack_w = 5; 
+    mob->speed = 13;
     mob->steps = 3;
     mob->range = 6;
-    mob->hp = 30;
+    mob->hp = 40;
     mob->exp = 500;
     mob->damage = 3;
     break;
@@ -202,10 +202,10 @@ int make_monster(int y, int x, int type)
     mob->article = ART_AN;
 //    mob->w = 5;
     mob->pack_w = 7;
-    mob->speed = 6;
-    mob->steps = 3;
+    mob->speed = 8;
+    mob->steps = 5;
     mob->range = 10;
-    mob->hp = 40;
+    mob->hp = 60;
     mob->exp = 800;
     mob->attack_frames = 2;
     mob->damage = 16;

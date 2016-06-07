@@ -94,8 +94,6 @@ void shop_armor()
   else
     leave = POPUP_LEAVE_RIGHT;
 
-//  snprintf(shop_name, DEFLEN, "ROLF");
-
   seller_name = random_seller_name();
   
   snprintf(line, DEFLEN,
@@ -247,7 +245,6 @@ void shop_weapons(int selection)
 {
   int sel;
   char line[DEFLEN];
-//  char seller_name[DEFLEN];
   char * seller_name;
   char shop_name[DEFLEN];
 
@@ -257,8 +254,6 @@ void shop_weapons(int selection)
 
   int wpn_type[6];
   int wpn_cost[6];
-
-  //snprintf(seller_name, DEFLEN, "ROLF");
 
   seller_name = random_seller_name();
   
@@ -326,7 +321,7 @@ void shop_weapons(int selection)
 
   if (sel_wpn == WPN_FREEZE_RAY)
   {
-    snprintf(line, DEFLEN, "%s:\nSORRY, FREEZE RAY ISN'T IMPLEMENTED YET!!!", seller_name);
+    snprintf(line, DEFLEN, "%s:\nSORRY, FREEZE RAY HASN'T BEEN IMPLEMENTED YET!!!", seller_name);
     pwait(line);
     return;
   }
@@ -340,8 +335,6 @@ void shop_weapons(int selection)
 
   if (is_ranged_weapon(sel_wpn) && player->shd_type != SHD_NONE)
   {
-    //draw_board_norefresh();
-    
     snprintf(line, DEFLEN,
 	     "DISCARD YOUR %s?\n"
 	     "\n"
@@ -366,280 +359,6 @@ void shop_weapons(int selection)
   
   return;
 }
-
-
-
-
-/*void shop_ranged()
-{
-  int sel;
-  char line[DEFLEN];
-  char shop_name[DEFLEN];
-
-  int cost;
-  int leave;
-  int wpn;
-
-  if (gtile(player->y - 1, player->x - 3) == TL_DESK)
-    leave = POPUP_LEAVE_LEFT;
-  else
-    leave = POPUP_LEAVE_RIGHT;
-
-  snprintf(shop_name, DEFLEN, "ROLF");
-  
-  snprintf(line, DEFLEN,
-	   "WELCOME TO %s'S MISSILE*MART\n"
-	   "BUY SOMETHING WILL YA!!\n\n"
-	   "  %-16s(%d)  \n"
-	   "  %-16s(%d)  \n"
-	   "  %-16s(%d)  ",
-	   shop_name,
-	   weapon_name[WPN_BOW], 100,
-	   weapon_name[WPN_BLASTER], 200,
-	   weapon_name[WPN_FREEZE_RAY], 400);
-  
-  sel = pchoose(line, 3, 3, leave);
-  
-  draw_board();
-  
-  if (sel < 0)
-    return;
-
-  if (sel == 0)
-  {
-    wpn = WPN_BOW;
-    cost = 100;
-  }
-  else if (sel == 1)
-  {
-    wpn = WPN_BLASTER;
-    cost = 200;
-  }
-  else if (sel == 2)
-  {
-    wpn = WPN_FREEZE_RAY;
-    cost = 400;
-  }
-  
-  if (game->weapon == wpn)
-  {
-    pwait("YOU ALREADY HAVE THAT!");
-    draw_board();
-    return;
-  }
-
-  if (spend_gold(cost) == false)
-  {
-    snprintf(line, DEFLEN, "%s:\nSORRY, I DON'T GIVE CREDIT!!!", shop_name);
-    pwait(line);
-    return;
-  }
-
-  if (player->shd_type != SHD_NONE)
-  {
-//    draw_board_norefresh();
-    
-    snprintf(line, DEFLEN,
-	     "DISCARD YOUR %s?\n"
-	     "\n"
-	     "<- NO#YES ->",
-	     armor_name[player->shd_type]);
-
-    if (psel(line) != 1)
-      return;
-
-    player->shd_type = SHD_NONE;
-  }
-  
-  give_weapon(wpn);
-  
-  // Update gold
-  draw_stats();
-  
-  draw_board();
-
-  snprintf(line, DEFLEN, "YOU NOW HAVE A %s", weapon_name[wpn]);
-  pwait(line);
-  
-  return;
-  }*/
-
-
-
-void shop_blacksmith()
-{
-  int sel;
-  char line[DEFLEN];
-
-  int weapon;
-  int weapon_cost;
-  int armor;
-  int armor_cost;
-  int shield;
-  int shield_cost;
-  int final_cost;
-  int leave;
-
-  if (gtile(player->y - 1, player->x - 3) == TL_DESK)
-    leave = POPUP_LEAVE_LEFT;
-  else
-    leave = POPUP_LEAVE_RIGHT;
-  
-  if (game->current_floor < 6)
-  {
-    weapon = WPN_SWORD;
-    weapon_cost = 100;
-    armor = ARMOR_LEATHER;
-    armor_cost = 100;
-    shield = SHD_WOODEN;
-    shield_cost = 100;
-  }
-  else if (game->current_floor < 12)
-  {
-    if (game->current_floor % 2 == 0)
-      weapon = WPN_SWORD;
-    else
-      weapon = WPN_MACE;
-
-    weapon_cost = 150;
-
-    armor = ARMOR_SCALE;
-    armor_cost = 150;
-    shield = SHD_METAL;
-    shield_cost = 150;
-  }
-  else if (game->current_floor < 18)
-  {
-    if (game->current_floor % 2 == 0)
-      weapon = WPN_MACE;
-    else
-      weapon = WPN_SPEAR;
-
-    weapon_cost = 200;
-
-    armor = ARMOR_PLATE;
-    armor_cost = 200;
-    shield = SHD_METAL;
-    shield_cost = 200;
-  }
-  else if (game->current_floor < 21)
-  {
-    if (game->current_floor % 2 == 0)
-      weapon = WPN_FLAIL;
-    else
-      weapon = WPN_AXE;
-
-    weapon_cost = 250;
-
-    armor = ARMOR_MAGIC;
-    armor_cost = 250;
-
-    shield = SHD_MAGIC;
-    shield_cost = 250;
-  }
-  else
-  {
-    if (game->current_floor % 3 == 0)
-      weapon = WPN_DIAMOND;
-    else if (game->current_floor % 3 == 1)
-      weapon = WPN_GLASS;
-    else
-      weapon = WPN_DRAIN;
-
-    weapon_cost = 300;
-
-    armor = ARMOR_DRAGON;
-    armor_cost = 300;
-
-    shield = SHD_MAGIC;
-    shield_cost = 300;
-  }
-
-  snprintf(line, DEFLEN,
-	   "BLACKSMITH:\n"
-	   "BUY SOMETHING WILL YA!!\n\n"
-	   "  %-16s(%d)  \n"
-	   "  %-16s(%d)  \n"
-	   "  %-16s(%d)  ",
-	   weapon_name[weapon], weapon_cost,
-	   armor_name[armor], shield_cost,
-	   armor_name[shield], shield_cost);
-  
-  sel = pchoose(line, 3, 3, leave);
-  
-  draw_board();
-  
-  if (sel < 0)
-    return;
-
-  if ((sel == 0 && game->weapon == weapon) ||
-      (sel == 1 && player->armor_type == armor) ||
-      (sel == 2 && player->shd_type == shield))
-  {
-    pwait("YOU ALREADY HAVE THAT!");
-    draw_board();
-    return;
-  }
-
-  if (sel == 0)
-    final_cost = weapon_cost;
-  else if (sel == 1)
-    final_cost = armor_cost;
-  else if (sel == 2)
-    final_cost = shield_cost;
-  
-  if (spend_gold(final_cost) == false)
-  {
-    pwait("BLACKSMITH:\n"
-	  "HEY! CASH UP FRONT!!");
-    return;
-  }
-
-  if (sel == 0)
-  {
-    give_weapon(weapon);
-    snprintf(line, DEFLEN,
-	     "YOU NOW HAVE A %s",
-	     weapon_name[weapon]);
-  }
-  else if (sel == 1)
-  {
-    give_armor(armor);
-    snprintf(line, DEFLEN,
-	     "YOU NOW HAVE %s",
-	     armor_name[armor]);
-  }
-  else if (sel == 2)
-  {
-    if (game->weapon == WPN_BOW)
-    {
-      snprintf(line, DEFLEN,
-	       "DISCARD YOUR %s?\n"
-	       "\n"
-	       "<- NO#YES ->",
-	       weapon_name[game->weapon]);
-
-      if (psel(line) != 1)
-	return;
-
-      give_weapon(WPN_UNARMED);
-    }
-
-    give_armor(shield);
-    snprintf(line, DEFLEN,
-	     "YOU NOW HAVE A %s",
-	     armor_name[shield]);
-  }
-  
-  // Update gold
-  draw_stats();
-  
-  draw_board();
-  pwait(line);
-  
-  return;
-}
-
 
 
 
