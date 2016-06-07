@@ -216,20 +216,27 @@ void rogue_escape(mob_t * m)
 
 
 
-int shoot_missile(int mi, int dir)
+int shoot_missile(mob_t * attacker, int dir)
 {
   char line[DEFLEN];
-  mob_t * attacker;
   mob_t * target;
   int m_y; int m_x;
   int sc_y; int sc_x;
   int count;
   int m_type;
+  int adjust_y;
+  int passes;
+  int pass;
+  int xbow;
   chtype color;
   chtype missile;
 
-  attacker = &game->mob[mi];
+//   attacker = &game->mob[mi];
 
+  xbow = false;
+  passes = 1;
+
+  adjust_y = water_offset(attacker);
   m_y = attacker->y;
   sc_y = m_y - view_y - 1;
 
@@ -248,167 +255,242 @@ int shoot_missile(int mi, int dir)
     m_type = MIS_FIREBALL;
     sc_y -= 1;
   }
+  else if (attacker == player)
+  {
+    if (game->weapon == WPN_BOW)
+      m_type = MIS_ARROW;
+    else if (game->weapon == WPN_3XBOW)
+    {
+      xbow = true;
+      m_type = MIS_ARROW;
+
+      if (water_offset(attacker))
+	passes = 2;
+      else
+	passes = 3;
+    }
+    else if (game->weapon == WPN_BLASTER)
+    {
+      m_type = MIS_BLASTER;
+      adjust_y -= 1;
+    }
+  }
   else
+  {
     m_type = MIS_ARROW;
+  }
 
   draw_board();
-
-  count = 0;
-
-  while (1)
+  
+  for (pass = 0; pass < passes; pass++)
   {
-    m_x += dir;
-    sc_x = m_x - view_x;
-    count++;
-
-    if (sc_x < 0 || sc_x >= BOARD_W)
-      return 0;
-
-    target = find_enemy(attacker, m_y, m_x + dir);
-
-    if (target == NULL)
-    {
-      if (game->blinded)
-	continue;
+    count = 0;
     
-      if (count % 2 == 0)
-	continue;
+    if (xbow)
+    {
+      m_x = attacker->x +
+	(attacker->flip ? -attacker->pack_w + 2 : attacker->pack_w - 2) +
+	dir * 2;
+      
+      if (pass == 0)
+	adjust_y = water_offset(attacker) - 1;
+      else if (pass == 1)
+	adjust_y = water_offset(attacker);
+      else if (pass == 2)
+	adjust_y = water_offset(attacker) + 1;
+    }
 
-      missile = '?';
-      color = COLOR_PAIR(PAIR_GREEN);
+    while (1)
+    {
+      m_x += dir;
+      sc_x = m_x - view_x;
+      count++;
+
+      if (sc_x < 0 || sc_x >= BOARD_W)
+	goto end_pass;//break;//return 0;
+      
+      target = find_enemy(attacker, m_y, m_x + dir);
+      
+      if (target == NULL)
+      {
+	if (game->blinded)
+	  continue;
+	
+	if (m_type != MIS_BLASTER && count % 2 == 1)
+	  continue;
+	
+	// Skip the length of the barrel
+	if (m_type == MIS_BLASTER && count < 4)
+	  continue;
+	
+	missile = '?';
+	color = COLOR_PAIR(PAIR_GREEN);
+	
+	if (m_type == MIS_ARROW)
+	{
+	  missile = '-';
+	  color = COLOR_PAIR(PAIR_MAGENTA);
+	}
+	if (m_type == MIS_BLASTER)
+	{
+	  missile = '=';
+	  color = COLOR_PAIR(PAIR_MAGENTA);
+	}
+	else if (m_type == MIS_FIREBALL)
+	{
+	  missile = '*';
+	  color = COLOR_PAIR(PAIR_RED);
+	}
+	else if (m_type == MIS_DISINT)
+	{
+	  missile = (dir > 0 ? '>' : '<');
+	  color = COLOR_PAIR(PAIR_RED);
+	}
+	
+	if (water_join(gtile(m_y - 1, m_x)))
+	{
+	  color = COLOR_PAIR(PAIR_BLACK_ON_CYAN);
+	}
+	
+	if (m_type == MIS_BLASTER)
+	{
+	  mvwaddch(board, sc_y + adjust_y, sc_x, '_' | color);
+/*	if (count % 2)
+	mvwaddch(board, sc_y, sc_x, (dir > 0 ? ')' : '(') | color);
+	else
+	mvwaddch(board, sc_y - 1, sc_x, (dir > 0 ? ')' : '(') | color);*/
+	}
+	else
+	  mvwaddch(board, sc_y + adjust_y, sc_x, missile | color);
+	
+	
+	wrefresh(board);
+	spause();
+	
+	continue;
+      }
+      
+      if (target->shd_up &&
+	  ((!target->flip && dir < 0) ||
+	   (target->flip && dir > 0)) )
+      {
+	if (target == player &&
+	    m_type == MIS_DISINT &&
+	    target->shd_type != SHD_NONE &&
+	    target->shd_type != SHD_MAGIC)
+	{
+	  flush_input();
+	  snprintf(line, DEFLEN,
+		   "DISINTEGRATION BEAM!!\n\nYOUR %s\nCRUMBLES TO DUST!",
+		   armor_name[target->shd_type]);
+	  pwait(line);
+	  target->shd_type = SHD_NONE;
+	  target->shd_up = false;
+	  goto end_pass;//return true;
+	}
+	
+	if (m_type != MIS_BLASTER && shield_block(target))
+	{
+	  mob_text(target, "BLOCK");
+	  damage_shield(target);
+	  goto end_pass; //return true;
+	}
+      }
+      
+      if (target == player && m_type == MIS_DISINT)
+      {
+	if (target->armor_type != ARMOR_NONE &&
+	    target->armor_type != ARMOR_MAGIC)
+	{
+	  flush_input();
+	  snprintf(line, DEFLEN,
+		   "DISINTEGRATION BEAM!!\n\nYOUR %s\nCRUMBLES TO DUST!",
+		   armor_name[target->armor_type]);
+	  pwait(line);
+	  target->armor_type = ARMOR_NONE;
+	  goto end_pass;// return true;
+	}
+	
+	if (game->weapon != WPN_UNARMED)
+	{
+	  flush_input();
+	  snprintf(line, DEFLEN,
+		   "DISINTEGRATION BEAM!!\n\nYOUR %s\nCRUMBLES TO DUST!",
+		   weapon_name[game->weapon]);
+	  pwait(line);
+	  give_weapon(WPN_UNARMED);
+	  goto end_pass; //return true;
+	}
+      }
+      
+      damage(attacker, target);
       
       if (m_type == MIS_ARROW)
       {
-	missile = '-';
-	color = COLOR_PAIR(PAIR_MAGENTA);
+	target->flags = GFX_HURT;
+	draw_board(); lpause();
+	target->flags = 0;
+      }
+      else if (m_type == MIS_BLASTER)
+      {
+	target->flags = GFX_HURT;
+	draw_board(); lpause();
+	target->flags = 0;
       }
       else if (m_type == MIS_FIREBALL)
       {
-	missile = '*';
-	color = COLOR_PAIR(PAIR_RED);
+	explosion(sc_y, sc_x + dir);
       }
-      else if (m_type == MIS_DISINT)
-      {
-	missile = (dir > 0 ? '>' : '<');
-	color = COLOR_PAIR(PAIR_RED);
-      }
-
-      if (water_join(gtile(m_y - 1, m_x)))
-      {
-	color = COLOR_PAIR(PAIR_BLACK_ON_CYAN);
-      }
-
-      mvwaddch(board, sc_y, sc_x, missile | color);
-      wrefresh(board);
-      spause();
-
-      continue;
-    }
-    
-    if (target->shd_up &&
-	((!target->flip && dir < 0) ||
-	 (target->flip && dir > 0)) )
-    {
-      if (target == player &&
-	  m_type == MIS_DISINT &&
-	  target->shd_type != SHD_NONE &&
-	  target->shd_type != SHD_MAGIC)
-      {
-	flush_input();
-	snprintf(line, DEFLEN,
-		 "DISINTEGRATION BEAM!!\n\nYOUR %s\nCRUMBLES TO DUST!",
-		 armor_name[target->shd_type]);
-	pwait(line);
-	target->shd_type = SHD_NONE;
-	target->shd_up = false;
-	return true;
-      }
-
-      if (shield_block(target))
-      {
-	mob_text(target, "BLOCK");
-	damage_shield(target);
-	return true;
-      }
-    }
-
-    if (target == player && m_type == MIS_DISINT)
-    {
-      if (target->armor_type != ARMOR_NONE &&
-	  target->armor_type != ARMOR_MAGIC)
-      {
-	flush_input();
-	snprintf(line, DEFLEN,
-		 "DISINTEGRATION BEAM!!\n\nYOUR %s\nCRUMBLES TO DUST!",
-		 armor_name[target->armor_type]);
-	pwait(line);
-	target->armor_type = ARMOR_NONE;
-	return true;
-      }
-
-      if (game->weapon != WPN_UNARMED)
-      {
-	flush_input();
-	snprintf(line, DEFLEN,
-		 "DISINTEGRATION BEAM!!\n\nYOUR %s\nCRUMBLES TO DUST!",
-		 weapon_name[game->weapon]);
-	pwait(line);
-	give_weapon(WPN_UNARMED);
-	return true;
-      }
-    }
-
-    damage(attacker, target);
-    
-    if (m_type == MIS_ARROW)
-    {
-      target->flags = GFX_HURT;
-      draw_board(); lpause();
-      target->flags = 0;
-    }
-    else if (m_type == MIS_FIREBALL)
-    {
-      explosion(sc_y, sc_x + dir);
-    }
-    
-    if (target == player)
-      draw_bars();
-    
-    if (target->hp <= 0)
-    {
+      
       if (target == player)
       {
-	snprintf(line, DEFLEN,
-		 "YOU WERE %s\n"
-		 "BY %s%s",
-		 (m_type == MIS_FIREBALL ? "FRIED" :
-		  (m_type == MIS_DISINT ? "DISINTEGRATED" : "SHOT")),
-		 article[attacker->article],
-		 mob_name[attacker->type]);
-	draw_board();
-	game_over(line, false);
+	draw_bars();
       }
-      else
+      
+      if (target->hp <= 0)
       {
-	kill_enemy(target);
+	if (target == player)
+	{
+	  snprintf(line, DEFLEN,
+		   "YOU WERE %s\n"
+		   "BY %s%s",
+		   (m_type == MIS_FIREBALL ? "FRIED" :
+		    (m_type == MIS_DISINT ? "DISINTEGRATED" : "SHOT")),
+		   article[attacker->article],
+		   mob_name[attacker->type]);
+	  draw_board();
+	  game_over(line, false);
+	}
+	else
+	{
+	  if (!xbow || pass == passes - 1)
+	    kill_enemy(target);
+
+	  goto end_pass;
+	}
       }
-    }
-    else if (target != player)
-    {
-      enemy_bar = target->index;
-      enemy_bar_time = BAR_TIMEOUT;
-      draw_bars();
+      else if (target != player)
+      {
+	enemy_bar = target->index;
+	enemy_bar_time = BAR_TIMEOUT;
+	draw_bars();
+	
+	// update the number of eyes it has
+	if (target->type == MOB_BIGSPIDER)
+	  draw_board();//	  draw_board();
+      }
 
-      // update the number of eyes it has
-      if (target->type == MOB_BIGSPIDER)
-	draw_board();
+      damage_armor(target);
+      goto end_pass;
     }
 
-    damage_armor(target);
-   
-    return 1;
+  end_pass:
+    continue;
   }
-
+  
+//      return 1;
+//    }
+    
   return 1;
 }
 
@@ -417,9 +499,22 @@ int shoot_missile(int mi, int dir)
 int damage(mob_t * attacker, mob_t * target)
 {
   int amount;
+  int base;
 
-  amount = attacker->strength + rand() % (1 + attacker->damage);
+  base = attacker->damage;
 
+  if (attacker == player)
+  {
+    switch (game->weapon)
+    {
+    case WPN_BOW:     base = 5; break;
+    case WPN_BLASTER: base = 12; break;
+    default: base = 3; break;
+    }
+  }
+  
+  amount = attacker->strength + rand() % (1 + base);
+  
   if (attacker == player && game->beer)
   {
     amount *= 4;

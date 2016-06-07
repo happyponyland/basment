@@ -557,3 +557,20 @@ void try_to_breathe()
 
   return;
 }
+
+
+
+int water_offset(mob_t * mob)
+{
+  if (mob->flying)
+    return 0;
+
+  if (gtile(mob->y + 1, mob->x)     == TL_SURFACE &&
+      gtile(mob->y + 1, mob->x - 1) == TL_SURFACE &&
+      gtile(mob->y + 1, mob->x + 1) == TL_SURFACE)
+  {
+    return 1;
+  }
+
+  return 0;
+}

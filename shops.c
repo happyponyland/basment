@@ -2,6 +2,7 @@
 #include "basment.h"
 
 
+
 void shop_chef()
 {
   int sel;
@@ -82,7 +83,7 @@ void shop_armor()
 {
   int sel;
   char line[DEFLEN];
-  char shop_name[DEFLEN];
+  char * seller_name;
 
   int cost;
   int leave;
@@ -93,7 +94,9 @@ void shop_armor()
   else
     leave = POPUP_LEAVE_RIGHT;
 
-  snprintf(shop_name, DEFLEN, "ROLF");
+//  snprintf(shop_name, DEFLEN, "ROLF");
+
+  seller_name = random_seller_name();
   
   snprintf(line, DEFLEN,
 	   "WELCOME TO %s'S PREMIUM ARMOR\n"
@@ -102,7 +105,7 @@ void shop_armor()
 	   "  %-16s(%d)  \n"
 	   "  %-16s(%d)  \n"
 	   "  %-16s(%d)  ",
-	   shop_name,
+	   seller_name,
 	   armor_name[ARMOR_SCALE], 100,
 	   armor_name[ARMOR_PLATE], 150,
 	   armor_name[ARMOR_MAGIC], 200,
@@ -142,7 +145,7 @@ void shop_armor()
 
   if (spend_gold(cost) == false)
   {
-    snprintf(line, DEFLEN, "%s:\nSORRY, I DON'T GIVE CREDIT!!!", shop_name);
+    snprintf(line, DEFLEN, "%s:\nSORRY, I DON'T GIVE CREDIT!!!", seller_name);
     pwait(line);
     return;
   }
@@ -186,7 +189,188 @@ void shop_armor()
 
 
 
-void shop_ranged()
+
+char * seller_names[] =
+{
+  "ROLFE",
+  "JACQUELINE",
+  "HAGBARD",
+  "PATRICIA",
+  "TEEMU",
+  "KNUT-OYVIND",
+  "PER-EINAR",
+  "VEGAN_SXE_1994"
+};
+
+#define SELLER_NAMES 8
+
+
+
+
+char * random_seller_name()
+{
+  int y;
+  int x;
+  int i;
+  int sy;
+  int sx;
+
+  i = 0;
+  
+  sy = player->y / FLOOR_H;
+  sx = player->x / CELLS_W;
+
+
+  for (y = 0; y < MAX_FLOORS; y++)
+  {
+    for (x = 0; x < CELLS_W; x++)
+    {
+      if (y == sy && x == sx)
+	goto finish_it;
+      
+      if (get_cell(y, x) == CELL_NPC_L ||
+	  get_cell(y, x) == CELL_NPC_R)
+      {
+	i = (i + 1) % SELLER_NAMES;
+      }
+    }
+  }
+  
+finish_it:
+  return seller_names[i];
+}
+
+
+
+
+void shop_weapons(int selection)
+{
+  int sel;
+  char line[DEFLEN];
+//  char seller_name[DEFLEN];
+  char * seller_name;
+  char shop_name[DEFLEN];
+
+  int leave;
+  int sel_wpn;
+  int final_cost;
+
+  int wpn_type[6];
+  int wpn_cost[6];
+
+  //snprintf(seller_name, DEFLEN, "ROLF");
+
+  seller_name = random_seller_name();
+  
+  if (selection == 0)
+  {
+    snprintf(shop_name, DEFLEN, "%s", "INSTRUMENTS OF DEATH");
+
+    wpn_type[0] = WPN_SWORD;
+    wpn_cost[0] = 100;
+    wpn_type[1] = WPN_SPEAR;
+    wpn_cost[1] = 150;
+    wpn_type[2] = WPN_FLAIL;
+    wpn_cost[2] = 250;
+    wpn_type[3] = WPN_GLASS;
+    wpn_cost[3] = 300;
+  }
+  else if (selection == 1)
+  {
+    snprintf(shop_name, DEFLEN, "%s", "MISSILE*MART");
+
+    wpn_type[0] = WPN_BOW;
+    wpn_cost[0] = 100;
+    wpn_type[1] = WPN_3XBOW;
+    wpn_cost[1] = 200;
+    wpn_type[2] = WPN_BLASTER;
+    wpn_cost[2] = 300;
+    wpn_type[3] = WPN_FREEZE_RAY;
+    wpn_cost[3] = 500;
+  }
+
+  if (gtile(player->y - 1, player->x - 3) == TL_DESK)
+    leave = POPUP_LEAVE_LEFT;
+  else
+    leave = POPUP_LEAVE_RIGHT;
+
+  snprintf(line, DEFLEN,
+	   "WELCOME TO %s'S %s\n"
+	   "BUY SOMETHING WILL YA!!\n\n"
+	   "  %-16s(%d)  \n"
+	   "  %-16s(%d)  \n"
+	   "  %-16s(%d)  \n"
+	   "  %-16s(%d)  ",
+	   seller_name, shop_name,
+	   weapon_name[wpn_type[0]], wpn_cost[0],
+	   weapon_name[wpn_type[1]], wpn_cost[1],
+	   weapon_name[wpn_type[2]], wpn_cost[2],
+	   weapon_name[wpn_type[3]], wpn_cost[3]);
+  
+  sel = pchoose(line, 3, 4, leave);
+  
+  draw_board();
+  
+  if (sel < 0)
+    return;
+
+  sel_wpn    = wpn_type[sel];
+  final_cost = wpn_cost[sel];
+  
+  if (game->weapon == sel_wpn)
+  {
+    pwait("YOU ALREADY HAVE THAT!");
+    draw_board();
+    return;
+  }
+
+  if (sel_wpn == WPN_FREEZE_RAY)
+  {
+    snprintf(line, DEFLEN, "%s:\nSORRY, FREEZE RAY ISN'T IMPLEMENTED YET!!!", seller_name);
+    pwait(line);
+    return;
+  }
+  
+  if (spend_gold(final_cost) == false)
+  {
+    snprintf(line, DEFLEN, "%s:\nSORRY, I DON'T GIVE CREDIT!!!", seller_name);
+    pwait(line);
+    return;
+  }
+
+  if (is_ranged_weapon(sel_wpn) && player->shd_type != SHD_NONE)
+  {
+    //draw_board_norefresh();
+    
+    snprintf(line, DEFLEN,
+	     "DISCARD YOUR %s?\n"
+	     "\n"
+	     "<- NO#YES ->",
+	     armor_name[player->shd_type]);
+
+    if (psel(line) != 1)
+      return;
+
+    player->shd_type = SHD_NONE;
+  }
+
+  give_weapon(sel_wpn);
+  
+  // Update gold
+  draw_stats();
+  
+  draw_board();
+
+  snprintf(line, DEFLEN, "YOU NOW HAVE A %s", weapon_name[sel_wpn]);
+  pwait(line);
+  
+  return;
+}
+
+
+
+
+/*void shop_ranged()
 {
   int sel;
   char line[DEFLEN];
@@ -208,7 +392,7 @@ void shop_ranged()
 	   "BUY SOMETHING WILL YA!!\n\n"
 	   "  %-16s(%d)  \n"
 	   "  %-16s(%d)  \n"
-	   "  %-16s(%d)  \n",
+	   "  %-16s(%d)  ",
 	   shop_name,
 	   weapon_name[WPN_BOW], 100,
 	   weapon_name[WPN_BLASTER], 200,
@@ -278,7 +462,7 @@ void shop_ranged()
   pwait(line);
   
   return;
-}
+  }*/
 
 
 
@@ -735,3 +919,7 @@ void shop_scuba()
   
   return;
 }
+
+
+
+

@@ -36,10 +36,10 @@ void init_gfx_map()
   gfx_map[TL_BR_VL]       = ACS_VLINE | COLOR_PAIR(PAIR_BROWN);
   gfx_map[TL_BR_HL]       = ACS_HLINE | COLOR_PAIR(PAIR_BROWN);
   
-  gfx_map[TL_BL_TTEE]     = ACS_TTEE     | COLOR_PAIR(PAIR_BLUE);
-  gfx_map[TL_BL_UR]       = ACS_URCORNER | COLOR_PAIR(PAIR_BLUE);
-  gfx_map[TL_BL_UL]       = ACS_ULCORNER | COLOR_PAIR(PAIR_BLUE);
-  gfx_map[TL_BL_VL]       = ACS_VLINE    | COLOR_PAIR(PAIR_BLUE);
+  gfx_map[TL_BL_TTEE]     = ACS_TTEE     | COLOR_PAIR(PAIR_BLUE) | A_BOLD;
+  gfx_map[TL_BL_UR]       = ACS_URCORNER | COLOR_PAIR(PAIR_BLUE) | A_BOLD;
+  gfx_map[TL_BL_UL]       = ACS_ULCORNER | COLOR_PAIR(PAIR_BLUE) | A_BOLD;
+  gfx_map[TL_BL_VL]       = ACS_VLINE    | COLOR_PAIR(PAIR_BLUE) | A_BOLD;
   
   gfx_map[TL_BLOOD_TTEE]  = ACS_TTEE     | COLOR_PAIR(PAIR_RED);
   gfx_map[TL_BLOOD_UR]    = ACS_URCORNER | COLOR_PAIR(PAIR_RED);
@@ -102,6 +102,37 @@ void init_gfx_map()
   gfx_map[TL_DISCOLIGHT8] = 'o' | COLOR_PAIR(PAIR_BLACK) | A_BOLD | A_BLINK;
   gfx_map[TL_DISCOLIGHT9] = 'O' | COLOR_PAIR(PAIR_RED)   | A_BOLD;
 
+  gfx_map[TL_P_MUSHROOMS]   =
+    gfx_map[TL_MUSH_CLEARED]   = ACS_VLINE | COLOR_PAIR(PAIR_GREEN);
+
+  gfx_map[TL_MUSH_1L2]   = ACS_VLINE | COLOR_PAIR(PAIR_BLUE) | A_BOLD;
+  gfx_map[TL_MUSH_1R2]   = '/'  | COLOR_PAIR(PAIR_RED);
+
+  gfx_map[TL_MUSH_2L3]   = ACS_ULCORNER | COLOR_PAIR(PAIR_BLUE) | A_BOLD;
+  gfx_map[TL_MUSH_2L2]   = '_'       | COLOR_PAIR(PAIR_CYAN);
+//  gfx_map[TL_MUSH_2L2]   = ACS_VLINE | COLOR_PAIR(PAIR_BLUE) | A_BOLD;
+  gfx_map[TL_MUSH_2L1]   = ACS_URCORNER | COLOR_PAIR(PAIR_BLUE) | A_BOLD;
+  gfx_map[TL_MUSH_2C]    = ACS_VLINE | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_MUSH_2R1]   = '('       | COLOR_PAIR(PAIR_MAGENTA);
+  gfx_map[TL_MUSH_2R2]   = '_'       | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_MUSH_2R3]   = '/'       | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_MUSH_2R4]   = '_'       | COLOR_PAIR(PAIR_RED);
+  gfx_map[TL_MUSH_2R5]   = ')'       | COLOR_PAIR(PAIR_MAGENTA);
+
+  gfx_map[TL_MUSH_3L2]   = '('       | COLOR_PAIR(PAIR_GREEN) | A_BOLD;
+  gfx_map[TL_MUSH_3L1]   = '_'       | COLOR_PAIR(PAIR_BROWN);
+  gfx_map[TL_MUSH_3C]    = ACS_VLINE | COLOR_PAIR(PAIR_GREEN);
+  gfx_map[TL_MUSH_3R1]   = '_'       | COLOR_PAIR(PAIR_BROWN);
+  gfx_map[TL_MUSH_3R2]   = ')'       | COLOR_PAIR(PAIR_GREEN) | A_BOLD;
+  gfx_map[TL_MUSH_3R3]   = '_'       | COLOR_PAIR(PAIR_MAGENTA);
+  gfx_map[TL_MUSH_3R4]   = '_'       | COLOR_PAIR(PAIR_MAGENTA);
+
+  gfx_map[TL_MUSH_4L1]   = '_'       | COLOR_PAIR(PAIR_GREEN) | A_BOLD;
+  gfx_map[TL_MUSH_4C]    = '_'       | COLOR_PAIR(PAIR_GREEN) | A_BOLD;
+  gfx_map[TL_MUSH_4R1]   = '_'       | COLOR_PAIR(PAIR_GREEN) | A_BOLD;
+
+
+  
   gfx_map[TL_REDSPIKE]    = '^' | COLOR_PAIR(PAIR_RED);
 
   gfx_map[TL_FLOOR]       = ACS_HLINE | COLOR_PAIR(PAIR_WHITE) | A_REVERSE;
@@ -246,7 +277,6 @@ void init_gfx_map()
     gfx_map[TL_IWALL] =
     gfx_map[TL_P_HELL] =
     gfx_map[TL_P_NPC1] =
-    gfx_map[TL_P_NPC2] =
     gfx_map[TL_P_NPC3] =
     gfx_map[TL_P_NPC4] =
     gfx_map[TL_P_NPC_ARMOR] =
@@ -705,14 +735,9 @@ void draw_thing(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
     {
       y--;
     }
-    else if (!mob->flying)
+    else
     {
-      if (gtile(mob->y + 1, mob->x)     == TL_SURFACE &&
-	  gtile(mob->y + 1, mob->x - 1) == TL_SURFACE &&
-	  gtile(mob->y + 1, mob->x + 1) == TL_SURFACE)
-      {
-	y++;
-      }
+      y += water_offset(mob);
     }
   }
   
@@ -3546,6 +3571,14 @@ void draw_human(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
       wpn_c = COLOR_PAIR(PAIR_WHITE);
       break;
 
+    case WPN_3XBOW:
+      wpn_c = COLOR_PAIR(PAIR_WHITE);
+      break;
+
+    case WPN_BLASTER:
+      wpn_c = COLOR_PAIR(PAIR_GREEN) | A_BOLD;
+      break;
+      
     case WPN_DRAIN:
     case WPN_DIAMOND:
     case WPN_GLASS:
@@ -3788,6 +3821,23 @@ void draw_human(mob_t * mob, int y, int x, int type, bool flip, uint32_t flags)
     GA(-2, +2, GA_PR | wpn_c);
     GA(-1, +2, GA_AR | wpn_c);
     GA(-0, +2, GA_PR | wpn_c);
+  }
+  else if (weapon == WPN_3XBOW && !attack)
+  {
+    GA(-2, +2, GA_PR | wpn_c);
+    GA(-1, +2, 'X'   | wpn_c);
+    GA(-0, +2, GA_PR | wpn_c);
+  }
+  else if (weapon == WPN_BLASTER && !attack)
+  {
+    GA(-1, +2, GA_PR | wpn_c);
+//    GA(-1, +3, GA_LR | wpn_c);
+    GA(-1, +3, '=' | wpn_c);
+//    GA(-2, +2, '=' | wpn_c);
+//    GA(-2, +3, '=' | wpn_c);
+    GA(-2, +2, '_' | wpn_c);
+    GA(-2, +3, '_' | wpn_c);
+    GA(-2, +4, '_' | wpn_c);
   }
   else if (weapon == WPN_SPEAR)
   {

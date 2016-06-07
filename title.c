@@ -55,7 +55,7 @@ redraw_title:
     addstr("  TO START GAME");
     
     t++;
-    mvaddstr(t++, l_edge, " <H> FOR INSTRUXIONZ  <S> TO VIEW HIGH SCORES   <Q> TO QUIT ");
+    mvaddstr(t++, l_edge, " <H> FOR INSTRUXIONS  <S> TO VIEW HIGH SCORES   <Q> TO QUIT ");
   }
   else if (mode == 1)
   {

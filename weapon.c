@@ -15,6 +15,7 @@ char * weapon_name[WPN_LAST] =
   [WPN_DIAMOND]    = "DIAMOND MACE",
   [WPN_GLASS]      = "GLASS SWORD",
   [WPN_BOW]        = "BOW",
+  [WPN_3XBOW]      = "3X-BOW",
   [WPN_BLASTER]    = "BLASTER",
   [WPN_FREEZE_RAY] = "FREEZE RAY",
   [WPN_RUNESWORD]  = "RUNESWORD",
@@ -97,6 +98,12 @@ void give_weapon(int type)
     game->wpn_dur = 50 + rand() % 50;
     break;
 
+  case WPN_3XBOW:
+    player->range = 3;
+    player->damage = 3;
+    game->wpn_dur = 50 + rand() % 50;
+    break;
+
   case WPN_BLASTER:
     player->range = 3;
     player->damage = 3;
@@ -134,7 +141,10 @@ int has_ranged_weapon()
 
 int is_ranged_weapon(int wpn)
 {
-  if (wpn == WPN_BOW)
+  if (wpn == WPN_BOW ||
+      wpn == WPN_3XBOW ||
+      wpn == WPN_BLASTER ||
+      wpn == WPN_FREEZE_RAY)
     return true;
 
   return false;

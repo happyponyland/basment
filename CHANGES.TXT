@@ -1,8 +1,13 @@
 version 0.10
+- Ice caves and DEATH WALRUS added
+- BAR added
+- BLASTER and 3X-BOW added
 - Blood fountains
+- Shops now sell one type of armor/weapon/ranged
 - Some monsters now use a custom verb when they kill you ("EATEN BY A FISH" etc)
 - HEALTH no longer gets stuck in red when BREATH runs out
 - Hell bridges now have matching support beams
+- Shooting animation finetuned and offset when submerged in water
 - Fixed a bunch of unsafe string operations
 
 

@@ -285,7 +285,7 @@ retry:
 
     try_to_breathe();
 
-    if (game->weapon == WPN_BOW)
+    if (is_ranged_weapon(game->weapon))
     {
       if (game->player_gold <= 0)
       {
@@ -301,8 +301,8 @@ retry:
 
 	setlowmsg("YOU SHOOT");
 	draw_lowmsg();
-	
-	shoot_missile(0, (player->flip ? -1 : +1));
+
+	shoot_missile(player, (player->flip ? -1 : +1));
       }
     }
     else if (player->shd_type)
@@ -613,7 +613,7 @@ int player_move(int dir)
     } while (tile_below == TL_TRAPDOOR_M);
   }
 
-  if (tile_feet == TL_P_NPC1 ||
+/*  if (tile_feet == TL_P_NPC1 ||
       tile_feet == TL_P_NPC2 ||
       tile_feet == TL_P_NPC3 ||
       tile_feet == TL_P_NPC4 ||
@@ -627,7 +627,7 @@ int player_move(int dir)
   {
     interact();
   }
-  else
+  else*/
   {
     /*
       Instruct the player how to access points of interest at its
@@ -899,7 +899,7 @@ void climb_ladder(int dir)
 void game_over(char * cause, bool won)
 {
   char line[DEFLEN];
-  char morgue[4000];
+  char morgue[20000];
   bool any_skill;
   long score;
   score_t sheet;

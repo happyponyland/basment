@@ -29,6 +29,36 @@ void decorate(int y, int x, int type)
     stile(y - 6, x + 3, TL_WALL_TT);
     break;
 
+  case DEC_MUSHROOMS:
+
+    stile(y, x - 3, TL_MUSH_1L2);
+    stile(y, x - 1, TL_P_MUSHROOMS);
+    stile(y, x + 1, TL_MUSH_1R2);
+
+    stile(y - 1, x - 4, TL_MUSH_2L3);
+    stile(y - 1, x - 3, TL_MUSH_2L2);
+    stile(y - 1, x - 2, TL_MUSH_2L1);
+    stile(y - 1, x - 1, TL_MUSH_2C);
+    stile(y - 1, x + 0, TL_MUSH_2R1);
+    stile(y - 1, x + 1, TL_MUSH_2R2);
+    stile(y - 1, x + 2, TL_MUSH_2R3);
+    stile(y - 1, x + 3, TL_MUSH_2R4);
+    stile(y - 1, x + 4, TL_MUSH_2R5);
+
+    stile(y - 2, x - 3, TL_MUSH_3L2);
+    stile(y - 2, x - 2, TL_MUSH_3L1);
+    stile(y - 2, x - 1, TL_MUSH_3C);
+    stile(y - 2, x + 0, TL_MUSH_3R1);
+    stile(y - 2, x + 1, TL_MUSH_3R2);
+    stile(y - 2, x + 2, TL_MUSH_3R3);
+    stile(y - 2, x + 3, TL_MUSH_3R4);
+
+    stile(y - 3, x - 2, TL_MUSH_4L1);
+    stile(y - 3, x - 1, TL_MUSH_4C);
+    stile(y - 3, x + 0, TL_MUSH_4R1);
+
+    break;
+
   case DEC_CAMP:
     stile(y, x - 2, TL_CAMP_STAND_B);
     stile(y, x - 1, TL_CAMP_FIRE);

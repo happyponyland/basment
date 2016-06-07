@@ -17,7 +17,6 @@ int interesting(int tile)
   case TL_P_BLOOD_FOUNTAIN:
   case TL_P_IDOL:
   case TL_P_NPC1:
-  case TL_P_NPC2:
   case TL_P_NPC3:
   case TL_P_NPC4:
   case TL_P_NPC_ARMOR:
@@ -35,6 +34,7 @@ int interesting(int tile)
   case TL_P_SWSTONE:
   case TL_P_TABLET:
   case TL_P_UWCHEST:
+  case TL_P_MUSHROOMS:
   case TL_P_DISCO:
     return true;
 
@@ -113,8 +113,11 @@ void feet_instruction(int tile)
     setlowmsg("PRESS <UP> TO DRAW SWORD");
     break;
 
+  case TL_P_MUSHROOMS:
+    setlowmsg("PRESS <UP> TO SAMPLE MUSHROOMS");
+    break;
+
   case TL_P_NPC1:
-  case TL_P_NPC2:
   case TL_P_NPC3:
   case TL_P_NPC4:
   case TL_P_NPC_ARMOR:
@@ -161,10 +164,6 @@ int interact()
   {
     shop_chef();
   }
-  else if (tile == TL_P_NPC2)
-  {
-    shop_blacksmith();
-  }
   else if (tile == TL_P_NPC3)
   {
     shop_train();
@@ -179,7 +178,11 @@ int interact()
   }
   else if (tile == TL_P_NPC_RANGED)
   {
-    shop_ranged();
+    shop_weapons(1);
+  }
+  else if (tile == TL_P_NPC_WEAPONS)
+  {
+    shop_weapons(0);
   }
   else if (tile == TL_P_NPC_CLOSED)
   {
@@ -273,6 +276,10 @@ int interact()
   else if (tile == TL_P_IDOL)
   {
     idol();
+  }
+  else if (tile == TL_P_MUSHROOMS)
+  {
+    mushrooms();
   }
   else if (tile == TL_P_BOOKSHELF)
   {
@@ -1423,4 +1430,35 @@ void stone_tablet()
 }
 
 
+
+
+void mushrooms()
+{
+  stile(player->y, player->x, TL_MUSH_CLEARED);
+  
+  switch (rand() % 5)
+  {
+  case 0:
+    game->beer = 20;
+    draw_board_norefresh();
+    pwait("@ WOW !!! @");
+    break;
+
+  case 1:
+    game->hallucination = 20;
+    draw_board_norefresh();
+    pwait("@ WOW !!! @");
+    break;
+
+    // TODO: Teleport to subquest
+    
+  case 2:
+    pwait("WOW!!!\n\nYOU FEEL MUCH STRONGER!");
+    change_pl_st(+4);
+    break;
+  }
+
+
+  return;
+}
 

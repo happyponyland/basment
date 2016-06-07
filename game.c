@@ -100,12 +100,12 @@ void enemy_turn(int mi)
       if (player->x < mob->x)
       {
 	mob->flip = true;
-	shoot_missile(mi, -1);
+	shoot_missile(mob, -1);
       }
       else
       {
 	mob->flip = false;
-	shoot_missile(mi, +1);
+	shoot_missile(mob, +1);
       }
     }
   }

@@ -127,9 +127,10 @@ void title_anim(void);
 #define MIS_ARROW    0
 #define MIS_FIREBALL 1
 #define MIS_DISINT   2
+#define MIS_BLASTER  3
 
 bool melee(mob_t * attacker, int speed);
-int shoot_missile(int mi, int dir);
+int shoot_missile(mob_t * attacker, int dir);
 int damage(mob_t * attacker, mob_t * target);
 void kill_enemy(mob_t * target);
 void rogue_escape(mob_t * m);
@@ -337,9 +338,11 @@ void draw_tablet(int highlight);
 void stone_tablet(void);
 void sword_in_stone(void);
 void disco(void);
+void mushrooms(void);
 int anything_near(void);
 
 /* shops.c */
+char * random_seller_name(void);
 void shop_chef(void);
 void shop_train(void);
 void shop_map(void);
@@ -347,7 +350,8 @@ void shop_blacksmith(void);
 void shop_sushi(void);
 void shop_scuba(void);
 void shop_armor(void);
-void shop_ranged(void);
+//void shop_ranged(void);
+void shop_weapons(int selection);
 
 /* weapon.c */
 #define WPN_UNARMED    0
@@ -361,11 +365,12 @@ void shop_ranged(void);
 #define WPN_DIAMOND    8
 #define WPN_GLASS      9
 #define WPN_BOW        10
-#define WPN_BLASTER    11
-#define WPN_FREEZE_RAY 12
-#define WPN_RUNESWORD  13
-#define WPN_BONECLUB   14
-#define WPN_LAST       15
+#define WPN_3XBOW      11
+#define WPN_BLASTER    12
+#define WPN_FREEZE_RAY 13
+#define WPN_RUNESWORD  14
+#define WPN_BONECLUB   15
+#define WPN_LAST       16
 
 extern char * weapon_name[WPN_LAST];
 
@@ -488,6 +493,7 @@ int spend_breath(mob_t * m, int amount);
 void take_breath(mob_t * m);
 int player_underwater(void);
 void try_to_breathe(void);
+int water_offset(mob_t * mob);
 
 /* hiscore.c */
 #define SCORE_ITEMS 20

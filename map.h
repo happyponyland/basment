@@ -104,7 +104,6 @@ enum tile_t
 
   TL_NPC,
   TL_P_NPC1,
-  TL_P_NPC2,
   TL_P_NPC3,
   TL_P_NPC4,
   TL_P_NPC_BAR,
@@ -131,6 +130,7 @@ enum tile_t
   TL_P_SWSTONE,
   TL_P_TABLET,
   TL_P_DISCO,
+  TL_P_MUSHROOMS,
   TL_P_HELL,
 
   TL_WOOD,
@@ -201,6 +201,32 @@ enum tile_t
   TL_SHELF_BOOK6,
   TL_SHELF_BOOK7,
   TL_SHELF_BOOK8,
+  
+  TL_MUSH_1L2,
+  TL_MUSH_CLEARED,
+  TL_MUSH_1R2,
+
+  TL_MUSH_2L3,
+  TL_MUSH_2L2,
+  TL_MUSH_2L1,
+  TL_MUSH_2C,
+  TL_MUSH_2R1,
+  TL_MUSH_2R2,
+  TL_MUSH_2R3,
+  TL_MUSH_2R4,
+  TL_MUSH_2R5,
+
+  TL_MUSH_3L2,
+  TL_MUSH_3L1,
+  TL_MUSH_3C,
+  TL_MUSH_3R1,
+  TL_MUSH_3R2,
+  TL_MUSH_3R3,
+  TL_MUSH_3R4,
+
+  TL_MUSH_4L1,
+  TL_MUSH_4C,
+  TL_MUSH_4R1,
 
   TL_BONE1,
   TL_BONE2,
@@ -530,6 +556,7 @@ enum decoration_t
   DEC_SWSTONE,
   DEC_IDOL,
   DEC_CAMP,
+  DEC_MUSHROOMS,
 
   // Below this point stuff that isn't "interesting"
   DEC_INTERESTING,
@@ -629,6 +656,7 @@ enum decoration_t
 #define CELL_OPENLADDER 49 // Used in archdemon lair
 #define CELL_OPENLADDER_B 50 // Used in archdemon lair
 #define CELL_BOOKSHELF  51
+#define CELL_MUSHROOMS  52
 
 #define CELL_WSURFACE   80
 

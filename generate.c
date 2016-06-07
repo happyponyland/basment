@@ -1012,6 +1012,11 @@ void populate_cellmap(void)
   place_single_cell(12, CELL_SWSTONE);
   place_single_cell(8, CELL_DISCO);
 
+  /*  for (i = 0; i < 600; i++)
+  {
+    place_single_cell(1, CELL_MUSHROOMS);
+    }*/
+
   for (i = 0; i < 3; i++)
   {
     place_single_cell(1, CELL_TABLET);
@@ -1394,6 +1399,11 @@ void convert_cellmap(void)
 	decorate(feet, tx, DEC_DISCO);
 	set_cell(cy, cx, CELL_LOOT);
 	break;
+
+      case CELL_MUSHROOMS:
+	decorate(feet, tx, DEC_MUSHROOMS);
+	set_cell(cy, cx, CELL_LOOT);
+	break;
 	
       case CELL_BRIDGE_C:
       case CELL_BRIDGE_W:
@@ -1730,7 +1740,7 @@ void npc_room(int y, int x, int cell_type)
   }
   else
   {
-    npc_type = TL_P_NPC1 + rand() % 6;
+    npc_type = TL_P_NPC1 + rand() % 7;
 
     if (rand() % 10 == 0)
       npc_type = TL_P_NPC_SCUBA;
@@ -1739,7 +1749,7 @@ void npc_room(int y, int x, int cell_type)
       npc_type = TL_P_NPC_CLOSED;
   }
 
-  npc_type = TL_P_NPC_RANGED;
+//  npc_type = TL_P_NPC_RANGED;
 
   if (cell_type == CELL_NPC_R || cell_type == CELL_SUSHI_R)
   {
@@ -1763,7 +1773,7 @@ void npc_room(int y, int x, int cell_type)
     stile(y - 4, x + x_off + 2, TL_L_O);
     stile(y - 4, x + x_off + 3, TL_L_D);
   }
-  else if (npc_type == TL_P_NPC2)
+/*  else if (npc_type == TL_P_NPC2)
   {
     if (rand() % 2)
     {
@@ -1787,7 +1797,7 @@ void npc_room(int y, int x, int cell_type)
       stile(y - 4, x + x_off + 3, TL_L_H);
       stile(y - 4, x + x_off + 4, TL_L_Y);
     }
-  }
+    }*/
   else if (npc_type == TL_P_NPC3)
   {
     stile(y - 5, x - 1, TL_L_T);
@@ -1830,13 +1840,29 @@ void npc_room(int y, int x, int cell_type)
     stile(y - 4, x + x_off + 2, TL_L_O);
     stile(y - 4, x + x_off + 3, TL_L_R);
   }
+  else if (npc_type == TL_P_NPC_WEAPONS)
+  {
+    stile(y - 5, x + x_off - 0, TL_L_C);
+    stile(y - 5, x + x_off + 1, TL_L_U);
+    stile(y - 5, x + x_off + 2, TL_L_T);
+
+    stile(y - 4, x + x_off - 1, TL_L_E);
+    stile(y - 4, x + x_off - 0, TL_L_M);
+    stile(y - 4, x + x_off + 2, TL_L_U);
+    stile(y - 4, x + x_off + 3, TL_L_P);
+  }
   else if (npc_type == TL_P_NPC_RANGED)
   {
-    stile(y - 4, x + x_off - 1, TL_L_M);
-    stile(y - 4, x + x_off - 0, TL_L_R);
-    stile(y - 4, x + x_off + 1, TL_L_M);
-    stile(y - 4, x + x_off + 2, TL_L_O);
-    stile(y - 4, x + x_off + 3, TL_L_R);
+    stile(y - 5, x + x_off - 1, TL_L_S);
+    stile(y - 5, x + x_off - 0, TL_L_H);
+    stile(y - 5, x + x_off + 1, TL_L_O);
+    stile(y - 5, x + x_off + 2, TL_L_O);
+    stile(y - 5, x + x_off + 3, TL_L_T);
+
+    stile(y - 4, x + x_off - 1, TL_L_E);
+    stile(y - 4, x + x_off - 0, TL_L_M);
+    stile(y - 4, x + x_off + 2, TL_L_U);
+    stile(y - 4, x + x_off + 3, TL_L_P);
   }
 
   return;
